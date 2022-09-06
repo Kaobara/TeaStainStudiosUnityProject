@@ -31,7 +31,7 @@ public static class SubmissionInfo
     // Write a brief blurb of your game, no more than 200 words. Again, ensure
     // this is final by the video milestone deadline.
     public static readonly string GameBlurb =
-@"Chiki’s Delivery Service is a Casual Simulation RPG featuring ragdoll physics delivered by Tea Stain Studios. In Chiki’s Delivery Service, the player takes on the role of Chiki, an aspiring young chick :baby_chick:  who has just started her employment in the esteemed 🐔Chicken Delivery Service company. 
+@"Chiki’s Delivery Service is a Casual Simulation RPG featuring ragdoll physics delivered by Tea Stain Studios. In Chiki’s Delivery Service, the player takes on the role of Chiki, an aspiring young chick 🐤 who has just started her employment in the esteemed 🐔Chicken Delivery Service company. 
 
  
 As Chiki, the player will tackle various levels involving bypassing several obstacles to successfully deliver packages to the designated area. Each level will feature procedurally generated scenery and clouds, with certain parts of the level containing manual set components. However, the goal remains consistent across all levels: deliver the package successfully. 
