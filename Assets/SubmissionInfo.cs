@@ -12,22 +12,21 @@ public static class SubmissionInfo
     public static readonly string RepoURL = "https://github.com/COMP30019/project-2-";
     
     // Come up with a team name below (plain text, no more than 50 chars).
-    public static readonly string TeamName = "Replace with your team name";
+    public static readonly string TeamName = "Tea Stain Studios";
     
     // List every team member below. Ensure student names/emails match official
     // UniMelb records exactly (e.g. avoid nicknames or aliases).
     public static readonly TeamMember[] Team = new[]
     {
-        new TeamMember("Student Name 1", "...@student.unimelb.edu.au"),
-        new TeamMember("Student Name 2", "...@student.unimelb.edu.au"),
-        new TeamMember("Student Name 3", "...@student.unimelb.edu.au"),
-        // Remove the following line if you have a group of 3
-        new TeamMember("Student Name 4", "...@student.unimelb.edu.au"), 
+        new TeamMember("Mukul Chodhary", "mchodhary@student.unimelb.edu.au"),
+        new TeamMember("Peh Ni Tan", "pehnit@student.unimelb.edu.au"),
+        new TeamMember("Mohamad Danielsyah Mahmud", "mohamaddanie@student.unimelb.edu.au"),        
+        new TeamMember("Sebastian Thomas Tobin-Couzens", "stobincouzen@student.unimelb.edu.au"), 
     };
 
     // This may be a "working title" to begin with, but ensure it is final by
     // the video milestone deadline (plain text, no more than 50 chars).
-    public static readonly string GameName = "Replace with your game name";
+    public static readonly string GameName = "Chicken Delivery Service";
 
     // Write a brief blurb of your game, no more than 200 words. Again, ensure
     // this is final by the video milestone deadline.
