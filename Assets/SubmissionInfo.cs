@@ -9,7 +9,7 @@ public static class SubmissionInfo
     // for extra details related to use of this file.
 
     // URL to your group's project 2 repository on GitHub.
-    public static readonly string RepoURL = "https://github.com/COMP30019/project-2-";
+    public static readonly string RepoURL = "https://github.com/COMP30019/project-2-tea-stain-studios";
     
     // Come up with a team name below (plain text, no more than 50 chars).
     public static readonly string TeamName = "Tea Stain Studios";
