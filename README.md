@@ -9,10 +9,22 @@
 
 <!-- Fill this section by Milestone 1 (see specification for details) -->
 
-Here you should be discussing how you will be delegating tasks among team members, as well
-as protocols and processes you will use to keep the project organised. Keep it updated 
-throughout the duration of the project. By the final submission it should contain 
-a summary of who completed what. (You should of course remove and replace this paragraph!)
+We will be using Confluence to keep track of our weekly progress and organising all of our intellectual work. We will be having weekly meeting to ensure smooth discussions and to report to Project Manager, Mukul. Weekly, Fortnightly and Montly goals will be set to ensure each Deliverable is submitted.
+|Role | Who |
+| ----------- | ----------- |
+| Physics | Sebastian |
+| Gameplay | Mukul, Sebastian, Daniel, Jason |
+| General Pixel Shaders | Sebastion & Daniel |
+| Particle and SFX | Daniel |
+| Animation | Daniel and Jason |
+| Objs and Assets | Mukul |
+| Music and Sound Assets | Jason |
+| Procedural generation (scenery + maps and clouds) | Mukul, Seb, Jason
+| Camera Orientation and Controlling | Jason |
+| Querying and Playtesting and Surveying | Jason and Mukul |
+| Level Design | Mukul and everyone |
+| Storytelling and Objectives | Daniel and Mukul |
+
 
 <!-- [[EndTeamworkPlan]] PLEASE LEAVE THIS LINE UNTOUCHED -->
 
