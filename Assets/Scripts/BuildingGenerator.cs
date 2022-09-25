@@ -14,7 +14,9 @@ public class BuildingGenerator : MonoBehaviour
     [SerializeField] private GameObject buildingLongChimney;
     [SerializeField] private GameObject basePlane;    
     [SerializeField] [Range(min: defaultHeight,10)] private int maxBuildingHeight;
-    
+    [SerializeField] private Vector3 buildingOffset = new Vector3(-0.1f, 3.139151f, 0.1f);
+    [SerializeField] private Vector3 middleFloorOffset = new Vector3(-0.03259f, -0.01084f, 0.003151f);
+    [SerializeField] private Vector3 roofOffset = new Vector3(-0.0576f, -1.02915f, -0.06615f);
     private struct Building{
         public GameObject BuildingBase;
         public List<GameObject> BuildingFloors;
@@ -35,19 +37,19 @@ public class BuildingGenerator : MonoBehaviour
     }
     private void generate()
     {
-        building.BuildingBase = GetRandomItem<GameObject>(this.buildingBases);
-        var baseTransform = Instantiate(building.BuildingBase).transform;
-        baseTransform.parent = transform;
-        for (int i=0; i<Random.Range(0, this.maxBuildingHeight-defaultHeight);i++)
+        building.BuildingBase = Instantiate(GetRandomItem<GameObject>(this.buildingBases), transform, true);
+
+        float heightOffset=0f;
+        building.BuildingFloors = new List<GameObject>();
+        for (int i = 0; i < this.maxBuildingHeight - defaultHeight; i++)
         {
-            var floor = GetRandomItem<GameObject>(this.buildingMiddles);            
-            var middleTransform = Instantiate(floor).transform;
-            middleTransform.parent = transform;
-            building.BuildingFloors.Add(floor);            
+            var floor = Instantiate(GetRandomItem<GameObject>(this.buildingMiddles), transform, true);
+            heightOffset +=  middleFloorOffset.y+ buildingOffset.y;
+            floor.transform.localPosition += new Vector3(middleFloorOffset.x, heightOffset, middleFloorOffset.z);           
+            building.BuildingFloors.Add(floor);
         }
-        building.BuildingRoof = this.buildingRoof;
-        var roofTransform = Instantiate(building.BuildingRoof).transform;
-        roofTransform.parent = transform;
+        building.BuildingRoof = Instantiate(this.buildingRoof, transform, true);
+        building.BuildingRoof.transform.localPosition += new Vector3(0f, heightOffset, 0f) + buildingOffset + roofOffset;
     }
     public T GetRandomItem<T>(List<T> listToRandomize)
     {

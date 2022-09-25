@@ -330,13 +330,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 541d01cc3476f304286090d68650e9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingBase:
+  buildingBases:
   - {fileID: 919132149155446097, guid: 2ec22358c1857094583d8fbb44e3e4a6, type: 3}
-  buildingMiddle: {fileID: 0}
-  buildingRoof: {fileID: 0}
-  grass: {fileID: 0}
-  buildingLongChimney: {fileID: 0}
-  basePlane: {fileID: 0}
+  buildingMiddles:
+  - {fileID: 919132149155446097, guid: 548e485d5df27714d84844bf17c7163f, type: 3}
+  buildingRoof: {fileID: 919132149155446097, guid: b42aca3fad34f1144ad32b9eccfb4efe, type: 3}
+  grass: {fileID: 919132149155446097, guid: 41e4548e9c9afa6418e1bd1a06b2eb89, type: 3}
+  buildingLongChimney: {fileID: 919132149155446097, guid: 994ae580e3bd3f74cadd9011b16d7ba7, type: 3}
+  basePlane: {fileID: 919132149155446097, guid: 1ecf4e458766fcd498a1bc3ef8f6ad46, type: 3}
+  maxBuildingHeight: 3
+  buildingOffset: {x: -0.1, y: 3.139151, z: 0.1}
+  middleFloorOffset: {x: -0.03259, y: -0.01084, z: 0.003151}
+  roofOffset: {x: 0.0674, y: -0.11084, z: 0.09685}
 --- !u!4 &1400173605
 Transform:
   m_ObjectHideFlags: 0

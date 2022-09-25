@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wall.005
-    second: {fileID: 2100000, guid: e570f633a1444be4ba3c9c0afd3a70d1, type: 2}
+    second: {fileID: 2100000, guid: 6b7d98d7327619a41af9c1a915304243, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -82,7 +82,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importVisibility: 1
