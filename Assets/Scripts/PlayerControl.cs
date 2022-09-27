@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {   
-    
-    void Start() {
+      
+    private void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    void Update() {
-    
+    void Update()
+    {
+        
     }
 
-    void LateUpdate() {
-
+    void LateUpdate()
+    {
         float horizontal_movement_x = Input.GetAxis("Mouse X");
         
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
