@@ -13,6 +13,12 @@ public class PlayerControl : MonoBehaviour
     
     }
 
+    // When player moves their mouse horizontally, Chiki also turns, and the camera turns along with Chiki
+    // This section of Chiki + camera control was referenced, studied and adapted for use from the following resources:
+    // https://answers.unity.com/questions/1179680/how-to-rotate-my-camera.html
+    // https://gamedevacademy.org/unity-audio-tutorial/
+    // https://docs.unity3d.com/ScriptReference/Vector3.html
+    // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
     void LateUpdate() {
 
         float horizontal_movement_x = Input.GetAxis("Mouse X");
