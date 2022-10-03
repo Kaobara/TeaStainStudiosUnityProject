@@ -7,6 +7,7 @@ public class BuildingGenerator : MonoBehaviour
     // Start is called before the first frame update
     // External parameters/variables
     private const int defaultHeight = 2;
+    [SerializeField] private ScriptableObject shape;
     [SerializeField] private List<GameObject> buildingBases;
     [SerializeField] private List<GameObject> buildingMiddles;
     [SerializeField] private GameObject buildingRoof;
@@ -37,8 +38,7 @@ public class BuildingGenerator : MonoBehaviour
     }
     private void generate()
     {
-        building.BuildingBase = Instantiate(GetRandomItem<GameObject>(this.buildingBases), transform, true);
-
+        building.BuildingBase = Instantiate(GetRandomItem<GameObject>(this.buildingBases), transform, true);        
         float heightOffset=0f;
         building.BuildingFloors = new List<GameObject>();
         for (int i = 0; i < this.maxBuildingHeight - defaultHeight; i++)
