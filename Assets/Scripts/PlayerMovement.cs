@@ -33,12 +33,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float playerHeight;    
     public LayerMask groundMask;
 
+    [Header("Walking on Slopes")]
+    [SerializeField] private float maxAngle = Mathf.PI / 6;
+    [SerializeField] private float playerLength;
+    [SerializeField] private RaycastHit slopeHit;
+    [SerializeField] private float slopeAngle;
+
     [Header("Player State")]
     [SerializeField] private playerState state = playerState.Ground;
 
     [Header("Acceleration Constants")]
-    [SerializeField] private float groundAccel = 5f;
-    [SerializeField] private float airAccel = 1f;
+    [SerializeField] private float groundAccel = 25f;
+    [SerializeField] private float airAccel = 5f;
     
     [Header("Drag Constants")]
     [SerializeField] private float groundDrag = 1f;
@@ -64,8 +70,19 @@ public class PlayerMovement : MonoBehaviour
     // move player according to movement keys and current player state
     private void MovePlayer()
     {
+        // calculate direction of player based on move keys and orientation
         playerDir = orientation.forward * forwardsInput + orientation.right * sidewaysInput;
-        rigidBody.AddForce(playerDir.normalized * maxSpeed * accel);
+        
+        // project direction onto plane of a slope, if on slope
+        if (SlopeCheck()) {
+            rigidBody.useGravity = false;
+            playerDir = Vector3.ProjectOnPlane(playerDir, slopeHit.normal).normalized;
+        }
+        else {
+            rigidBody.useGravity = true;
+        }
+
+        rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
     }
 
     // limit non vertical speed to a designated max speed
@@ -82,7 +99,16 @@ public class PlayerMovement : MonoBehaviour
     private bool GroundCheck()
     {
         // shoot downward ray to check if on ground
-        return Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + heightEpsilon, groundMask);
+        return Physics.Raycast(transform.position, Vector3.down, 0.5f * playerHeight + 0.4f, groundMask);
+    }
+
+    private bool SlopeCheck()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.5f * playerHeight + 0.4f, groundMask)) {
+            slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            if (slopeAngle < maxAngle) return true;
+        }
+        return false;
     }
 
     // cause the player to jump
@@ -183,6 +209,8 @@ public class PlayerMovement : MonoBehaviour
     {
         // move player
         MovePlayer();
+
+   
         
         // glide if player is in glide player state
         if (state == playerState.Glide) Glide();
