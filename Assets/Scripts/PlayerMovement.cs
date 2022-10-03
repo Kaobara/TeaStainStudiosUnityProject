@@ -74,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
         playerDir = orientation.forward * forwardsInput + orientation.right * sidewaysInput;
         
         // project direction onto plane of a slope, if on slope
+        // (disable gravity while on slope, to prevent sliding down,
+        // may be replaced with explicit slope type state handling)
         if (SlopeCheck()) {
             rigidBody.useGravity = false;
             playerDir = Vector3.ProjectOnPlane(playerDir, slopeHit.normal).normalized;
@@ -102,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
         return Physics.Raycast(transform.position, Vector3.down, 0.5f * playerHeight + 0.4f, groundMask);
     }
 
+    // check if player is on a slope
     private bool SlopeCheck()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.5f * playerHeight + 0.4f, groundMask)) {
