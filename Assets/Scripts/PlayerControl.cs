@@ -11,7 +11,7 @@ enum playerState
     Rise,
     Fall
 }
-public class PlayerMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {   
     [Header("Lateral Movemnt")]
     [SerializeField] private float maxSpeed = 5f;
@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
 
     [Header("Walking on Slopes")]
-    [SerializeField] private float maxAngle = Mathf.PI / 6;
+    [SerializeField] private float maxAngle = 30f;
     [SerializeField] private float playerLength;
     [SerializeField] private RaycastHit slopeHit;
     [SerializeField] private float slopeAngle;
@@ -77,11 +77,11 @@ public class PlayerMovement : MonoBehaviour
         // (disable gravity while on slope, to prevent sliding down,
         // may be replaced with explicit slope type state handling)
         if (SlopeCheck()) {
-            rigidBody.useGravity = false;
+            //rigidBody.useGravity = false;
             playerDir = Vector3.ProjectOnPlane(playerDir, slopeHit.normal).normalized;
         }
         else {
-            rigidBody.useGravity = true;
+            //rigidBody.useGravity = true;
         }
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
     private bool GroundCheck()
     {
         // shoot downward ray to check if on ground
-        return Physics.Raycast(transform.position, Vector3.down, 0.5f * playerHeight + 0.4f, groundMask);
+        return Physics.Raycast(transform.position, Vector3.down, 0.5f * playerHeight + 0.01f, groundMask);
     }
 
     // check if player is on a slope
