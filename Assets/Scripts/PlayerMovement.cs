@@ -155,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // store rigidbody and disallow rotation, allow jumping from start
+        Cursor.lockState = CursorLockMode.Locked;
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.freezeRotation = true;
         canJump = true;
@@ -212,17 +213,28 @@ public class PlayerMovement : MonoBehaviour
     {
         // move player
         MovePlayer();
-
-   
         
         // glide if player is in glide player state
         if (state == playerState.Glide) Glide();
     }
 
+    // When player moves their mouse horizontally, Chiki also turns, and the camera turns along with Chiki
+    // This section of Chiki + camera control was referenced, studied and adapted for use from the following resources:
+    // https://answers.unity.com/questions/1179680/how-to-rotate-my-camera.html
+    // https://gamedevacademy.org/unity-audio-tutorial/
+    // https://docs.unity3d.com/ScriptReference/Vector3.html
+    // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
     private void LateUpdate()
     {
         // trigger speed limiter to limit speed if needed
         SpeedLimiter();
+
+        float horizontal_movement_x = Input.GetAxis("Mouse X");
+        
+        // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
+        // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
+        // movement of the player's mouse.
+        transform.eulerAngles += Vector3.up * horizontal_movement_x; 
     }
 
 }
