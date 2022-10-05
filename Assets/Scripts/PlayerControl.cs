@@ -7,6 +7,7 @@ using UnityEngine;
 enum playerState
 {
     Ground,
+    Steep,
     Glide,
     Rise,
     Fall
@@ -35,6 +36,7 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Walking on Slopes")]
     [SerializeField] private float maxAngle = 30f;
+    [SerializeField] private float slopeThresholdAngle = 5f;
     [SerializeField] private float playerLength;
     [SerializeField] private RaycastHit slopeHit;
     [SerializeField] private float slopeAngle;
@@ -76,13 +78,15 @@ public class PlayerControl : MonoBehaviour
         // project direction onto plane of a slope, if on slope
         // (disable gravity while on slope, to prevent sliding down,
         // may be replaced with explicit slope type state handling)
-        if (SlopeCheck()) {
+        if (slopeAngle > slopeThresholdAngle && slopeAngle < maxAngle) {
             //rigidBody.useGravity = false;
-            playerDir = Vector3.ProjectOnPlane(playerDir, slopeHit.normal).normalized;
+            playerDir = Vector3.ProjectOnPlane(playerDir, slopeHit.normal);
         }
         else {
             //rigidBody.useGravity = true;
         }
+
+        Debug.DrawLine(transform.position, transform.position + playerDir * 5, Color.green, 0.05f, false);
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
     }
@@ -97,19 +101,34 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // check if player is on the ground, within margin for error
+    //
     private bool GroundCheck()
     {
-        // shoot downward ray to check if on ground
-        return Physics.Raycast(transform.position, Vector3.down, 0.5f * playerHeight + 0.01f, groundMask);
-    }
-
-    // check if player is on a slope
-    private bool SlopeCheck()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.5f * playerHeight + 0.4f, groundMask)) {
+        // shoot ray downward, only as far as player could be standing on
+        // steepest walkable slope
+        slopeAngle = 0;
+        if (Physics.Raycast(
+                transform.position,
+                Vector3.down,
+                out slopeHit,
+                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle * 180) / Mathf.PI)) + heightEpsilon,
+                groundMask
+            ))
+        {
+            // calculate angle of slope
             slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            if (slopeAngle < maxAngle) return true;
+
+            if (slopeAngle > maxAngle) {
+                return false;
+            }
+
+            // calculate maximum distance away from surface according to slope angle
+            float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle * 180) / Mathf.PI)) + heightEpsilon;
+
+            // if slope isnt too steep
+            if (slopeHit.distance < maxDist) {
+                return true;
+            }
         }
         return false;
     }
@@ -172,6 +191,14 @@ public class PlayerControl : MonoBehaviour
         if (GroundCheck() && state != playerState.Rise) {
             state = playerState.Ground;
             canGlide = false;
+        } 
+        else if (state == playerState.Ground) {
+            if (rigidBody.velocity.y > 0) {
+                state = playerState.Rise;
+            }
+            else {
+                state = playerState.Fall;
+            }        
         }
 
         // when player starts falling, set new state and allow gliding
