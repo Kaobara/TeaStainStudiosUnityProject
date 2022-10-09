@@ -11,20 +11,31 @@ public class mapBuilder : MonoBehaviour
     private const float TILE_SIZE = 8f;
     private const int DEFAULTROT = 90;
     private const int NROT = 4;
+    private const int defaultHeight = 2;
     [SerializeField] private socket roadTile;
     [SerializeField] private socket grassTile;
     [SerializeField] private socket houseTile;
+    [SerializeField] private socket river0;
+    [SerializeField] private socket river1;
     [SerializeField] private int length;
     [SerializeField] private int width;
     [SerializeField] private int seed = 92879187;
     [SerializeField] private float Tile_offset = 0.5f;
-   
+    [SerializeField] [Range(min: defaultHeight, 10)] private int maxBuildingHeight;
+    [SerializeField] private BuildingGenerator buildingGen;
+    [SerializeField] private GrassPlotter grassPloter;
+    [SerializeField] private int chunkSize = 5;
+    [SerializeField] private bool debugMode;
+    [SerializeField] private int maxSearchDepth = 20;
+
     [System.Serializable]
     public enum socketType
     {
         road, 
         grass, 
-        house
+        house,
+        river0,
+        river1
     }
 
     [System.Serializable]
@@ -170,7 +181,7 @@ public class mapBuilder : MonoBehaviour
     private List<GameObject> roadTiles = new List<GameObject>();
     private List<GameObject> grassTiles = new List<GameObject>();
     private List<GameObject> houseTiles = new List<GameObject>();
-
+    private List<GameObject> riverTiles = new List<GameObject>();
     private IDictionary<(int, int), List<socketType>> CSPMap = new Dictionary<(int, int), List<socketType>>();
     private IDictionary<(int, int), socket> GridMap = new Dictionary<(int, int), socket>();
     private IDictionary<(int, int), int> rotIds = new Dictionary<(int, int), int>();
@@ -186,25 +197,89 @@ public class mapBuilder : MonoBehaviour
     private void makeGrid()
     {
         int k = 0;
+       
         for(int i =0; i<this.length; i++)
         {
             for(int j=0; j < this.width; j++)
             {
                 
                 socket tileskt = new socket(getRandomSocket(CSPMap[(i, j)]));
-                socket prefapskt = getPrefabSocket(tileskt.type);
+                socket prefapskt = getPrefabSocket(tileskt.type);                
                 tileskt.tile = Instantiate(prefapskt.tile, transform, true);
-                tileskt.tile.transform.Rotate(new Vector3(0, 1, 0), (float)(rotIds[(i, j)]) * DEFAULTROT);
+                generateBuildings(tileskt);
+                tileskt.tile.transform.Rotate(0, (float)(rotIds[(i, j)]) * DEFAULTROT,0, Space.Self);
                 tileskt.tile.transform.position = new Vector3(0, 0, 0);
                 tileskt.tile.transform.localPosition = new Vector3(0, 0, 0);
-                tileskt.tile.transform.localPosition += new Vector3(i * (TILE_SIZE-Tile_offset), 0, j * (TILE_SIZE-Tile_offset));
-               
+                
+                Vector2 centrePos = new Vector2(i * (TILE_SIZE - Tile_offset), j * (TILE_SIZE - Tile_offset));                
+                tileskt.tile.transform.localPosition += new Vector3(centrePos.x, 0,centrePos.y );
+                plotGrass(tileskt, centrePos,transform);
                 nameObject(tileskt, k++, (i, j));
                 
                 setGridskt(tileskt, (i,j));
                 GridMap.Add((i, j), tileskt);
                 
             }
+        }
+    }
+
+    private int maxChunks(int gridSize, int chunkSize)
+    {
+        var q = gridSize / chunkSize;
+        var r = gridSize % chunkSize;
+
+        return (r == 0) ? q : q + 1;
+    }
+
+    // a chunk boundary is [min, max)
+    private List<(int, int)> getChunkBounds(int xChunkNumber, int zChunkNumber)
+    {
+        List<(int, int)> ChunkBounds = new List<(int, int)>(2);
+        
+        (int, int) xBounds = correctBounds(getMinMaxBounds(xChunkNumber), this.length);
+        (int, int) zBounds = correctBounds(getMinMaxBounds(zChunkNumber), this.width);
+        ChunkBounds.Add(xBounds);
+        ChunkBounds.Add(zBounds);
+        return ChunkBounds;
+    }
+
+    private (int, int) getMinMaxBounds(int chunkNumber)
+    {
+        int minBound = getChunkMinBound(chunkNumber);
+        int maxBound = getChunkMaxBound(chunkNumber);
+
+        return (minBound, maxBound);
+    }
+    private int getChunkMaxBound(int chunkNumber)
+    {
+        return (chunkNumber + 1) * chunkSize;
+    }
+    private int getChunkMinBound(int chunkNumber)
+    {
+        return (chunkNumber * chunkSize) - 1;
+    }
+    private (int, int) correctBounds((int, int) n, int max)
+    {
+        return (correctToWorldBounds(n.Item1, max), correctToWorldBounds(n.Item2, max));
+    }
+    private int correctToWorldBounds(int n, int max)
+    {
+        return Mathf.Max(0, Mathf.Min(max, n));
+    }
+    private void plotGrass(socket skt, Vector2 centrePos, Transform t)
+    {
+        if( skt.type == socketType.grass)
+        {
+            Vector2 halfSize = new Vector2((TILE_SIZE) / 2, (TILE_SIZE) / 2);
+            grassPloter.plot(centrePos - halfSize, centrePos + halfSize, r, t);
+        }
+        
+    }
+    private void generateBuildings(socket skt)
+    {
+        if(skt.type == socketType.house)
+        {
+            buildingGen.generate(r.Next(defaultHeight, maxBuildingHeight), skt.tile.transform, r);
         }
     }
     private void nameObject(socket tileskt, int k, (int, int) Loc)
@@ -214,20 +289,26 @@ public class mapBuilder : MonoBehaviour
         switch (tileskt.type)
         {
             case socketType.road:
-                tileskt.tile.gameObject.name = "RoadTile_" + "(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
+                tileskt.tile.gameObject.name = "RoadTile_" + rotIds[(i,j)].ToString() +"_(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
                 roadTiles.Add(tileskt.tile);
                 break;
 
             case socketType.grass:
-                tileskt.tile.gameObject.name = "GrassTile_" + "(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
-                grassTiles.Add(tileskt.tile);
+                tileskt.tile.gameObject.name = "GrassTile_" + rotIds[(i, j)].ToString() + "_(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
                 break;
 
             case socketType.house:
-                tileskt.tile.gameObject.name = "HouseTile_" + "(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
+                tileskt.tile.gameObject.name = "HouseTile_" + rotIds[(i, j)].ToString() + "_(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
                 houseTiles.Add(tileskt.tile);
                 break;
-
+            case socketType.river0:
+                tileskt.tile.gameObject.name = "RiverTile0_" + rotIds[(i, j)].ToString() + "_(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
+                riverTiles.Add(tileskt.tile);
+                break;
+            case socketType.river1:
+                tileskt.tile.gameObject.name = "RiverTile1_" + rotIds[(i, j)].ToString() + "_(" + i.ToString() + "," + j.ToString() + ")_" + (k).ToString();
+                riverTiles.Add(tileskt.tile);
+                break;
             default:
                 break;
         }
@@ -284,32 +365,67 @@ public class mapBuilder : MonoBehaviour
                 
             }
         }
-        
+
         // collapse a random point on the map 
-        var x = r.Next(0, this.length);
-        var y = r.Next(0, this.width);
+        /*var x = r.Next(0, this.length);
+        var y = r.Next(0, this.width);*/
+        var x = 0;
+        var y = 0;
+        var skt = getRandomSocket(allStates);
         CSPMap[(x, y)].Clear();
-        CSPMap[(x, y)].Add(socketType.grass);
-        propogateToNeighbour((x, y), CSPMap[(x, y)]);
+        CSPMap[(x, y)].Add(skt.type);
+        List<(int, int)> bounds = getChunkBounds(x, y);
+        (int, int) xBounds = bounds[0];
+        (int, int) zBounds = bounds[1];
+        propogateToNeighbour((x, y), CSPMap[(x, y)], xBounds, zBounds, 0);
     }
 
     private void solveCSP()
     {
-        for (int i = 0; i < this.length; i++)
+        // Vector2Int nChunks = new Vector2Int(this.length / this.chunkSize, this.width / this.chunkSize);
+        Vector2Int maxNChunks = new Vector2Int(maxChunks(this.length, this.chunkSize), maxChunks(this.width, this.chunkSize));
+        for (int i = 0; i < maxNChunks.x; i++)
         {
-            for (int j = 0; j < this.width; j++)
+            for (int j = 0; j < maxNChunks.y; j++)
             {
-               if(this.CSPMap[(i,j)].Count == 1)
+                List<(int, int)> bounds = getChunkBounds(i, j); 
+                (int, int) xBounds = bounds[0];
+                (int, int) zBounds = bounds[1];
+                if (debugMode)
                 {
-                    //already been solved
-                    //Debug.Log("Solved");
-                    //printMap();
-                    continue;
+                    Debug.Log("Chunk number" + i + "," + j + xBounds);
                 }
-                propogateToNeighbour((i, j), this.CSPMap[(i, j)]);
+                solveCSPChunk(xBounds, zBounds);
             }
         }
-        printMap();
+        
+       // printMap();
+    }
+    private void solveCSPChunk((int, int) xBounds, (int, int) zBounds)
+    {
+        for (int i = xBounds.Item1; i < xBounds.Item2; i++)
+        {
+            for (int j = zBounds.Item1; j < zBounds.Item2; j++)
+            {
+                if (debugMode)
+                {
+                    Debug.Log("Begin csp at Location: (" + i + ", " + j + "): ");
+                }
+
+                if (this.CSPMap[(i, j)].Count == 1)
+                {
+                    //already been solved
+                    if (debugMode)
+                    {
+                        Debug.Log("Solved " + "Location: (" + i + ", " + j + "): " + this.CSPMap[(i, j)][0].ToString() + "rotID: " + rotIds[(i, j)]);
+                        //printMap();
+                    }
+
+                    continue;
+                }
+                propogateToNeighbour((i, j), this.CSPMap[(i, j)], xBounds, zBounds,0);
+            }
+        }
     }
 
     private void printMap()
@@ -326,7 +442,7 @@ public class mapBuilder : MonoBehaviour
 
     private void printList((int, int) Loc)
     {
-        Debug.Log("Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + "rotID: " + rotIds[Loc] + "nCSPMAP"+ CSPMap[Loc].Count.ToString());
+        Debug.Log("[propogate print List] Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + "rotID: " + rotIds[Loc] + "nCSPMAP"+ CSPMap[Loc].Count.ToString());
         
         foreach (var k in CSPMap[Loc])
         {
@@ -335,24 +451,38 @@ public class mapBuilder : MonoBehaviour
         Debug.Log("\n");
 
     }
+    private bool isInBounds((int, int) Loc, (int, int) xBounds, (int, int) zBounds)
+    {
+        if(Loc.Item1<xBounds.Item1 || Loc.Item1 >= xBounds.Item2 || Loc.Item2<zBounds.Item1 || Loc.Item2>=zBounds.Item2)
+        {
+            //out of x bounds or z Bounds, move on
+            return false;
+        }
+        return true;
+    }
 
-    private bool propogateToNeighbour((int, int) Loc, List<socketType> types)
+    private bool propogateToNeighbour((int, int) Loc, List<socketType> types, (int, int) xBounds, (int, int) zBounds, int currentDepth)
     {
         // this tile is of type 'type' we need to check if making this change to current tile will cause issues
         //Debug.Log("inside propogate to neighbour");
+        
+        if (++currentDepth > maxSearchDepth)
+        {
+            return true;
+        }
         socket skt = getRandomSocket(types);
         List<socketType> currentStates = new List<socketType>(CSPMap[Loc]);
         CSPMap[Loc].Clear();
         CSPMap[Loc].Add(skt.type);
 
-        bool check = propogate(Loc, skt);
+        bool check = propogate(Loc, skt, xBounds, zBounds, currentDepth);
         while (!check)
         {
             CSPMap[Loc].Clear();
             CSPMap[Loc].AddRange(currentStates);
             if (!skt.isSymmetric)
             {
-                var rotId = checkAllRot(skt, Loc);
+                var rotId = checkAllRot(skt, Loc, xBounds, zBounds, currentDepth);
                 if (rotId> -1)
                 {
                     rotIds[(Loc)] = rotId;
@@ -369,7 +499,7 @@ public class mapBuilder : MonoBehaviour
             skt = getRandomSocket(types);
             CSPMap[Loc].Clear();
             CSPMap[Loc].Add(skt.type);
-            check = propogate(Loc, skt);
+            check = propogate(Loc, skt, xBounds, zBounds, currentDepth);
         }
        
 
@@ -377,21 +507,23 @@ public class mapBuilder : MonoBehaviour
     }
 
     // return the rot id for which this worked
-    private int checkAllRot(socket skt, (int, int) Loc)
+    private int checkAllRot(socket skt, (int, int) Loc, (int, int)xBounds, (int, int)zBounds, int currentDepth)
     {
         List<socketType> currentStates = new List<socketType>(CSPMap[Loc]);
         CSPMap[Loc].Clear();
         CSPMap[Loc].Add(skt.type);
-
-        for (int i =1; i<4; i++)
+        var nrot = (skt.type == socketType.river0) ? 2 : NROT;
+        for (int i =1; i<NROT; i++)
         {
             skt.applyRot(i);
-            if(propogate(Loc, skt))
+            rotIds[Loc] = i;
+            if(propogate(Loc, skt, xBounds, zBounds, currentDepth))
             {
                 skt.reset();
                 return i;
             }
         }
+        rotIds[Loc] = 0;    
         CSPMap[Loc].Clear();
         CSPMap[Loc].AddRange(currentStates);
         skt.reset();
@@ -399,10 +531,13 @@ public class mapBuilder : MonoBehaviour
     }
     
     // if this is a valid move and it doesnt fail any csp 
-    private bool propogate((int, int) Loc, socket skt)
+    private bool propogate((int, int) Loc, socket skt, (int, int) xBounds, (int, int) zBounds, int currentDepth)
     {
         //Debug.Log("inside propogate");
-        
+        if(!preCheck(Loc, skt))
+        {
+            return false;
+        }
         int k = 0;
         List<(int, int)> roadlocs = new List<(int, int)>();
         // to ensure there is always two roads connected to this road
@@ -419,6 +554,7 @@ public class mapBuilder : MonoBehaviour
             
             if (x >= length || y>=width || x<0 ||y<0)
             {
+                roadCount++;
                 // house is pointing out of the map
                 if (t.Contains(socketType.road) && t.Count == 1)
                 {
@@ -426,32 +562,37 @@ public class mapBuilder : MonoBehaviour
                 }
                 continue;
             }
+           
             if (CSPMap[(x, y)].Count == 0)
             {
                 return false;
             }
-            
-                     
-            Debug.Log("Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + CSPMap[Loc].Count.ToString());
-            Debug.Log("Valid States "+ "type: "+ k.ToString() + " rotID " + rotIds[Loc]);
-            Debug.Log("checkLocation: (" + x.ToString() + ", " + y.ToString() + "): " );
-            Debug.Log("k: " + k.ToString());
             if (t.Count == 0)
             {
                 return false;
             }
-            foreach(var d in t)
-            {
-                Debug.Log(((int)d).ToString());
-            }
-            printList((x, y));
 
+            if (debugMode)
+            {
+                Debug.Log("[propogate] Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + CSPMap[Loc].Count.ToString() + CSPMap[Loc][0]);
+                Debug.Log("Valid States " + "type: " + k.ToString() + " rotID " + rotIds[Loc]);
+                Debug.Log("checkLocation: (" + x.ToString() + ", " + y.ToString() + "): ");
+                Debug.Log("k: " + k.ToString());
+
+                foreach (var d in t)
+                {
+                    Debug.Log(((int)d).ToString());
+                }
+                Debug.Log("\n");
+                printList((x, y));
+            }
+           
             List<socketType> validStates = new List<socketType>(findIntersect(t, CSPMap[(x, y)]));
             if (validStates == null) return false; 
            
             if (validStates.Count() == 0)
             {
-                //Debug.Log("false");
+                Debug.Log("false");
                 return false;
             }
 
@@ -460,15 +601,22 @@ public class mapBuilder : MonoBehaviour
                 roadlocs.Add((x, y));
                 roadCount++;
             }
-            foreach (var d in validStates)
+            if (debugMode)
             {
-                Debug.Log(((int)d).ToString());
+                foreach (var d in validStates)
+                {
+                    Debug.Log(((int)d).ToString());
+                }
             }
+            
             if (CSPMap[(x,y)].Count == validStates.Count)
             {
                 //no change to this cell so continue;
+                
                 continue;
             }
+
+            
 
             List<socketType> currentStates = new List<socketType>(CSPMap[(x, y)]);
             
@@ -477,7 +625,12 @@ public class mapBuilder : MonoBehaviour
             CSPMap[(x,y)].Clear();
             CSPMap[(x, y)].TrimExcess();
             CSPMap[(x, y)].AddRange(validStates);
-            if(!propogateToNeighbour((x, y), CSPMap[(x, y)]))
+            if (!isInBounds((x, y), xBounds, zBounds))
+            {
+                // in unexplored area
+                continue;
+            }
+            if (!propogateToNeighbour((x, y), CSPMap[(x, y)], xBounds, zBounds, currentDepth))
             {
                 CSPMap[(x, y)].Clear();
                 CSPMap[(x, y)].TrimExcess();
@@ -487,9 +640,13 @@ public class mapBuilder : MonoBehaviour
 
             //printList((x,y));
         }
-        /* Debug.Log("propogated");
-         printMap();*/
-        Debug.Log("road count: "+ roadCount);
+        if (debugMode)
+        {
+            /* Debug.Log("propogated");
+                     printMap();*/
+            Debug.Log("road count: " + roadCount);
+        }
+        
         if( socketType.road == skt.type)
         {
             if (roadCount < 2)
@@ -528,10 +685,96 @@ public class mapBuilder : MonoBehaviour
 
     
 
-    private bool roadCheck()
+    private bool preCheck((int,int) Loc, socket skt)
     {
+       // same as propogate but first quickly checks if the 1 degree neighbour cells are ok before going into recursion
+        int k = 0;
+        List<(int, int)> roadlocs = new List<(int, int)>();
+        // to ensure there is always two roads connected to this road
+        int roadCount = 0;
+        foreach ((int, int) l in skt.initial_cordRot)
+        {
+            int i = l.Item1;
+            int j = l.Item2;
 
-        return false;
+            var x = i + Loc.Item1;
+            var y = j + Loc.Item2;
+            List<socketType> t = new List<socketType>();
+            t.AddRange(getneighbourType(skt, k++));
+
+            if (x >= length || y >= width || x < 0 || y < 0)
+            {
+                // house is pointing out of the map
+                if (t.Contains(socketType.road) && t.Count == 1)
+                {
+                    return false;
+                }
+                continue;
+            }
+            if (CSPMap[(x, y)].Count == 0)
+            {
+                return false;
+            }
+
+            if (t.Count == 0)
+            {
+                return false;
+            }
+            if (debugMode)
+            {
+                Debug.Log("[precheck] Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + CSPMap[Loc].Count.ToString() + CSPMap[Loc][0]);
+                Debug.Log("Valid States " + "type: " + k.ToString() + " rotID " + rotIds[Loc]);
+                Debug.Log("checkLocation: (" + x.ToString() + ", " + y.ToString() + "): ");
+                Debug.Log("k: " + k.ToString());
+
+                foreach (var d in t)
+                {
+                    Debug.Log(((int)d).ToString());
+                }
+                Debug.Log("\n");
+                printList((x, y));
+            }
+
+
+            List<socketType> validStates = new List<socketType>(findIntersect(t, CSPMap[(x, y)]));
+            if (validStates == null) return false;
+
+            if (validStates.Count() == 0)
+            {
+                //Debug.Log("false");
+                return false;
+            }
+
+            if (validStates.Contains(socketType.road))
+            {
+                roadlocs.Add((x, y));
+                roadCount++;
+            }
+            
+            if (CSPMap[(x, y)].Count == validStates.Count)
+            {
+                //no change to this cell so continue;
+                
+                continue;
+            }
+
+        }
+        
+        if (socketType.road == skt.type)
+        {
+            if (roadCount < 2)
+            {
+                return false;
+            }
+        }
+
+        if (debugMode)
+        {
+            Debug.Log("[precheck] Location: (" + Loc.Item1.ToString() + ", " + Loc.Item2.ToString() + "): " + CSPMap[Loc][0] + " rotID " + rotIds[Loc]);
+
+        }
+
+        return true;
     }
 
     private List<socketType> findIntersect(List<socketType> l1, List<socketType> l2)
@@ -552,7 +795,7 @@ public class mapBuilder : MonoBehaviour
         
         if(types.Count == 1)
         {
-            return getPrefabSocket(types[0]);
+            return new socket(getPrefabSocket(types[0]));
         }
         
         float total = 0f;
@@ -571,13 +814,13 @@ public class mapBuilder : MonoBehaviour
             total += allProb[i];
             if (x < total)
             {
-                return getPrefabSocket(types[i]);
+                return new socket(getPrefabSocket(types[i]));
             }
         }
 
         idx =allProb.IndexOf(allProb.Max());
         idx = (idx < 0) ? 0 : (idx>=types.Count)?(types.Count-1): idx;
-        return getPrefabSocket(types[idx]);
+        return new socket(getPrefabSocket(types[idx]));
     }
 
 
@@ -595,7 +838,11 @@ public class mapBuilder : MonoBehaviour
                 
             case socketType.house:
                 return this.houseTile;
-                
+
+            case socketType.river0:
+                return this.river0;
+            case socketType.river1:
+                return this.river1;
             default:
                 return this.grassTile;
         }
