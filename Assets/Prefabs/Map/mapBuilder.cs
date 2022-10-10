@@ -242,7 +242,15 @@ public class mapBuilder : MonoBehaviour
         ChunkBounds.Add(zBounds);
         return ChunkBounds;
     }
+    private void plotGrass(socket skt, Vector2 centrePos, Transform t)
+    {
+        if (skt.type == socketType.grass)
+        {
+            Vector2 halfSize = new Vector2((TILE_SIZE) / 2, (TILE_SIZE) / 2);
+            grassPloter.plot(centrePos - halfSize, centrePos + halfSize, r, t);
+        }
 
+    }
     private (int, int) getMinMaxBounds(int chunkNumber)
     {
         int minBound = getChunkMinBound(chunkNumber);
@@ -266,15 +274,7 @@ public class mapBuilder : MonoBehaviour
     {
         return Mathf.Max(0, Mathf.Min(max, n));
     }
-    private void plotGrass(socket skt, Vector2 centrePos, Transform t)
-    {
-        if( skt.type == socketType.grass)
-        {
-            Vector2 halfSize = new Vector2((TILE_SIZE) / 2, (TILE_SIZE) / 2);
-            grassPloter.plot(centrePos - halfSize, centrePos + halfSize, r, t);
-        }
-        
-    }
+   
     private void generateBuildings(socket skt)
     {
         if(skt.type == socketType.house)
