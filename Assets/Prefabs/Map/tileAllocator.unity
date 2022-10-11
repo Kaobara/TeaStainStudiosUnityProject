@@ -309,9 +309,8 @@ MonoBehaviour:
     buildingRoof: {fileID: 919132149155446097, guid: e3849fef808d17c49841189639719f1a, type: 3}
     buildingLongChimney: {fileID: 919132149155446097, guid: 994ae580e3bd3f74cadd9011b16d7ba7, type: 3}
     buildingGround: {fileID: 919132149155446097, guid: dd609ea36a2f0e647958056a02b56790, type: 3}
-  grassPloter:
-    grass: {fileID: 919132149155446097, guid: 0c2ea72f9f458a64fb9844ca6baf5943, type: 3}
-    threshold: 0.65
+  topologyPlotter:
+    threshold: 0.6
   chunkSize: 4
   debugMode: 0
   maxSearchDepth: 20

@@ -23,7 +23,7 @@ public class mapBuilder : MonoBehaviour
     [SerializeField] private float Tile_offset = 0.5f;
     [SerializeField] [Range(min: defaultHeight, 10)] private int maxBuildingHeight;
     [SerializeField] private BuildingGenerator buildingGen;
-    [SerializeField] private GrassPlotter grassPloter;
+    [SerializeField] private TopologyPlotter topologyPlotter;
     [SerializeField] private int chunkSize = 5;
     [SerializeField] private bool debugMode;
     [SerializeField] private int maxSearchDepth = 20;
@@ -188,7 +188,8 @@ public class mapBuilder : MonoBehaviour
     List<socketType> allStates = Enum.GetValues(typeof(socketType)).Cast<socketType>().ToList();
     System.Random r;
     void Start()
-    {       
+    {
+        topologyPlotter.Start();
         initialiseMap();
         solveCSP();
         makeGrid();
@@ -247,7 +248,7 @@ public class mapBuilder : MonoBehaviour
         if (skt.type == socketType.grass)
         {
             Vector2 halfSize = new Vector2((TILE_SIZE) / 2, (TILE_SIZE) / 2);
-            grassPloter.plot(centrePos - halfSize, centrePos + halfSize, r, t);
+            topologyPlotter.plot(centrePos - halfSize, centrePos + halfSize, r, t);
         }
 
     }

@@ -53,7 +53,7 @@ public class BuildingGenerator
         building.BuildingRoof.transform.localPosition = new Vector3(0, 0, 0);
         building.BuildingRoof.transform.localPosition += new Vector3(0f, heightOffset, 0) + buildingOffset + roofOffset + buildingShift;        
     }
-    public T GetRandomItem<T>(List<T> listToRandomize)
+    private T GetRandomItem<T>(List<T> listToRandomize)
     {
         int randomNum = r.Next(0, listToRandomize.Count);        
         return listToRandomize[randomNum];
