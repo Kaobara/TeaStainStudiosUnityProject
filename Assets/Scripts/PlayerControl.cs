@@ -52,6 +52,18 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float groundDrag = 1f;
     [SerializeField] private float airDrag = 0.2f;
 
+    // Audio Components. Ideas were studied, referenced and adapted from https://gamedevacademy.org/unity-audio-tutorial/
+    [Header("Audio Components")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip[] footstepSounds;
+    // determines the rate at which to play footstep audio clips
+    [SerializeField] float playFootstepAudioRate; 
+    // determines the threshold for the player's velocity at which footstep audio clips should be played
+    [SerializeField] float playerVelocityFootstepThreshold; 
+
+    
+
     // storing inputs
     private float sidewaysInput;
     private float forwardsInput;
@@ -60,6 +72,9 @@ public class PlayerControl : MonoBehaviour
     private Vector3 playerDir;
     private Rigidbody rigidBody;
     private float accel;
+
+    // Some variables to track for playing audio
+    private float lastFootstepTime;
 
     // store inputs from movement keys
     private void ProcessInput()
@@ -89,6 +104,19 @@ public class PlayerControl : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + playerDir * 5, Color.green, 0.05f, false);
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
+        
+        // If the player's acceleration is higher than the threshold parameter and the time elapsed since
+        // the last footstep sound was played is sufficient, then log the current time (to be used for the
+        // next footstep sound) and play a random footstep sound clip.
+        if(rigidBody.velocity.magnitude > playerVelocityFootstepThreshold && (Time.time - lastFootstepTime) > playFootstepAudioRate) {
+            Vector3 vertVel = Vector3.up * rigidBody.velocity.y;
+            
+            if(state == playerState.Ground) {
+                lastFootstepTime = Time.time;
+                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length)]);
+            }
+        }
+
     }
 
     // limit non vertical speed to a designated max speed
@@ -138,6 +166,8 @@ public class PlayerControl : MonoBehaviour
     {
         // immediately disallow jumping
         canJump = false;
+
+        audioSource.PlayOneShot(jumpSound);
 
         // set y velocity to 0 to make every jump the same height
         rigidBody.velocity = new Vector3(rigidBody.velocity.x, 0, rigidBody.velocity.z);
