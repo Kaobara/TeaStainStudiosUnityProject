@@ -59,4 +59,8 @@ public class MainMenuController : MonoBehaviour
         mainMenuUIAudio.PlayOneShot(clickButtonSound);
     }
 
+    public void ExitGame() {
+        Application.Quit();
+    }
+
 }
