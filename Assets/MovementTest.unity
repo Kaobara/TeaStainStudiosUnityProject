@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 504649916}
   - component: {fileID: 504649915}
   - component: {fileID: 504649917}
+  - component: {fileID: 504649918}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -303,8 +304,8 @@ MonoBehaviour:
   playerLength: 0.2
   slopeAngle: 0
   state: 0
-  groundAccel: 25
-  airAccel: 5
+  groundAccel: 15
+  airAccel: 3
   groundDrag: 1
   airDrag: 0.2
   audioSource: {fileID: 0}
@@ -312,6 +313,18 @@ MonoBehaviour:
   footstepSounds: []
   playFootstepAudioRate: 0
   playerVelocityFootstepThreshold: 0
+--- !u!114 &504649918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504649913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce7b6b3973294c41aa1eb3bc36e6bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &578970070
 GameObject:
   m_ObjectHideFlags: 0

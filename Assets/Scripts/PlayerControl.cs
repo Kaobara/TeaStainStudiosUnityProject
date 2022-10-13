@@ -4,7 +4,7 @@ using UnityEngine;
 
 // enumeration of different player states that affect accel, drag and movement
 // abilities
-enum playerState
+public enum PlayerState
 {
     Ground,
     Steep,
@@ -12,6 +12,7 @@ enum playerState
     Rise,
     Fall
 }
+
 public class PlayerControl : MonoBehaviour
 {   
     [Header("Lateral Movemnt")]
@@ -42,7 +43,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float slopeAngle;
 
     [Header("Player State")]
-    [SerializeField] private playerState state = playerState.Ground;
+    [SerializeField] private PlayerState state = PlayerState.Ground;
 
     [Header("Acceleration Constants")]
     [SerializeField] private float groundAccel = 25f;
@@ -61,8 +62,6 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] float playFootstepAudioRate; 
     // determines the threshold for the player's velocity at which footstep audio clips should be played
     [SerializeField] float playerVelocityFootstepThreshold; 
-
-    
 
     // storing inputs
     private float sidewaysInput;
@@ -85,6 +84,11 @@ public class PlayerControl : MonoBehaviour
     }
 
     // move player according to movement keys and current player state
+    // Content researched or code adapted from sources (applies to other parts
+    // of this script as well):
+    // https://docs.unity3d.com/ScriptReference/Rigidbody.html
+    // https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
+    // https://youtu.be/xCxSjgYTw9c
     private void MovePlayer()
     {
         // calculate direction of player based on move keys and orientation
@@ -101,22 +105,23 @@ public class PlayerControl : MonoBehaviour
             //rigidBody.useGravity = true;
         }
 
-        Debug.DrawLine(transform.position, transform.position + playerDir * 5, Color.green, 0.05f, false);
-
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
-        
+    
+    }
+
+    // Make footstep noises based on velocity and cooldown
+    private void MakeFootsteps()
+    {
         // If the player's acceleration is higher than the threshold parameter and the time elapsed since
         // the last footstep sound was played is sufficient, then log the current time (to be used for the
         // next footstep sound) and play a random footstep sound clip.
         if(rigidBody.velocity.magnitude > playerVelocityFootstepThreshold && (Time.time - lastFootstepTime) > playFootstepAudioRate) {
-            Vector3 vertVel = Vector3.up * rigidBody.velocity.y;
             
-            if(state == playerState.Ground) {
+            if(state == PlayerState.Ground) {
                 lastFootstepTime = Time.time;
-                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length - 1)]);
+                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length) - 1]);
             }
         }
-
     }
 
     // limit non vertical speed to a designated max speed
@@ -192,7 +197,7 @@ public class PlayerControl : MonoBehaviour
     // set accel and drag multipliers according to player state
     private void SetAccelAndDrag()
     {
-        if (state == playerState.Ground) {
+        if (state == PlayerState.Ground) {
             accel = groundAccel;
             rigidBody.drag = groundDrag;
         } else {
@@ -218,47 +223,47 @@ public class PlayerControl : MonoBehaviour
         ProcessInput();
 
         // store if player is on the ground for current frame
-        if (GroundCheck() && state != playerState.Rise) {
-            state = playerState.Ground;
+        if (GroundCheck() && state != PlayerState.Rise) {
+            state = PlayerState.Ground;
             canGlide = false;
         } 
-        else if (state == playerState.Ground) {
+        else if (state == PlayerState.Ground) {
             if (rigidBody.velocity.y > 0) {
-                state = playerState.Rise;
+                state = PlayerState.Rise;
             }
             else {
-                state = playerState.Fall;
+                state = PlayerState.Fall;
             }        
         }
 
         // when player starts falling, set new state and allow gliding
-        if (state == playerState.Rise & rigidBody.velocity.y < 0) {
-            state = playerState.Fall;
+        if (state == PlayerState.Rise & rigidBody.velocity.y < 0) {
+            state = PlayerState.Fall;
             canGlide = true;
         }
 
         if (jumpInput) {
 
             // if player is on ground and can jump, jump
-            if (state == playerState.Ground && canJump) {
+            if (state == PlayerState.Ground && canJump) {
 
                 Jump();
 
                 // set new player state
-                state = playerState.Rise;
+                state = PlayerState.Rise;
 
                 // disallow jumping for set time
                 Invoke(nameof(MakeReadyToJump), jumpCooldown);
             }
             // if player is not on ground and can glide, glide
             else if (canGlide) {
-                state = playerState.Glide;
+                state = PlayerState.Glide;
             }
         }
         // if jump key is not pressed and player was gliding, change state
         // to falling and disallow gliding
-        else if (state == playerState.Glide) {
-            state = playerState.Fall;
+        else if (state == PlayerState.Glide) {
+            state = PlayerState.Fall;
             canGlide = false;
         }
         
@@ -270,9 +275,12 @@ public class PlayerControl : MonoBehaviour
     {
         // move player
         MovePlayer();
+
+        // conditionally make footsteps
+        MakeFootsteps();
         
         // glide if player is in glide player state
-        if (state == playerState.Glide) Glide();
+        if (state == PlayerState.Glide) Glide();
     }
 
     // When player moves their mouse horizontally, Chiki also turns, and the camera turns along with Chiki
@@ -292,6 +300,11 @@ public class PlayerControl : MonoBehaviour
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
         // movement of the player's mouse.
         transform.eulerAngles += Vector3.up * horizontal_movement_x; 
+    }
+
+    public PlayerState GetPlayerState()
+    {
+        return state;
     }
 
 }
