@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a72bac90c1b12274da24ed478752fb53
+guid: 98645684714a27e48952082295dacda1
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable:
@@ -10,20 +10,32 @@ ModelImporter:
       74: -2450978243870625273
     second: metarig.001|Idle
   - first:
+      74: -744880405291586207
+    second: metarig.001|IdlePackage
+  - first:
       74: 5623248144621392489
     second: metarig.001|Jump_end
+  - first:
+      74: 1373633468892773346
+    second: metarig.001|Jump_end_package
   - first:
       74: -3083974256178564857
     second: metarig.001|Jump_mid
   - first:
+      74: -5432152217814673371
+    second: metarig.001|Jump_mid_package
+  - first:
       74: -3815977034456649030
     second: metarig.001|Jump_start
+  - first:
+      74: -8566382805545221554
+    second: metarig.001|Jump_start_package
   - first:
       74: 6273409305190533238
     second: metarig.001|Running
   - first:
-      74: 3879769356285553430
-    second: metarig.001|Jump_end (1)
+      74: 3873932950591584437
+    second: metarig.001|RunningPackage
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -54,18 +66,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: metarig.001|Jump_end (1)
-      takeName: metarig.001|Jump_end
+      name: metarig.001|glide
+      takeName: metarig.001|glide
       internalID: 0
       firstFrame: 0
-      lastFrame: 5
+      lastFrame: 19
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -85,6 +97,35 @@ ModelImporter:
     - serializedVersion: 16
       name: metarig.001|Idle
       takeName: metarig.001|Idle
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 31
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: metarig.001|IdlePackage
+      takeName: metarig.001|IdlePackage
       internalID: 0
       firstFrame: 0
       lastFrame: 30
@@ -141,11 +182,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: metarig.001|Jump_end_package
+      takeName: metarig.001|Jump_end_package
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: metarig.001|Jump_mid
       takeName: metarig.001|Jump_mid
       internalID: 0
       firstFrame: 0
       lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: metarig.001|Jump_mid_package
+      takeName: metarig.001|Jump_mid_package
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 21
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -199,8 +298,66 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: metarig.001|Jump_start_package
+      takeName: metarig.001|Jump_start_package
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 21
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: metarig.001|Running
       takeName: metarig.001|Running
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: metarig.001|RunningPackage
+      takeName: metarig.001|RunningPackage
       internalID: 0
       firstFrame: 0
       lastFrame: 29
