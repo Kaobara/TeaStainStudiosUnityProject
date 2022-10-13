@@ -112,8 +112,7 @@ public class PlayerControl : MonoBehaviour
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
 
-        //if (state != PlayerState.Ground) return;
-
+        // set idle or walk animation triggers
         if (forwardsInput == 0 && sidewaysInput == 0) {
             playerAnimator.TriggerIdle();
         }
@@ -179,6 +178,7 @@ public class PlayerControl : MonoBehaviour
                 return false;
             }
 
+            // if just in air, set landing animation trigger
             if (state == PlayerState.Fall || state == PlayerState.Glide) {
                 playerAnimator.TriggerLanding();
             }
@@ -194,6 +194,7 @@ public class PlayerControl : MonoBehaviour
         // immediately disallow jumping
         canJump = false;
 
+        // play jump sound
         audioSource.PlayOneShot(jumpSound);
 
         // set y velocity to 0 to make every jump the same height
@@ -202,6 +203,7 @@ public class PlayerControl : MonoBehaviour
         // add upward force
         rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
+        // set jump animation trigger
         playerAnimator.TriggerJumpStart();
     }
 
@@ -211,6 +213,7 @@ public class PlayerControl : MonoBehaviour
     {
         rigidBody.AddForce(Physics.gravity * rigidBody.mass * -glideGravProp);
 
+        // set glider animation trigger
         playerAnimator.TriggerGlide();
     }
 
@@ -253,7 +256,8 @@ public class PlayerControl : MonoBehaviour
         if (GroundCheck() && state != PlayerState.Rise) {
             state = PlayerState.Ground;
             canGlide = false;
-        } 
+        }
+        // distinguish between rising and falling while in the air
         else if (state == PlayerState.Ground) {
             if (rigidBody.velocity.y > 0) {
                 state = PlayerState.Rise;
@@ -289,6 +293,8 @@ public class PlayerControl : MonoBehaviour
         else if (state == PlayerState.Glide) {
             state = PlayerState.Fall;
             canGlide = false;
+
+            // trigger jump animation trigger for glide -> mid jump transition
             playerAnimator.TriggerJumpMid();
         }
         

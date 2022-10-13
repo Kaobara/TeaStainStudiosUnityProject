@@ -32,6 +32,9 @@ public class PlayerAnimator : MonoBehaviour
     // https://docs.unity3d.com/Manual/class-Transition.html
     // https://docs.unity3d.com/ScriptReference/Animator.SetTrigger.html
     // https://learn.unity.com/tutorial/animator-controllers#5ce2b1caedbc2a0d2ece30f3
+    // public methods called by playerController to set 'Trigger' paramaters,
+    // which the animator controller state machine use as conditionals
+    // for transitioning between animation states
     public void TriggerIdle()
     {        
         animator.ResetTrigger("TrWalk");
