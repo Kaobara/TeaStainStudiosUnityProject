@@ -113,7 +113,7 @@ public class PlayerControl : MonoBehaviour
             
             if(state == playerState.Ground) {
                 lastFootstepTime = Time.time;
-                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length)]);
+                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length - 1)]);
             }
         }
 
