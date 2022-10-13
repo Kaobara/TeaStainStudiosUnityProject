@@ -17,6 +17,9 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Slider volumeSlider;
     private float curSessionVolume;
 
+    [SerializeField] AudioSource mainMenuUIAudio;
+    [SerializeField] AudioClip clickButtonSound;
+
     void Awake() {
         // If there is a volume setting found in the player preferences file, then use that value
         if(PlayerPrefs.HasKey("Volume")) {
@@ -51,4 +54,9 @@ public class MainMenuController : MonoBehaviour
         PlayerPrefs.SetFloat("Volume", AudioListener.volume);
         curSessionVolume = volumeSlider.value;
     }
+
+    public void PlayClickButtonSound() {
+        mainMenuUIAudio.PlayOneShot(clickButtonSound);
+    }
+
 }
