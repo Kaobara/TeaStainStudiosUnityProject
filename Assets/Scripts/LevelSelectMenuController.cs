@@ -11,13 +11,18 @@ using UnityEngine.SceneManagement;
 // Various ways of disabling/removing buttons: https://www.w3schools.blog/how-to-disable-buttons-in-unity
 // Unlock Levels - Levels Menu - Unity (PlayerPrefs) - Tutorial: https://www.youtube.com/watch?v=HhAEwhKnJJA (referenced the idea of a Button array)
 // Unity GameObject.GetComponent Scripting API documentation: https://docs.unity3d.com/ScriptReference/GameObject.GetComponent.html
-public class LevelSelector : MonoBehaviour
+public class LevelSelectMenuController : MonoBehaviour
 {
+    [Header("Level Buttons")]
     [SerializeField] GameObject[] levelButtons;
     int curLevelsUnlocked;
 
     private const int DEFAULT_LEVELS_UNLOCKED = 1;
     private const int ZERO_OFFSET = 1;
+
+    [Header("Level Select Menu UI Sounds")]
+    [SerializeField] AudioSource levelSelectMenuUIAudio;
+    [SerializeField] AudioClip clickButtonSound;
 
     void start() {
         // If a player has some progress on unlocked levels, fetch the "save data"
@@ -53,5 +58,13 @@ public class LevelSelector : MonoBehaviour
         // Apply ZERO_OFFSET for array indices, and obtain the appropriate button to now unlock
         // for the player.
         levelButtons[curLevelsUnlocked - ZERO_OFFSET].GetComponent<Button>().interactable = true;
+    }
+
+    public void GoToMainMenu() {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void PlayClickButtonSound() {
+        levelSelectMenuUIAudio.PlayOneShot(clickButtonSound);
     }
 }

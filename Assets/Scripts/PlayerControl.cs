@@ -28,6 +28,7 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Gliding")]
     [SerializeField] private float glideGravProp = 0.8f;
+    [SerializeField] private bool glideInput;
     [SerializeField] private bool canGlide = false;
 
     [Header("Checks for Groundedness")]
@@ -63,6 +64,9 @@ public class PlayerControl : MonoBehaviour
     // determines the threshold for the player's velocity at which footstep audio clips should be played
     [SerializeField] float playerVelocityFootstepThreshold; 
 
+    [Header("Animation")]
+    [SerializeField] PlayerAnimator playerAnimator;
+
     // storing inputs
     private float sidewaysInput;
     private float forwardsInput;
@@ -80,7 +84,8 @@ public class PlayerControl : MonoBehaviour
     {
         forwardsInput = Input.GetAxisRaw("Vertical");
         sidewaysInput = Input.GetAxisRaw("Horizontal");
-        jumpInput = Input.GetKey(jumpKey);
+        jumpInput = Input.GetKeyDown(jumpKey);
+        glideInput = Input.GetKey(jumpKey);
     }
 
     // move player according to movement keys and current player state
@@ -106,6 +111,15 @@ public class PlayerControl : MonoBehaviour
         }
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
+
+        //if (state != PlayerState.Ground) return;
+
+        if (forwardsInput == 0 && sidewaysInput == 0) {
+            playerAnimator.TriggerIdle();
+        }
+        else {
+            playerAnimator.TriggerWalk();
+        }
     
     }
 
@@ -119,7 +133,9 @@ public class PlayerControl : MonoBehaviour
             
             if(state == PlayerState.Ground) {
                 lastFootstepTime = Time.time;
-                audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length) - 1]);
+                if (footstepSounds.Length > 0) {
+                    audioSource.PlayOneShot(footstepSounds[Random.Range(0, footstepSounds.Length)]);
+                }
             }
         }
     }
@@ -159,9 +175,15 @@ public class PlayerControl : MonoBehaviour
             float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle * 180) / Mathf.PI)) + heightEpsilon;
 
             // if slope isnt too steep
-            if (slopeHit.distance < maxDist) {
-                return true;
+            if (slopeHit.distance >= maxDist) {
+                return false;
             }
+
+            if (state == PlayerState.Fall || state == PlayerState.Glide) {
+                playerAnimator.TriggerLanding();
+            }
+
+            return true;
         }
         return false;
     }
@@ -179,6 +201,8 @@ public class PlayerControl : MonoBehaviour
         
         // add upward force
         rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        playerAnimator.TriggerJumpStart();
     }
 
     // cause the player to glide, reduces gravity by glideGravProp*100 percent
@@ -186,6 +210,8 @@ public class PlayerControl : MonoBehaviour
     private void Glide()
     {
         rigidBody.AddForce(Physics.gravity * rigidBody.mass * -glideGravProp);
+
+        playerAnimator.TriggerGlide();
     }
 
     // allow player to jump again
@@ -211,6 +237,7 @@ public class PlayerControl : MonoBehaviour
         // store rigidbody and disallow rotation, allow jumping from start
         Cursor.lockState = CursorLockMode.Locked;
         rigidBody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         rigidBody.freezeRotation = true;
         canJump = true;
         canGlide = false;
@@ -241,30 +268,28 @@ public class PlayerControl : MonoBehaviour
             state = PlayerState.Fall;
             canGlide = true;
         }
+        // if player is on ground and can jump, jump
+        if (jumpInput && state == PlayerState.Ground && canJump) {
 
-        if (jumpInput) {
+            Jump();
 
-            // if player is on ground and can jump, jump
-            if (state == PlayerState.Ground && canJump) {
+            // set new player state
+            state = PlayerState.Rise;
 
-                Jump();
+            // disallow jumping for set time
+            Invoke(nameof(MakeReadyToJump), jumpCooldown);
 
-                // set new player state
-                state = PlayerState.Rise;
-
-                // disallow jumping for set time
-                Invoke(nameof(MakeReadyToJump), jumpCooldown);
-            }
-            // if player is not on ground and can glide, glide
-            else if (canGlide) {
-                state = PlayerState.Glide;
-            }
+        }
+        // if player is not on ground and can glide, glide
+        else if (glideInput && canGlide) {
+            state = PlayerState.Glide;
         }
         // if jump key is not pressed and player was gliding, change state
         // to falling and disallow gliding
         else if (state == PlayerState.Glide) {
             state = PlayerState.Fall;
             canGlide = false;
+            playerAnimator.TriggerJumpMid();
         }
         
         // set drag and acceleration values according to air/ground state
