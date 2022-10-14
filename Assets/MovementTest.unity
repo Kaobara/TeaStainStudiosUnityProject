@@ -290,7 +290,7 @@ MonoBehaviour:
   maxSpeed: 5
   orientation: {fileID: 578970071}
   jumpCooldown: 0.5
-  jumpForce: 8
+  jumpForce: 5
   jumpKey: 32
   canJump: 1
   glideGravProp: 0.9
