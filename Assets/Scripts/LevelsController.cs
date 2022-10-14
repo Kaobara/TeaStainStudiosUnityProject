@@ -9,6 +9,7 @@ public class LevelsController : MonoBehaviour
     [SerializeField] GameObject exitLevelPrompt;
     [SerializeField] GameObject player;
     [SerializeField] GameObject camera;
+    [SerializeField] GameObject timeText;
 
     public float sensitivity;
     // Used for temporarily storing the sensitivity for when player pauses the game, so the game
@@ -63,5 +64,11 @@ public class LevelsController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         
         gamePaused = false;
+    }
+
+    // When completing level, set the time text to the time used to clear the level
+    // so that it can be displayed to the player.
+    public void CompleteLevel() {
+        timeText.GetComponent<TMPro.TextMeshProUGUI>().text = Time.time.ToString();
     }
 }
