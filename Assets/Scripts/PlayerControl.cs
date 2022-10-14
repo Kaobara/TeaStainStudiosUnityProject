@@ -203,6 +203,10 @@ public class PlayerControl : MonoBehaviour
             rigidBody.drag = airDrag;
         } 
     }
+
+    public void updateSensitivity(float sensitivity) {
+        this.sensitivity = sensitivity;
+    }
     
     private void Start()
     {
@@ -293,7 +297,7 @@ public class PlayerControl : MonoBehaviour
 
         // Normalise the sensitivity value to between 0.1 to 1.0, so the player can't have such low sensitivity that
         // they can't move the camera left and right at all.
-        float horizontal_movement_x = Input.GetAxis("Mouse X") * ((sensitivity * 0.9f) + 0.1f);
+        float horizontal_movement_x = Input.GetAxis("Mouse X") * sensitivity;
         
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal

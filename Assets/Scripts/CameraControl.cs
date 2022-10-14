@@ -27,9 +27,7 @@ public class CameraControl : MonoBehaviour
     // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
     void LateUpdate() {
 
-        // Normalise the sensitivity value to between 0.1 to 1.0, so the player can't have such low sensitivity that
-        // they can't move the camera up and down at all.
-        float vertical_movement_y = Input.GetAxis("Mouse Y") * ((sensitivity * 0.9f) + 0.1f);
+        float vertical_movement_y = Input.GetAxis("Mouse Y") * sensitivity;
         
         // Using the vertical movement of the mouse to rotate about the x-axis (vertical rotation)
         // the vertical movement value is negated due to Unity's LHS coordinate system having counterintuitive
@@ -43,5 +41,9 @@ public class CameraControl : MonoBehaviour
             transform.eulerAngles += Vector3.right * -vertical_movement_y;
         }
     
+    }
+
+    public void updateSensitivity(float sensitivity) {
+        this.sensitivity = sensitivity;
     }
 }
