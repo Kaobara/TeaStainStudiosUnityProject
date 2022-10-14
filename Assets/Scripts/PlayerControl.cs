@@ -62,7 +62,10 @@ public class PlayerControl : MonoBehaviour
     // determines the threshold for the player's velocity at which footstep audio clips should be played
     [SerializeField] float playerVelocityFootstepThreshold; 
 
-    
+
+    [Header("Level Controller")]
+    [SerializeField] GameObject levelController;
+    private float sensitivity;
 
     // storing inputs
     private float sidewaysInput;
@@ -210,6 +213,8 @@ public class PlayerControl : MonoBehaviour
         canJump = true;
         canGlide = false;
         maxSpeedSq = maxSpeed * maxSpeed;
+
+        sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
     }
 
     private void Update()
@@ -286,7 +291,9 @@ public class PlayerControl : MonoBehaviour
         // trigger speed limiter to limit speed if needed
         SpeedLimiter();
 
-        float horizontal_movement_x = Input.GetAxis("Mouse X");
+        // Normalise the sensitivity value to between 0.1 to 1.0, so the player can't have such low sensitivity that
+        // they can't move the camera left and right at all.
+        float horizontal_movement_x = Input.GetAxis("Mouse X") * ((sensitivity * 0.9f) + 0.1f);
         
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal

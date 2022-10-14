@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExitGamePrompt : MonoBehaviour
+public class ExitGame : MonoBehaviour
 {
     [SerializeField] GameObject exitGamePrompt;
 
