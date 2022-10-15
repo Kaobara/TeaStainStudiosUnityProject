@@ -23,13 +23,22 @@ public class PlayerControl : MonoBehaviour
     [Header("Jumping")]
     [SerializeField] private float jumpCooldown = 0.5f;
     [SerializeField] private float jumpForce = 5f;
-    public KeyCode jumpKey;
+    [SerializeField] private KeyCode jumpKey;
     [SerializeField] private bool canJump = true;
 
     [Header("Gliding")]
     [SerializeField] private float glideGravProp = 0.8f;
     [SerializeField] private bool glideInput;
     [SerializeField] private bool canGlide = false;
+
+    [Header("Interacting")]
+    [SerializeField] private KeyCode useKey;
+    [SerializeField] private float useRange = 2f;
+    [SerializeField] private float detachForce = 5f;
+    [SerializeField] private bool useInput;
+    [SerializeField] private bool isHolding;
+    [SerializeField] private InteractiveObject heldObject = null;
+    [SerializeField] private float holdDistance = 1.5f;
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
@@ -79,6 +88,130 @@ public class PlayerControl : MonoBehaviour
     // Some variables to track for playing audio
     private float lastFootstepTime;
 
+    private void Start()
+    {
+        // store rigidbody and disallow rotation, allow jumping from start
+        Cursor.lockState = CursorLockMode.Locked;
+        rigidBody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<PlayerAnimator>();
+        rigidBody.freezeRotation = true;
+        canJump = true;
+        canGlide = false;
+        maxSpeedSq = maxSpeed * maxSpeed;
+    }
+
+    private void Update()
+    {
+        // process movement input keys
+        ProcessInput();
+
+        // store if player is on the ground for current frame
+        if (GroundCheck() && state != PlayerState.Rise) {
+            state = PlayerState.Ground;
+            canGlide = false;
+        }
+        // if no longer grounded by didnt jump, set state
+        else if (state == PlayerState.Ground) {
+            if (rigidBody.velocity.y > 0) {
+                state = PlayerState.Rise;
+            }
+            else {
+                state = PlayerState.Fall;
+            }        
+        }
+
+        // when player starts falling, set new state and allow gliding
+        if (state == PlayerState.Rise & rigidBody.velocity.y < 0) {
+            state = PlayerState.Fall;
+            canGlide = true;
+        }
+        // if player is on ground and can jump, jump
+        if (jumpInput && state == PlayerState.Ground && canJump) {
+
+            Jump();
+
+            // set new player state
+            state = PlayerState.Rise;
+
+            // disallow jumping for set time
+            Invoke(nameof(MakeReadyToJump), jumpCooldown);
+
+        }
+        // if player is not on ground and can glide, glide
+        else if (glideInput && canGlide && !isHolding) {
+            state = PlayerState.Glide;
+        }
+        // if jump key is not pressed and player was gliding, change state
+        // to falling and disallow gliding
+        else if (state == PlayerState.Glide) {
+            state = PlayerState.Fall;
+            canGlide = false;
+
+            // trigger jump animation trigger for glide -> mid jump transition
+            playerAnimator.TriggerJumpMid();
+        }
+
+        if (useInput && state != PlayerState.Glide) {
+
+            if (isHolding) {
+                heldObject.Detach(orientation.forward, detachForce);
+                isHolding = false;
+            }
+            else {
+
+                InteractiveObject[] objs = (InteractiveObject[]) GameObject.FindObjectsOfType(typeof (InteractiveObject));
+                InteractiveObject nearest = null;
+                float minDist = useRange;
+
+                foreach (InteractiveObject obj in objs) {
+                    float distance = Vector3.Distance(transform.position, obj.transform.position);
+                    if (distance < minDist) {
+                        minDist = distance;
+                        nearest = obj;
+                    }
+                }
+                if (nearest != null) {
+                    nearest.Attach(gameObject);
+                    heldObject = nearest;
+                    isHolding = true;
+                }                
+            }
+        }
+        
+        // set drag and acceleration values according to air/ground state
+        SetAccelAndDrag();
+    }
+
+    private void FixedUpdate()
+    {
+        // move player
+        MovePlayer();
+
+        // conditionally make footsteps
+        MakeFootsteps();
+        
+        // glide if player is in glide player state
+        if (state == PlayerState.Glide) Glide();
+    }
+
+    // When player moves their mouse horizontally, Chiki also turns, and the camera turns along with Chiki
+    // This section of Chiki + camera control was referenced, studied and adapted for use from the following resources:
+    // https://answers.unity.com/questions/1179680/how-to-rotate-my-camera.html
+    // https://gamedevacademy.org/unity-audio-tutorial/
+    // https://docs.unity3d.com/ScriptReference/Vector3.html
+    // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
+    private void LateUpdate()
+    {
+        // trigger speed limiter to limit speed if needed
+        SpeedLimiter();
+
+        float horizontal_movement_x = Input.GetAxis("Mouse X");
+        
+        // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
+        // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
+        // movement of the player's mouse.
+        transform.eulerAngles += Vector3.up * horizontal_movement_x; 
+    }
     // store inputs from movement keys
     private void ProcessInput()
     {
@@ -86,6 +219,7 @@ public class PlayerControl : MonoBehaviour
         sidewaysInput = Input.GetAxisRaw("Horizontal");
         jumpInput = Input.GetKeyDown(jumpKey);
         glideInput = Input.GetKey(jumpKey);
+        useInput = Input.GetKeyDown(useKey);
     }
 
     // move player according to movement keys and current player state
@@ -234,108 +368,16 @@ public class PlayerControl : MonoBehaviour
             rigidBody.drag = airDrag;
         } 
     }
-    
-    private void Start()
-    {
-        // store rigidbody and disallow rotation, allow jumping from start
-        Cursor.lockState = CursorLockMode.Locked;
-        rigidBody = GetComponent<Rigidbody>();
-        playerAnimator = GetComponent<PlayerAnimator>();
-        rigidBody.freezeRotation = true;
-        canJump = true;
-        canGlide = false;
-        maxSpeedSq = maxSpeed * maxSpeed;
-    }
 
-    private void Update()
-    {
-        // process movement input keys
-        ProcessInput();
-
-        // store if player is on the ground for current frame
-        if (GroundCheck() && state != PlayerState.Rise) {
-            state = PlayerState.Ground;
-            canGlide = false;
-        }
-        // distinguish between rising and falling while in the air
-        else if (state == PlayerState.Ground) {
-            if (rigidBody.velocity.y > 0) {
-                state = PlayerState.Rise;
-            }
-            else {
-                state = PlayerState.Fall;
-            }        
-        }
-
-        // when player starts falling, set new state and allow gliding
-        if (state == PlayerState.Rise & rigidBody.velocity.y < 0) {
-            state = PlayerState.Fall;
-            canGlide = true;
-        }
-        // if player is on ground and can jump, jump
-        if (jumpInput && state == PlayerState.Ground && canJump) {
-
-            Jump();
-
-            // set new player state
-            state = PlayerState.Rise;
-
-            // disallow jumping for set time
-            Invoke(nameof(MakeReadyToJump), jumpCooldown);
-
-        }
-        // if player is not on ground and can glide, glide
-        else if (glideInput && canGlide) {
-            state = PlayerState.Glide;
-        }
-        // if jump key is not pressed and player was gliding, change state
-        // to falling and disallow gliding
-        else if (state == PlayerState.Glide) {
-            state = PlayerState.Fall;
-            canGlide = false;
-
-            // trigger jump animation trigger for glide -> mid jump transition
-            playerAnimator.TriggerJumpMid();
-        }
-        
-        // set drag and acceleration values according to air/ground state
-        SetAccelAndDrag();
-    }
-
-    private void FixedUpdate()
-    {
-        // move player
-        MovePlayer();
-
-        // conditionally make footsteps
-        MakeFootsteps();
-        
-        // glide if player is in glide player state
-        if (state == PlayerState.Glide) Glide();
-    }
-
-    // When player moves their mouse horizontally, Chiki also turns, and the camera turns along with Chiki
-    // This section of Chiki + camera control was referenced, studied and adapted for use from the following resources:
-    // https://answers.unity.com/questions/1179680/how-to-rotate-my-camera.html
-    // https://gamedevacademy.org/unity-audio-tutorial/
-    // https://docs.unity3d.com/ScriptReference/Vector3.html
-    // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
-    private void LateUpdate()
-    {
-        // trigger speed limiter to limit speed if needed
-        SpeedLimiter();
-
-        float horizontal_movement_x = Input.GetAxis("Mouse X");
-        
-        // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
-        // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
-        // movement of the player's mouse.
-        transform.eulerAngles += Vector3.up * horizontal_movement_x; 
-    }
 
     public PlayerState GetPlayerState()
     {
         return state;
+    }
+
+    public float GetHoldDistance()
+    {
+        return holdDistance;
     }
 
 }
