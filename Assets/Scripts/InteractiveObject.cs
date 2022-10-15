@@ -5,7 +5,6 @@ using UnityEngine;
 public class InteractiveObject : MonoBehaviour
 {
     [SerializeField] Rigidbody rigidBody;
-    private bool isColliding;
 
     // Start is called before the first frame update
     private void Start()
@@ -37,13 +36,5 @@ public class InteractiveObject : MonoBehaviour
         transform.parent = null;
         rigidBody.useGravity = true;
         rigidBody.AddForce(Vector3.RotateTowards(playerOrientation, Vector3.up, Mathf.PI/4, 10000) * force, ForceMode.Impulse);
-    }
-
-    public void OnCollisionEnter(Collision other) {
-        isColliding = true;
-    }
-
-    public void OnCollisionExit(Collision other) {
-        isColliding = false;
     }
 }
