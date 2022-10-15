@@ -6,10 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class LevelsController : MonoBehaviour
 {   
-    [SerializeField] GameObject exitLevelPrompt;
     [SerializeField] GameObject player;
     [SerializeField] GameObject camera;
-    [SerializeField] GameObject timeText;
+
+    [Header("Goal Distance")]
+    [SerializeField] GameObject goalDistanceTMP;
+    private float distance;
+
+    [Header("Exit Level")]
+    [SerializeField] GameObject exitLevelPrompt;
+
+    [Header("Level Completion")]
+    [SerializeField] GameObject timeTMP;
 
     public float sensitivity;
     // Used for temporarily storing the sensitivity for when player pauses the game, so the game
@@ -30,11 +38,17 @@ public class LevelsController : MonoBehaviour
         if (Input.GetKey("escape") && gamePaused == false) {
             PauseGame();
         }
+
+        updateGoalDistance();
     }
 
-    public void ExitLevel() {
-        SceneManager.LoadScene("LevelSelectMenu");
+    private void updateGoalDistance() {
+        // insert distance formula here.
+        distance = 0.0f;
+
+        goalDistanceTMP.GetComponent<TMPro.TextMeshProUGUI>().text = distance.ToString();
     }
+
 
     // Pause the game by bringing up exit level prompt and changing the sensitivity to be 0
     // so the player can't use mouse movements to rotate the player and camera.
@@ -51,11 +65,10 @@ public class LevelsController : MonoBehaviour
         camera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
     }
 
-    // Unpause by making the prompt inactive and then reverting the sensitivity to the 
-    // temporary attribute stored on pause. Cursor is also locked again. 
+    // Unpause by reverting the sensitivity to the temporary attribute stored on pause. 
+    // Cursor is also locked again. The calling prompt will outside set themselves
+    // to be inactive outside of this script.
     public void UnpauseGame() {
-        exitLevelPrompt.SetActive(false);
-
         sensitivity = tempSensitivity;
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);
@@ -66,9 +79,19 @@ public class LevelsController : MonoBehaviour
         gamePaused = false;
     }
 
+    public void ExitLevel() {
+        SceneManager.LoadScene("LevelSelectMenu");
+    }
+
+    public void RestartLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     // When completing level, set the time text to the time used to clear the level
     // so that it can be displayed to the player.
     public void CompleteLevel() {
-        timeText.GetComponent<TMPro.TextMeshProUGUI>().text = Time.time.ToString();
+        timeTMP.GetComponent<TMPro.TextMeshProUGUI>().text = Time.time.ToString();
     }
+
+
 }
