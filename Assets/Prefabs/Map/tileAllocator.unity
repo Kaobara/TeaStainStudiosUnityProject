@@ -296,8 +296,8 @@ MonoBehaviour:
     right: 000000000100000002000000
     forward: 000000000100000002000000
     back: 0300000004000000
-  length: 9
-  width: 9
+  length: 5
+  width: 5
   seed: 235235
   Tile_offset: 0.5
   maxBuildingHeight: 4
