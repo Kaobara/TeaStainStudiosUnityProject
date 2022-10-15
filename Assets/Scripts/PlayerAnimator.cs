@@ -73,6 +73,18 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetTrigger("TrJump");
     }
 
+    public void TriggerAttach()
+    {
+        animator.ResetTrigger("TrDetach");
+        animator.SetTrigger("TrAttach");
+    }
+
+    public void TriggerDetach()
+    {
+        animator.ResetTrigger("TrAttach");
+        animator.SetTrigger("TrDetach");
+    }
+
     public Animator GetAnimator()
     {
         return animator;

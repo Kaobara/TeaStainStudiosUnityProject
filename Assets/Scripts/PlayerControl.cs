@@ -156,6 +156,7 @@ public class PlayerControl : MonoBehaviour
             if (isHolding) {
                 heldObject.Detach(orientation.forward, detachForce);
                 isHolding = false;
+                playerAnimator.TriggerDetach();
             }
             else {
 
@@ -174,6 +175,7 @@ public class PlayerControl : MonoBehaviour
                     nearest.Attach(gameObject);
                     heldObject = nearest;
                     isHolding = true;
+                    playerAnimator.TriggerAttach();
                 }                
             }
         }
