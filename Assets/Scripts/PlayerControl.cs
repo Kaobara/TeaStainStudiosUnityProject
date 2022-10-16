@@ -382,6 +382,8 @@ public class PlayerControl : MonoBehaviour
     public PlayerState GetPlayerState()
     {
         return state;
+    }
+    
     public void updateSensitivity(float sensitivity) {
         this.sensitivity = sensitivity;
     }

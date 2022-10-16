@@ -19,6 +19,7 @@ public class LevelsController : MonoBehaviour
     [Header("Level Completion")]
     [SerializeField] GameObject timeTMP;
 
+    [Header("Game Options")]
     public float sensitivity;
     // Used for temporarily storing the sensitivity for when player pauses the game, so the game
     // can revert back to the original sensitivity upon player unpausing.
