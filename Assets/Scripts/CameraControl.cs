@@ -17,7 +17,6 @@ public class CameraControl : MonoBehaviour
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
         sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
-        Debug.Log(sensitivity);
     }
 
     // Perform camera rotation on LateUpdate so player's position is updated first before applying changes to the camera
