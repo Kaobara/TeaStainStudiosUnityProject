@@ -29,7 +29,6 @@ public class LevelSelectMenuController : MonoBehaviour
         // otherwise create new "save data" in the player preferences through the
         // constant default which is just 1.
         if(PlayerPrefs.HasKey("Unlocked Levels")) {
-            Debug.Log("has unlocked levels key");
             curLevelsUnlocked = PlayerPrefs.GetInt("Unlocked Levels");
         } else {
             PlayerPrefs.SetInt("Unlocked Levels", DEFAULT_LEVELS_UNLOCKED);
@@ -39,8 +38,6 @@ public class LevelSelectMenuController : MonoBehaviour
         // For debugging. Resets player level progression.
         // PlayerPrefs.SetInt("Unlocked Levels", DEFAULT_LEVELS_UNLOCKED);
         // curLevelsUnlocked = PlayerPrefs.GetInt("Unlocked Levels");
-
-        Debug.Log(curLevelsUnlocked);
 
         // Depending on the levels that the player has unlocked based on the "save data"
         // in the PlayerPrefs File, set the buttons to be interactable.
