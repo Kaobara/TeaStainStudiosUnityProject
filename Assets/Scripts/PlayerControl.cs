@@ -104,7 +104,6 @@ public class PlayerControl : MonoBehaviour
         maxSpeedSq = maxSpeed * maxSpeed;
 
         sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
-        Debug.Log(sensitivity);
     }
 
     private void Update()
