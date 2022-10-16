@@ -2332,11 +2332,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2470773012221528958, guid: 8e75a109b5d322b489480bbc10f818ca, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4810958588513747961, guid: 8e75a109b5d322b489480bbc10f818ca, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1379729233}
+    - target: {fileID: 4810958588513747961, guid: 8e75a109b5d322b489480bbc10f818ca, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UnpauseGame
       objectReference: {fileID: 0}
     - target: {fileID: 5669823954572768418, guid: 8e75a109b5d322b489480bbc10f818ca, type: 3}
       propertyPath: m_Pivot.x

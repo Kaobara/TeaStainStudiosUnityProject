@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class LevelsController : MonoBehaviour
 {   
     [SerializeField] GameObject player;
-    [SerializeField] GameObject camera;
+    [SerializeField] GameObject playerCamera;
 
     [Header("Goal Distance")]
     [SerializeField] GameObject goalDistanceTMP;
@@ -63,7 +63,7 @@ public class LevelsController : MonoBehaviour
         sensitivity = 0.0f;
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);
-        camera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
+        playerCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
     }
 
     // Unpause by reverting the sensitivity to the temporary attribute stored on pause. 
@@ -73,7 +73,7 @@ public class LevelsController : MonoBehaviour
         sensitivity = tempSensitivity;
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);
-        camera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
+        playerCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
 
         Cursor.lockState = CursorLockMode.Locked;
         

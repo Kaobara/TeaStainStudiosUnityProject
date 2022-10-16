@@ -104,6 +104,7 @@ public class PlayerControl : MonoBehaviour
         maxSpeedSq = maxSpeed * maxSpeed;
 
         sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
+        Debug.Log(sensitivity);
     }
 
     private void Update()
@@ -214,7 +215,7 @@ public class PlayerControl : MonoBehaviour
         // trigger speed limiter to limit speed if needed
         SpeedLimiter();
 
-        float horizontal_movement_x = Input.GetAxis("Mouse X");
+        float horizontal_movement_x = Input.GetAxis("Mouse X") * sensitivity;
         
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
