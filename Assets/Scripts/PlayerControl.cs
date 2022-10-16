@@ -124,6 +124,7 @@ public class PlayerControl : MonoBehaviour
         if (state == PlayerState.Rise & rigidBody.velocity.y < 0) {
             state = PlayerState.Fall;
             canGlide = true;
+            playerAnimator.TriggerFall();
         }
         // if player is on ground and can jump, jump
         if (jumpInput && state == PlayerState.Ground && canJump) {
@@ -295,7 +296,7 @@ public class PlayerControl : MonoBehaviour
                 transform.position,
                 Vector3.down,
                 out slopeHit,
-                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
+                0.5f * (playerHeight * 1.5f + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             ))
         {
