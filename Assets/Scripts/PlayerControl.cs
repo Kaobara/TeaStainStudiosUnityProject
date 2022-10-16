@@ -295,7 +295,7 @@ public class PlayerControl : MonoBehaviour
                 transform.position,
                 Vector3.down,
                 out slopeHit,
-                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle * 180) / Mathf.PI)) + heightEpsilon,
+                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             ))
         {
@@ -307,7 +307,7 @@ public class PlayerControl : MonoBehaviour
             }
 
             // calculate maximum distance away from surface according to slope angle
-            float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle * 180) / Mathf.PI)) + heightEpsilon;
+            float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
 
             // if slope isnt too steep
             if (slopeHit.distance >= maxDist) {
