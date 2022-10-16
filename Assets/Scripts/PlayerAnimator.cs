@@ -57,6 +57,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.ResetTrigger("TrGlide");
         animator.ResetTrigger("TrJump");
+        animator.ResetTrigger("TrFall");
         animator.SetTrigger("TrLand");
     }
 
@@ -83,6 +84,11 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.ResetTrigger("TrAttach");
         animator.SetTrigger("TrDetach");
+    }
+
+    public void TriggerFall()
+    {
+        animator.SetTrigger("TrFall");
     }
 
     public Animator GetAnimator()
