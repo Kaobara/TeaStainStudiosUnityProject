@@ -899,7 +899,7 @@ MonoBehaviour:
     type: 3
     isSymmetric: 0
     probability: 0.15
-    tile: {fileID: 8109143531554893497, guid: af13b83afe1abe64e94cdd962c9a0871, type: 3}
+    tile: {fileID: 2732165710187189623, guid: af13b83afe1abe64e94cdd962c9a0871, type: 3}
     left: 0300000004000000
     right: 0300000004000000
     forward: 000000000100000002000000
@@ -908,7 +908,7 @@ MonoBehaviour:
     type: 4
     isSymmetric: 0
     probability: 0.1
-    tile: {fileID: 7008172605462712864, guid: 08adb4bb2d6e1c745a4ba71215e8ad6a, type: 3}
+    tile: {fileID: 7684613019001753233, guid: 2186673a953bc1a488f13192a27397a2, type: 3}
     left: 0300000004000000
     right: 000000000100000002000000
     forward: 000000000100000002000000
@@ -2435,6 +2435,10 @@ PrefabInstance:
     - target: {fileID: 1835640077815452080, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835640077815452082, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 272
       objectReference: {fileID: 0}
     - target: {fileID: 1835640077815452087, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_Name
