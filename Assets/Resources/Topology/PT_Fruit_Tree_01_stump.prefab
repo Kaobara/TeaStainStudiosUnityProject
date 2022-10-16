@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2426846095409649158}
   - component: {fileID: 1585891862951008675}
   - component: {fileID: 3595789461930143081}
-  - component: {fileID: 2899815457375214304}
-  m_Layer: 0
+  - component: {fileID: -2693936523576068159}
+  m_Layer: 8
   m_Name: PT_Fruit_Tree_01_stump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2899815457375214304
-CapsuleCollider:
+--- !u!64 &-2693936523576068159
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.37744433
-  m_Height: 1.2378002
-  m_Direction: 1
-  m_Center: {x: 0.013089657, y: 0.16585451, z: -0.02829951}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 494737336489812136, guid: f42a2ed0c78e45643bba339ed33235d4, type: 3}
