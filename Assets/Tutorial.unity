@@ -2555,6 +2555,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1869781630}
+    - target: {fileID: 8729528932553419734, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 8400000, guid: 228331b29a81357488a5e0b86ec5ffdc, type: 2}
     - target: {fileID: 8729528932918389171, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
       propertyPath: m_ScaleFactor
       value: 1.4
@@ -2575,6 +2579,10 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
+    - target: {fileID: 8729528933635902626, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 228331b29a81357488a5e0b86ec5ffdc, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
