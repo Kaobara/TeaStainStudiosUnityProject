@@ -92,6 +92,8 @@ public class PlayerControl : MonoBehaviour
     // Some variables to track for playing audio
     private float lastFootstepTime;
 
+    private float horizontal_movement_x = 0;
+
     private void Start()
     {
         // store rigidbody and disallow rotation, allow jumping from start
@@ -208,17 +210,20 @@ public class PlayerControl : MonoBehaviour
     // https://gamedevacademy.org/unity-audio-tutorial/
     // https://docs.unity3d.com/ScriptReference/Vector3.html
     // https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html
+    // https://www.youtube.com/watch?v=CxI2OBdhLno (for idea of accumulating mouse movement)
+    // https://docs.unity3d.com/ScriptReference/Quaternion.Euler.html
     private void LateUpdate()
     {
         // trigger speed limiter to limit speed if needed
         SpeedLimiter();
 
-        float horizontal_movement_x = Input.GetAxis("Mouse X") * sensitivity;
+        // Accumulate the horizontal_movement conducted by the mouse from the base of 0 (whenever level loads).
+        horizontal_movement_x += Input.GetAxis("Mouse X") * sensitivity;
         
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
         // movement of the player's mouse.
-        transform.eulerAngles += Vector3.up * horizontal_movement_x; 
+        transform.localRotation = Quaternion.Euler(Vector3.up * horizontal_movement_x); 
     }
     // store inputs from movement keys
     private void ProcessInput()

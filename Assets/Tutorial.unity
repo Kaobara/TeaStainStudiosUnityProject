@@ -202,7 +202,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &41207011
 RectTransform:
@@ -3557,6 +3557,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7572357948635147403, guid: c61b0106ef71e5748a9260c931e78ae8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7572357949819013906, guid: c61b0106ef71e5748a9260c931e78ae8, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -5770,6 +5774,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1835640077815452082, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 1835640077365775311}
+    - target: {fileID: 1835640077815452082, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1613490272}
@@ -5778,9 +5786,21 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1835640078142504539, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835640078142504539, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1613490272}
+    - target: {fileID: 1835640078142504539, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: max_up_rotation_angle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835640078142504539, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: max_down_rotation_angle
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
