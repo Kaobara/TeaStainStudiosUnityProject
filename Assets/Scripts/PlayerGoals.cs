@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Package : MonoBehaviour
+public class PlayerGoals : MonoBehaviour
 {
-    private LevelsController lc;
+    private TutorialController tc;
 
     // Start is called before the first frame update
     void Start()
     {
-        lc = GameObject.Find("LevelController").GetComponent<LevelsController>();
+        tc = GameObject.Find("TutorialController").GetComponent<TutorialController>();
     }
 
     // Update is called once per frame
@@ -20,8 +20,8 @@ public class Package : MonoBehaviour
 
     public void OnTriggerEnter(Collider other) {
         GoalZone goalZone = other.gameObject.GetComponent<GoalZone>();
-        if (goalZone != null && goalZone.levelComplete) {
-            lc.CompleteLevel();
+        if (goalZone != null && !goalZone.levelComplete) {
+            tc.CompleteGoal(goalZone);
         }
     }
 }

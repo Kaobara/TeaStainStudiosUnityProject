@@ -92,6 +92,7 @@ public class LevelsController : MonoBehaviour
     // so that it can be displayed to the player.
     public void CompleteLevel() {
         timeTMP.GetComponent<TMPro.TextMeshProUGUI>().text = Time.time.ToString();
+        Debug.Log("Level Complete");
     }
 
 
