@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5617426719925612861
 MonoBehaviour:
@@ -85,8 +85,8 @@ MonoBehaviour:
     isSymmetric: 0
     probability: 0.1
     tile: {fileID: 7684613019001753233, guid: 2186673a953bc1a488f13192a27397a2, type: 3}
-    left: 0300000004000000
-    right: 000000000100000002000000
+    left: 000000000100000002000000
+    right: 0300000004000000
     forward: 000000000100000002000000
     back: 0300000004000000
   length: 5
