@@ -95,7 +95,6 @@ public class PlayerControl : MonoBehaviour
     private void Start()
     {
         // store rigidbody and disallow rotation, allow jumping from start
-        Cursor.lockState = CursorLockMode.Locked;
         rigidBody = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<PlayerAnimator>();
         rigidBody.freezeRotation = true;

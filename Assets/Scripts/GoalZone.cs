@@ -6,6 +6,8 @@ public class GoalZone : MonoBehaviour
 {
     [SerializeField] public string msg;
     [SerializeField] public bool levelComplete;
+    [SerializeField] GameObject promptToShow;
+    [SerializeField] GameObject levelController;
 
     // Start is called before the first frame update
     void Start()
@@ -17,5 +19,10 @@ public class GoalZone : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void showPrompt() {
+        promptToShow.SetActive(true);
+        levelController.GetComponent<LevelsController>().PauseGame(false);
     }
 }

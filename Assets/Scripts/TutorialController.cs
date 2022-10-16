@@ -24,7 +24,7 @@ public class TutorialController : MonoBehaviour
     public void CompleteGoal(GoalZone goalZone)
     {
         if (n < goals.Length && goalZone.Equals(goals[n])) {
-            Debug.Log(goalZone.msg);
+            goalZone.showPrompt();
             n += 1;
         }
     }

@@ -15,7 +15,6 @@ public class CameraControl : MonoBehaviour
     // can use the Player's mouse movements for
     // camera rotation
     void Start() {
-        Cursor.lockState = CursorLockMode.Locked;
         sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
     }
 
