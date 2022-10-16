@@ -13,10 +13,18 @@ using UnityEngine.SceneManagement;
 // Unity PlayerPrefs Documentation: https://docs.unity3d.com/2020.1/Documentation/ScriptReference/PlayerPrefs.html
 public class MainMenuController : MonoBehaviour
 {   
+    [Header("Other Menu Navigation")]
     [SerializeField] string LevelSelectMenu;
+
+    [Header("Audio Options")]
     [SerializeField] Slider volumeSlider;
     private float curSessionVolume;
 
+    [Header("Sensitivity Options")]
+    [SerializeField] Slider sensitivitySlider;
+    private float curSessionSensitivity;
+
+    [Header("UI Audio")]
     [SerializeField] AudioSource mainMenuUIAudio;
     [SerializeField] AudioClip clickButtonSound;
 
@@ -31,6 +39,14 @@ public class MainMenuController : MonoBehaviour
         }
 
         curSessionVolume = volumeSlider.value;
+
+        if(PlayerPrefs.HasKey("Sensitivity")) {
+            sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity");
+        } else {
+            sensitivitySlider.value = 0.5f;
+        }
+
+        curSessionSensitivity = sensitivitySlider.value;
     }
 
     public void LoadLevelSelectMenu() {
@@ -53,6 +69,17 @@ public class MainMenuController : MonoBehaviour
     public void ApplyVolumeChange() {
         PlayerPrefs.SetFloat("Volume", AudioListener.volume);
         curSessionVolume = volumeSlider.value;
+    }
+
+    public void RevertSensitivityChange() {
+        sensitivitySlider.value = curSessionSensitivity;
+    }
+
+    // In-game sensitivity is only for in-game so no need to temporarily
+    // store the value as user configures
+    public void ApplySensitivityChange() {
+        PlayerPrefs.SetFloat("Sensitivity", sensitivitySlider.value);
+        curSessionSensitivity = sensitivitySlider.value;
     }
 
     public void PlayClickButtonSound() {

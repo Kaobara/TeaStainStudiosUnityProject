@@ -76,6 +76,10 @@ public class PlayerControl : MonoBehaviour
     [Header("Animation")]
     [SerializeField] PlayerAnimator playerAnimator;
 
+    [Header("Level Controller")]
+    [SerializeField] GameObject levelController;
+    private float sensitivity;
+
     // storing inputs
     private float sidewaysInput;
     private float forwardsInput;
@@ -98,6 +102,8 @@ public class PlayerControl : MonoBehaviour
         canJump = true;
         canGlide = false;
         maxSpeedSq = maxSpeed * maxSpeed;
+
+        sensitivity = levelController.GetComponent<LevelsController>().sensitivity;
     }
 
     private void Update()
@@ -376,7 +382,10 @@ public class PlayerControl : MonoBehaviour
     public PlayerState GetPlayerState()
     {
         return state;
+    public void updateSensitivity(float sensitivity) {
+        this.sensitivity = sensitivity;
     }
+    
 
     public float GetHoldDistance()
     {
