@@ -52,7 +52,7 @@ public class LevelSelectMenuController : MonoBehaviour
     }
 
     public void GoToMainMenu() {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("StartScene");
     }
 
     public void PlayClickButtonSound() {
