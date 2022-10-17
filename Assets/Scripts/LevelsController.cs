@@ -8,6 +8,7 @@ public class LevelsController : MonoBehaviour
 {   
     [SerializeField] GameObject player;
     [SerializeField] GameObject playerCamera;
+    [SerializeField] GameObject zoomOutCamera;
 
     [Header("Goal Distance")]
     [SerializeField] GameObject goalDistanceTMP;
@@ -26,6 +27,11 @@ public class LevelsController : MonoBehaviour
     // Used for temporarily storing the sensitivity for when player pauses the game, so the game
     // can revert back to the original sensitivity upon player unpausing.
     private float tempSensitivity;
+
+    [Header("Camera Switching")]
+    [SerializeField] float cameraSwitchTimeThreshold = 1.0f;
+    private float timeLastSwitchCamera;
+
 
     private bool gamePaused = false;
     private int curLevelsUnlocked;
@@ -50,6 +56,12 @@ public class LevelsController : MonoBehaviour
     void Update() {
         if (Input.GetKey("escape") && gamePaused == false) {
             PauseGame(true);
+        }
+
+        if (Input.GetKey("c") && (Time.time - timeLastSwitchCamera) > cameraSwitchTimeThreshold) {
+            timeLastSwitchCamera = Time.time;
+            playerCamera.SetActive(!playerCamera.activeInHierarchy);
+            zoomOutCamera.SetActive(!zoomOutCamera.activeInHierarchy);
         }
 
         updateGoalDistance();
