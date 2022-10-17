@@ -149,7 +149,7 @@ MonoBehaviour:
   maxSpeed: 5
   orientation: {fileID: 1835640076607646032}
   jumpCooldown: 0.5
-  jumpForce: 5
+  jumpForce: 6
   jumpKey: 32
   canJump: 1
   glideGravProp: 0.9
@@ -184,6 +184,7 @@ MonoBehaviour:
   playFootstepAudioRate: 0.7
   playerVelocityFootstepThreshold: 0.4
   playerAnimator: {fileID: 0}
+  levelController: {fileID: 0}
 --- !u!82 &1835640077815452085
 AudioSource:
   m_ObjectHideFlags: 0
@@ -395,6 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_up_rotation_angle: 90
   max_down_rotation_angle: 90
+  levelController: {fileID: 0}
 --- !u!1001 &1835640076979697287
 PrefabInstance:
   m_ObjectHideFlags: 0
