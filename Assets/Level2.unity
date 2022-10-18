@@ -1262,6 +1262,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelCompleteZone
       objectReference: {fileID: 0}
+    - target: {fileID: 6980746716974511836, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
+      propertyPath: promptToShow
+      value: 
+      objectReference: {fileID: 1276175612}
+    - target: {fileID: 6980746716974511836, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
+      propertyPath: levelController
+      value: 
+      objectReference: {fileID: 1146544651}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
@@ -1294,14 +1302,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c611d43f9473d64482e4167516716a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1479529903}
-  playerCamera: {fileID: 1479529901}
+  player: {fileID: 1479529904}
+  playerCamera: {fileID: 1479529903}
+  zoomOutCamera: {fileID: 1479529901}
   goalDistanceTMP: {fileID: 1437925442}
   exitLevelPrompt: {fileID: 511407702}
   timeTMP: {fileID: 1770407237}
   levelCompletePrompt: {fileID: 1276175612}
   levelNum: 2
   sensitivity: 0
+  cameraSwitchTimeThreshold: 1
 --- !u!4 &1146544653
 Transform:
   m_ObjectHideFlags: 0
@@ -2068,6 +2078,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 484061222092258367, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: levelController
+      value: 
+      objectReference: {fileID: 1146544651}
     - target: {fileID: 1835640077815452080, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2115,7 +2129,7 @@ PrefabInstance:
     - target: {fileID: 1835640077815452082, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: camera
       value: 
-      objectReference: {fileID: 1479529901}
+      objectReference: {fileID: 0}
     - target: {fileID: 1835640077815452082, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: glideGravProp
       value: 0.8
@@ -2144,41 +2158,37 @@ PrefabInstance:
       propertyPath: max_down_rotation_angle
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 5242255231004622753, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: levelController
+      value: 
+      objectReference: {fileID: 1146544651}
+    - target: {fileID: 8838440130943091056, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: levelController
+      value: 
+      objectReference: {fileID: 1146544651}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
 --- !u!1 &1479529901 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1835640078142504541, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8838440130943091058, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
   m_PrefabInstance: {fileID: 1479529900}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1479529902 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1835640077815452080, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8838440131307154033, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
   m_PrefabInstance: {fileID: 1479529900}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1479529903 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1835640077815452087, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7192796799482444736, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
   m_PrefabInstance: {fileID: 1479529900}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1479529905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!1 &1479529904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7192796799482444767, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+  m_PrefabInstance: {fileID: 1479529900}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1479529903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d7a5a635cb9c7f46a004b8bdfb65ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawn: {fileID: 1479529902}
-  spawnPos: {x: 0, y: 0, z: 0}
-  spawnRot: {x: 0, y: 0, z: 0, w: 0}
-  spawnScale: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 0}
 --- !u!1 &1500474570
 GameObject:
   m_ObjectHideFlags: 0
@@ -2358,7 +2368,7 @@ PrefabInstance:
     - target: {fileID: 7014109675541749735, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1479529902}
+      objectReference: {fileID: 0}
     - target: {fileID: 8729528932918389169, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
