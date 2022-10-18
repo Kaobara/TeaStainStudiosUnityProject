@@ -91,6 +91,7 @@ public class LevelsController : MonoBehaviour
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);
         playerCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
+        zoomOutCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
     }
 
     // Unpause by reverting the sensitivity to the temporary attribute stored on pause. 
@@ -101,6 +102,7 @@ public class LevelsController : MonoBehaviour
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);
         playerCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
+        zoomOutCamera.GetComponent<CameraControl>().updateSensitivity(sensitivity);
 
         Cursor.lockState = CursorLockMode.Locked;
         
