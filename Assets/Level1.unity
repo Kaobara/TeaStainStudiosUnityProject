@@ -667,6 +667,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelCompleteZone
       objectReference: {fileID: 0}
+    - target: {fileID: 6980746716974511836, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
+      propertyPath: promptToShow
+      value: 
+      objectReference: {fileID: 2080982354}
+    - target: {fileID: 6980746716974511836, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
+      propertyPath: levelController
+      value: 
+      objectReference: {fileID: 1127003698}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
@@ -1030,12 +1038,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1955350125}
   playerCamera: {fileID: 1955350123}
+  zoomOutCamera: {fileID: 0}
   goalDistanceTMP: {fileID: 1521169547}
   exitLevelPrompt: {fileID: 2118545228}
   timeTMP: {fileID: 615012808}
   levelCompletePrompt: {fileID: 2080982354}
   levelNum: 1
   sensitivity: 0
+  cameraSwitchTimeThreshold: 1
 --- !u!4 &1127003700
 Transform:
   m_ObjectHideFlags: 0
