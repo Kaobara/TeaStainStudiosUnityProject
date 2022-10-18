@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2775214159994476984
+--- !u!1 &1938105093768036817
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2775214159994476986}
-  - component: {fileID: 2775214159994476987}
+  - component: {fileID: 1938105093768036819}
+  - component: {fileID: 1938105093768036818}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: mapBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2775214159994476986
+--- !u!4 &1938105093768036819
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2775214159994476984}
+  m_GameObject: {fileID: 1938105093768036817}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2775214159994476987
+--- !u!114 &1938105093768036818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2775214159994476984}
+  m_GameObject: {fileID: 1938105093768036817}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76175cf40e623844aacd14fe5335e6e1, type: 3}
@@ -66,7 +66,7 @@ MonoBehaviour:
     type: 2
     isSymmetric: 0
     probability: 0.25
-    tile: {fileID: 5131750446351206860, guid: 3e71f0bb095bea64f84fcee939426025, type: 3}
+    tile: {fileID: 7200066660115954829, guid: 2f302122a87e02e44abc2164973e8cb7, type: 3}
     left: 00000000
     right: 0000000001000000020000000300000004000000
     forward: 0000000001000000020000000300000004000000
@@ -85,24 +85,24 @@ MonoBehaviour:
     isSymmetric: 0
     probability: 0.1
     tile: {fileID: 6218769809720111298, guid: 2186673a953bc1a488f13192a27397a2, type: 3}
-    left: 0300000004000000
-    right: 000000000100000002000000
+    left: 000000000100000002000000
+    right: 0300000004000000
     forward: 000000000100000002000000
     back: 0300000004000000
-  length: 5
-  width: 5
+  length: 10
+  width: 10
   seed: 235235
   Tile_offset: 0.5
   maxBuildingHeight: 4
   buildingGen:
     buildingBases:
-    - {fileID: 9001891659272532279, guid: 95d02c350d14f4b4f8e878f458be926d, type: 3}
+    - {fileID: 919132149155446097, guid: e18e49b12f4114f4f933fec4481f0089, type: 3}
     buildingMiddles:
-    - {fileID: 7981094734376381787, guid: a5e5db94682f39f4ea22b02f5e2d6b93, type: 3}
-    buildingRoof: {fileID: 7343349564117669492, guid: 8adc033e800f5ed42be8ef2a6b3430b5, type: 3}
+    - {fileID: 919132149155446097, guid: df4010e77665cfa4fb8f60bf51cd85f4, type: 3}
+    buildingRoof: {fileID: 919132149155446097, guid: e3849fef808d17c49841189639719f1a, type: 3}
     buildingLongChimney: {fileID: 919132149155446097, guid: 994ae580e3bd3f74cadd9011b16d7ba7, type: 3}
-    buildingGround: {fileID: 7200066660115954829, guid: 2f302122a87e02e44abc2164973e8cb7, type: 3}
+    buildingGround: {fileID: 919132149155446097, guid: dd609ea36a2f0e647958056a02b56790, type: 3}
   topologyPlotter:
-    threshold: 0.6
-  chunkSize: 4
+    threshold: 0.55
+  chunkSize: 6
   debugMode: 0
