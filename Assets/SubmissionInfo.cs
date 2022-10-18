@@ -46,7 +46,7 @@ In traversing levels, players use standard WASD movement to control the movement
     // By the gameplay video milestone deadline this should be a direct link
     // to a YouTube video upload containing your video. Ensure "Made for kids"
     // is turned off in the video settings. 
-    public static readonly string GameplayVideo = "https://youtube.com/...";
+    public static readonly string GameplayVideo = "https://www.youtube.com/watch?v=zFlDDzXRdAs&ab_channel=PehNiTan";
     
     // No more info to fill out!
     // Please don't modify anything below here.
