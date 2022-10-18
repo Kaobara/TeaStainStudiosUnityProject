@@ -16,10 +16,10 @@ We will be using Confluence to keep track of our weekly progress and organising 
 | Gameplay | Mukul, Sebastian, Daniel, Jason |
 | General Pixel Shaders | Sebastion & Daniel |
 | Particle and SFX | Daniel |
-| Animation | Daniel and Jason |
+| Animation | Daniel|
 | Objs and Assets | Mukul |
 | Music and Sound Assets | Jason |
-| Procedural generation (scenery + maps and clouds) | Mukul, Seb, Jason
+| Procedural generation (scenery + maps and clouds) | Mukul
 | Camera Orientation and Controlling | Jason |
 | Querying and Playtesting and Surveying | Jason and Mukul |
 | Level Design | Mukul and everyone |
