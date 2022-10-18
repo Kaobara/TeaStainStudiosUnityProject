@@ -39,7 +39,6 @@ public class CameraControl : MonoBehaviour
         // rotation and vice versa. The maximum rotation angles are determined by 2 parameters which are 
         // serialized and can be set in Unity.
         float post_rotation_x = transform.localRotation.x + -vertical_movement_y;
-        Debug.Log(post_rotation_x);
 
         // Apply rotation if the rotation is not past the maximum upwards or downwards rotation angles.
         if((post_rotation_x >= (-max_up_rotation_angle)) && (post_rotation_x <= max_down_rotation_angle)) {
