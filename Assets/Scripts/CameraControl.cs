@@ -12,6 +12,7 @@ public class CameraControl : MonoBehaviour
     private float sensitivity;
 
     private float vertical_movement_y;
+    private float vertical_movement_before;
 
     // Locks the cursor to the game screen so that Unity
     // can use the Player's mouse movements for
@@ -29,6 +30,7 @@ public class CameraControl : MonoBehaviour
     void LateUpdate() {
         
         // Calculates the accumulated vertical movement through the mouse from the base of 0 (when level loads).
+        vertical_movement_before = vertical_movement_y;
         vertical_movement_y += Input.GetAxis("Mouse Y") * sensitivity;
         
         // Using the vertical movement of the mouse to rotate about the x-axis (vertical rotation)
@@ -36,11 +38,14 @@ public class CameraControl : MonoBehaviour
         // rotations. Essentially, negating it makes it so that moving the mouse upwards nets an upwards 
         // rotation and vice versa. The maximum rotation angles are determined by 2 parameters which are 
         // serialized and can be set in Unity.
-        float post_rotation_x = transform.eulerAngles.x + -vertical_movement_y;
+        float post_rotation_x = transform.localRotation.x + -vertical_movement_y;
+        Debug.Log(post_rotation_x);
 
         // Apply rotation if the rotation is not past the maximum upwards or downwards rotation angles.
-        if((post_rotation_x >= (360 - max_up_rotation_angle)) || (post_rotation_x <= max_down_rotation_angle)) {
+        if((post_rotation_x >= (-max_up_rotation_angle)) && (post_rotation_x <= max_down_rotation_angle)) {
             transform.localRotation = Quaternion.Euler(Vector3.right * -vertical_movement_y);
+        } else {
+            vertical_movement_y = vertical_movement_before;
         }
     
     }
