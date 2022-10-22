@@ -18,7 +18,8 @@ public class LevelsController : MonoBehaviour
     [SerializeField] GameObject exitLevelPrompt;
 
     [Header("Level Completion")]
-    [SerializeField] GameObject timeTMP;
+    [SerializeField] GameObject currentTimeTMP;
+    [SerializeField] GameObject bestTimeTMP;
     [SerializeField] GameObject levelCompletePrompt;
     [SerializeField] int levelNum;
 
@@ -32,10 +33,17 @@ public class LevelsController : MonoBehaviour
     [SerializeField] float cameraSwitchTimeThreshold = 1.0f;
     private float timeLastSwitchCamera;
 
+    [Header("Medal Time Thresholds")]
+    [SerializeField] float goldTimeThreshold;
+    [SerializeField] float silverTimeThreshold;
+    [SerializeField] GameObject silverTimeThresholdTMP;
+    [SerializeField] GameObject goldTimeThresholdTMP;
+
 
     private bool gamePaused = false;
     private int curLevelsUnlocked;
     private const int tutorialLevelNum = 0;
+    private float levelCompleteTime;
 
     // Normalise the sensitivity value to between 0.1 to 1.0, so the player can't have such low sensitivity that
     // they can't move the camera up and down at all.
@@ -120,20 +128,50 @@ public class LevelsController : MonoBehaviour
     // When completing level, set the time text to the time used to clear the level
     // so that it can be displayed to the player.
     public void CompleteLevel() {
-        timeTMP.GetComponent<TMPro.TextMeshProUGUI>().text = Time.timeSinceLevelLoad.ToString();
+        levelCompleteTime = Time.timeSinceLevelLoad;
+        currentTimeTMP.GetComponent<TMPro.TextMeshProUGUI>().text = "Current: " + levelCompleteTime.ToString("n2");
+
+        silverTimeThresholdTMP.GetComponent<TMPro.TextMeshProUGUI>().text = silverTimeThreshold.ToString("n2");
+        goldTimeThresholdTMP.GetComponent<TMPro.TextMeshProUGUI>().text = goldTimeThreshold.ToString("n2");
 
         PauseGame(false);
+
+        // Check if player has an existing completion time for this level.
+        if(PlayerPrefs.HasKey("Level " + levelNum) && PlayerPrefs.HasKey("Level " + levelNum + " Time")) {
+            // Check if this is the player's best completion time. If it is then save
+            // the new completion time and then adjust the medal to be displayed
+            // on the level select menu.
+            if(levelCompleteTime < PlayerPrefs.GetFloat("Level " + levelNum + " Time")) {
+                saveAndDetermineMedal(levelCompleteTime);
+            }
+        // Otherwise, this is the player's first clear, so save the time and determine the medal.
+        } else {
+            saveAndDetermineMedal(levelCompleteTime);
+        }
+
+        bestTimeTMP.GetComponent<TMPro.TextMeshProUGUI>().text = "Best: " + PlayerPrefs.GetFloat("Level " + levelNum + " Time").ToString("n2");
         
         levelCompletePrompt.SetActive(true);
-
-        curLevelsUnlocked = PlayerPrefs.GetInt("Unlocked Levels");
         
+        curLevelsUnlocked = PlayerPrefs.GetInt("Unlocked Levels");
 
         // Increment number of levels the player has unlocked so far by 1
         // then save it into the PlayerPrefs file.
         if(levelNum == curLevelsUnlocked) {
             curLevelsUnlocked++;
             PlayerPrefs.SetInt("Unlocked Levels", curLevelsUnlocked);
+        }
+    }
+
+    private void saveAndDetermineMedal(float levelCompleteTime) {
+        PlayerPrefs.SetFloat("Level " + levelNum + " Time", levelCompleteTime);
+
+        if(levelCompleteTime < goldTimeThreshold) {
+            PlayerPrefs.SetString("Level " + levelNum, "Gold");
+        } else if (levelCompleteTime < silverTimeThreshold) {
+            PlayerPrefs.SetString("Level " + levelNum, "Silver");
+        } else {
+            PlayerPrefs.SetString("Level " + levelNum, "Bronze");
         }
     }
 
