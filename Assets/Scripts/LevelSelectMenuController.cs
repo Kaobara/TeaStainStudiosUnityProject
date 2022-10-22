@@ -13,9 +13,12 @@ using UnityEngine.SceneManagement;
 // Unity GameObject.GetComponent Scripting API documentation: https://docs.unity3d.com/ScriptReference/GameObject.GetComponent.html
 public class LevelSelectMenuController : MonoBehaviour
 {
-    [Header("Level Buttons")]
-    [SerializeField] GameObject[] levelButtons;
+    [Header("Level Buttons and Medals")]
+    [SerializeField] GameObject[] levelContainers;
     int curLevelsUnlocked;
+    [SerializeField] Sprite goldMedal;
+    [SerializeField] Sprite silverMedal;
+    [SerializeField] Sprite bronzeMedal;
 
     private const int DEFAULT_LEVELS_UNLOCKED = 0;
     private const int ZERO_OFFSET = 1;
@@ -40,10 +43,20 @@ public class LevelSelectMenuController : MonoBehaviour
         // curLevelsUnlocked = PlayerPrefs.GetInt("Unlocked Levels");
 
         // Depending on the levels that the player has unlocked based on the "save data"
-        // in the PlayerPrefs File, set the buttons to be interactable.
+        // in the PlayerPrefs File, set the buttons to be interactable. Then, also display the medals
+        // based on their best clear time. The method of finding child game objects was referenced from
+        // https://stackoverflow.com/questions/40752083/how-to-find-child-of-a-gameobject-or-the-script-attached-to-child-gameobject-via#:~:text=Finding%20child%20GameObject%20by%20index%3A&text=transform.,3%2C%20to%20the%20GetChild%20function.
+        // and communication/teaching from Workshops.
         for(int i = 0; i < curLevelsUnlocked; i++) {
-            levelButtons[i].GetComponent<Button>().interactable = true;
+            levelContainers[i].transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+            
+            if(PlayerPrefs.HasKey("Level " + i)) {
+                GameObject levelMedal = levelContainers[i].transform.GetChild(1).gameObject;
+                levelMedal.GetComponent<Image>().sprite = goldMedal;
+                levelMedal.SetActive(true);
+            }
         }
+
     }
 
     // Navigates to a certain level. Called by the level buttons on button press.

@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1938105093768036818
 MonoBehaviour:
@@ -66,7 +66,7 @@ MonoBehaviour:
     type: 2
     isSymmetric: 0
     probability: 0.25
-    tile: {fileID: 7200066660115954829, guid: 2f302122a87e02e44abc2164973e8cb7, type: 3}
+    tile: {fileID: 5131750446351206860, guid: 3e71f0bb095bea64f84fcee939426025, type: 3}
     left: 00000000
     right: 0000000001000000020000000300000004000000
     forward: 0000000001000000020000000300000004000000
@@ -99,9 +99,9 @@ MonoBehaviour:
     - {fileID: 919132149155446097, guid: e18e49b12f4114f4f933fec4481f0089, type: 3}
     buildingMiddles:
     - {fileID: 919132149155446097, guid: df4010e77665cfa4fb8f60bf51cd85f4, type: 3}
-    buildingRoof: {fileID: 919132149155446097, guid: e3849fef808d17c49841189639719f1a, type: 3}
+    buildingRoof: {fileID: 7343349564117669492, guid: 8adc033e800f5ed42be8ef2a6b3430b5, type: 3}
     buildingLongChimney: {fileID: 919132149155446097, guid: 994ae580e3bd3f74cadd9011b16d7ba7, type: 3}
-    buildingGround: {fileID: 919132149155446097, guid: dd609ea36a2f0e647958056a02b56790, type: 3}
+    buildingGround: {fileID: 7200066660115954829, guid: 2f302122a87e02e44abc2164973e8cb7, type: 3}
   topologyPlotter:
     threshold: 0.55
   chunkSize: 6
