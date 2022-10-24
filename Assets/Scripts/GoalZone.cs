@@ -23,6 +23,6 @@ public class GoalZone : MonoBehaviour
 
     public void showPrompt() {
         promptToShow.SetActive(true);
-        levelController.GetComponent<LevelsController>().PauseGame(false);
+        levelController.GetComponent<LevelsController>().PauseGame();
     }
 }

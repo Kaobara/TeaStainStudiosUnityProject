@@ -45,13 +45,17 @@ public class LevelsController : MonoBehaviour
     private const int tutorialLevelNum = 0;
     private float levelCompleteTime;
 
+    // Time elapsed since the player last paused or unpaused the game so the player/Unity doesn't
+    // spam pause/unpause.
+    private float lastGamePauseSwitchTime = 0.0f;
+
     // Normalise the sensitivity value to between 0.1 to 1.0, so the player can't have such low sensitivity that
     // they can't move the camera up and down at all.
     void Awake() {
         sensitivity = ((PlayerPrefs.GetFloat("Sensitivity") * 0.9f) + 0.1f);
 
         if(levelNum == 0) {
-            PauseGame(false);
+            PauseGame();
         } else {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -62,8 +66,18 @@ public class LevelsController : MonoBehaviour
     // If esc/escape key is pressed, then render the exit level prompt. 
     // Guard used to make sure unity doesn't "pause again" while game is paused.
     void Update() {
-        if (Input.GetKey("escape") && gamePaused == false) {
-            PauseGame(true);
+        if (Input.GetKey("escape")) {
+            if(gamePaused == false && (Time.time - lastGamePauseSwitchTime) > 0.5f) {
+                lastGamePauseSwitchTime = Time.time;
+                exitLevelPrompt.SetActive(true);
+                PauseGame();
+            }
+
+            if(gamePaused == true && (Time.time - lastGamePauseSwitchTime) > 0.5f) {
+                lastGamePauseSwitchTime = Time.time;
+                exitLevelPrompt.SetActive(false);
+                UnpauseGame();
+            }
         }
 
         if (Input.GetKey("c") && (Time.time - timeLastSwitchCamera) > cameraSwitchTimeThreshold) {
@@ -85,12 +99,8 @@ public class LevelsController : MonoBehaviour
 
     // Pause the game by bringing up exit level prompt and changing the sensitivity to be 0
     // so the player can't use mouse movements to rotate the player and camera.
-    public void PauseGame(bool exitKey) {
+    public void PauseGame() {
         gamePaused = true;
-        
-        if(exitKey) {
-            exitLevelPrompt.SetActive(true);
-        }
 
         Cursor.lockState = CursorLockMode.None;
 
@@ -134,7 +144,7 @@ public class LevelsController : MonoBehaviour
         silverTimeThresholdTMP.GetComponent<TMPro.TextMeshProUGUI>().text = silverTimeThreshold.ToString("n2");
         goldTimeThresholdTMP.GetComponent<TMPro.TextMeshProUGUI>().text = goldTimeThreshold.ToString("n2");
 
-        PauseGame(false);
+        PauseGame();
 
         // Check if player has an existing completion time for this level.
         if(PlayerPrefs.HasKey("Level " + levelNum) && PlayerPrefs.HasKey("Level " + levelNum + " Time")) {
