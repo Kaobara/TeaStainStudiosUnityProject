@@ -68,7 +68,7 @@ Shader "Unlit/WaveShader"
 				o.uv = v.uv;
 
 				// 	Tile the texture by time
-                o.uv.x += _Time.y * 0.1;
+                o.uv.x -= _Time.y * 0.1;
 				o.normal = UnityObjectToWorldNormal( v.normal);
 				TRANSFER_SHADOW(o)
 				return o;
