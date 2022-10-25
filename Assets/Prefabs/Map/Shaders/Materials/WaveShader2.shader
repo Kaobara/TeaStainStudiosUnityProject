@@ -59,14 +59,13 @@
 
 //UNITY_SHADER_NO_UPGRADE
 
-Shader "Unlit/WaveShader"
+Shader "Unlit/WaveShader2"
 {
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_Period ("Period", Float) = 1
-
-		_Amplitude ("Amplitude", Float) = 0.25
+		_Amplitude ("Amplitude", Float) = 1
         // _Time ("Time", Time) = T
 	}
 	SubShader
@@ -126,14 +125,12 @@ Shader "Unlit/WaveShader"
 				// o.uv = v.uv;
 				// return o;
 
-				_Amplitude = 0.25;
-
 
 				Interpolators o;
 				// Displace the original vertex in model space
-				v.vertex = mul(UNITY_MATRIX_M, v.vertex);
 				float4 displacement = float4(0.0f, _Amplitude * sin( (v.vertex.x + _Period * _Time.y  )), 0.0f, 0.0f);
 				v.vertex += displacement;
+				v.vertex = mul(UNITY_MATRIX_M, v.vertex);
 
 				o.vertex = mul(UNITY_MATRIX_VP, v.vertex);
 				o.uv = v.uv;
