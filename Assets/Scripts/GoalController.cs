@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialController : MonoBehaviour
+public class GoalController : MonoBehaviour
 {
     [Header("Goals")]
     [SerializeField] private GoalZone[] goals;

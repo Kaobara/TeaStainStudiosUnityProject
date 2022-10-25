@@ -21,7 +21,8 @@ public class GoalZone : MonoBehaviour
         
     }
 
-    public void showPrompt() {
+    public void ShowPrompt()
+    {
         promptToShow.SetActive(true);
         levelController.GetComponent<LevelsController>().PauseGame();
     }
