@@ -504,6 +504,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &205487513 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3172968988591259185, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
+  m_PrefabInstance: {fileID: 3172968988793853613}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &388033244
 GameObject:
   m_ObjectHideFlags: 0
@@ -2930,7 +2935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7572357948635147398, guid: c61b0106ef71e5748a9260c931e78ae8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7572357948635147400, guid: c61b0106ef71e5748a9260c931e78ae8, type: 3}
       propertyPath: m_UiScaleMode
@@ -4309,6 +4314,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1835640077365775311}
   zoomOutCamera: {fileID: 1359458685}
   goalDistanceTMP: {fileID: 1280842945}
+  goalController: {fileID: 205487513}
   exitLevelPrompt: {fileID: 936399940}
   currentTimeTMP: {fileID: 1293949274}
   bestTimeTMP: {fileID: 700007833}

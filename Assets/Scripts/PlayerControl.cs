@@ -474,4 +474,8 @@ public class PlayerControl : MonoBehaviour
         return holdDistance;
     }
 
+    public Vector3 GetPlayerPos() {
+        return this.gameObject.transform.position;
+    }
+
 }

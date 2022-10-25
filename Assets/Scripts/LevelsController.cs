@@ -12,6 +12,7 @@ public class LevelsController : MonoBehaviour
 
     [Header("Goal Distance")]
     [SerializeField] GameObject goalDistanceTMP;
+    [SerializeField] GameObject goalController;
     private float distance;
 
     [Header("Exit Level")]
@@ -60,7 +61,6 @@ public class LevelsController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        // Cursor.lockState = CursorLockMode.Locked;
     }
 
     // If esc/escape key is pressed, then render the exit level prompt. 
@@ -91,9 +91,9 @@ public class LevelsController : MonoBehaviour
 
     private void updateGoalDistance() {
         // insert distance formula here.
-        distance = 0.0f;
+        distance = Vector3.Distance(player.GetComponent<PlayerControl>().GetPlayerPos(), goalController.GetComponent<GoalController>().GetGoalPos());
 
-        goalDistanceTMP.GetComponent<TMPro.TextMeshProUGUI>().text = distance.ToString();
+        goalDistanceTMP.GetComponent<TMPro.TextMeshProUGUI>().text = distance.ToString("n2");
     }
 
 
