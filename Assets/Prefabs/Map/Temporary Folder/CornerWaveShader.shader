@@ -65,7 +65,8 @@ Shader "Unlit/CornerWaveShader"
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_Period ("Period", Float) = 1
-		_Amplitude ("Amplitude", Float) = 1
+
+		_Amplitude ("Amplitude", Float) = 0.25
         // _Time ("Time", Time) = T
 	}
 	SubShader
@@ -125,16 +126,18 @@ Shader "Unlit/CornerWaveShader"
 				// o.uv = v.uv;
 				// return o;
 
+				_Amplitude = 0.25;
+
 
 				Interpolators o;
-				v.vertex = mul(UNITY_MATRIX_M, v.vertex);
 				// Displace the original vertex in model space
+				v.vertex = mul(UNITY_MATRIX_M, v.vertex);
 				float4 displacement = float4(0.0f, _Amplitude * sin( (v.vertex.x + _Period * _Time.y  )), 0.0f, 0.0f);
 				v.vertex += displacement;
 
 				o.vertex = mul(UNITY_MATRIX_VP, v.vertex);
 				o.uv = v.uv;
-                o.uv.x += _Time.y * 0.1;
+                // o.uv.x += _Time.y * 0.1;
 
 				return o;
 			}
