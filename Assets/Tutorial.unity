@@ -4749,6 +4749,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703138406}
   m_CullTransparentMesh: 1
+--- !u!114 &1712183593 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6980746716974511836, guid: 95ef9ac38a38f2843a97f0132fde4689, type: 3}
+  m_PrefabInstance: {fileID: 459425697}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4323f6d8289eede488050c3ed44a21a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1820009425
 GameObject:
   m_ObjectHideFlags: 0
@@ -5251,6 +5262,10 @@ PrefabInstance:
       propertyPath: goals.Array.data[1]
       value: 
       objectReference: {fileID: 1404991166}
+    - target: {fileID: 3172968988591259186, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
+      propertyPath: goals.Array.data[2]
+      value: 
+      objectReference: {fileID: 1712183593}
     - target: {fileID: 3172968988591259187, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
       propertyPath: m_RootOrder
       value: 20
