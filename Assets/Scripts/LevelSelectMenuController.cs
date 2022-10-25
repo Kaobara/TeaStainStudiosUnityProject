@@ -48,7 +48,7 @@ public class LevelSelectMenuController : MonoBehaviour
         // https://stackoverflow.com/questions/40752083/how-to-find-child-of-a-gameobject-or-the-script-attached-to-child-gameobject-via#:~:text=Finding%20child%20GameObject%20by%20index%3A&text=transform.,3%2C%20to%20the%20GetChild%20function.
         // and communication/teaching from Workshops.
         Debug.Log(curLevelsUnlocked);
-        for(int i = 0; i < (curLevelsUnlocked + 1); i++) {
+        for(int i = 0; i <= curLevelsUnlocked; i++) {
             levelContainers[i].transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
             
             if(PlayerPrefs.HasKey("Level " + i)) {
