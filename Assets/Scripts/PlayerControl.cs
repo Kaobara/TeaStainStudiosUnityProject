@@ -34,7 +34,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Interacting")]
     [SerializeField] private KeyCode useKey;
     [SerializeField] private float useRange = 2f;
-    [SerializeField] private float detachForce = 5f;
+    [SerializeField] private float ejectForce = 5f;
     [SerializeField] private bool useInput;
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
@@ -178,9 +178,10 @@ public class PlayerControl : MonoBehaviour
         // player pressing use key and not gliding
         if (useInput && state != PlayerState.Glide) {
 
-            // if holding object, detach
+            // if holding object, eject
             if (isHolding) {
-                heldObject.Detach(orientation.forward, detachForce);
+                heldObject.Eject(orientation.forward, ejectForce);
+                heldObject = null;
                 isHolding = false;
                 playerAnimator.TriggerDetach();
             }
@@ -224,6 +225,9 @@ public class PlayerControl : MonoBehaviour
     {
         // move player
         MovePlayer();
+
+        // check if held object has moved significantly from relative pos
+        DetectHeldObjectDesync();
 
         // conditionally make footsteps
         MakeFootsteps();
@@ -286,6 +290,10 @@ public class PlayerControl : MonoBehaviour
         }
 
         rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
+
+        if (isHolding) {
+            heldObject.rigidBody.AddForce(playerDir.normalized * heldObject.rigidBody.mass * accel);
+        }
 
         // set idle or walk animation triggers
         if (forwardsInput == 0 && sidewaysInput == 0) {
@@ -458,6 +466,15 @@ public class PlayerControl : MonoBehaviour
         } 
     }
 
+    private void DetectHeldObjectDesync()
+    {
+        if (isHolding && (heldObject.transform.localPosition - heldObject.localPos).sqrMagnitude > heldObject.maxLocalDiffSq) {
+            isHolding = false;
+            heldObject = null;
+            playerAnimator.TriggerDetach();
+            heldObject.Detach();
+        }
+    }
 
     public PlayerState GetPlayerState()
     {
@@ -468,7 +485,6 @@ public class PlayerControl : MonoBehaviour
         this.sensitivity = sensitivity;
     }
     
-
     public float GetHoldDistance()
     {
         return holdDistance;

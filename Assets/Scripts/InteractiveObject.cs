@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class InteractiveObject : MonoBehaviour
 {
-    [SerializeField] Rigidbody rigidBody;
+    [SerializeField] public Rigidbody rigidBody {get; private set; }
+    [SerializeField] public Vector3 localPos  {get; private set; }
+    [SerializeField] public float maxLocalDiffSq {get; private set; }
 
     // Start is called before the first frame update
     private void Start()
@@ -12,24 +14,24 @@ public class InteractiveObject : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
-    {
-        if (transform.parent != null) {
-            Transform parentTrans = transform.parent.transform.Find("PlayerOrientation");
-            transform.position = parentTrans.position + parentTrans.forward * transform.parent.GetComponent<PlayerControl>().GetHoldDistance();
-        }        
-    }
-
     public void Attach(GameObject newParent)
     {
-        transform.SetParent(newParent.transform);
+        transform.SetParent(newParent.transform.Find("PlayerOrientation"));
         rigidBody.useGravity = false;
+        localPos = transform.parent.forward * transform.parent.GetComponent<PlayerControl>().GetHoldDistance();   
+        transform.localPosition = localPos;   
     }
 
-    public void Detach(Vector3 playerOrientation, float force)
+    public void Eject(Vector3 playerOrientation, float force)
     {
         transform.parent = null;
         rigidBody.useGravity = true;
         rigidBody.AddForce(Vector3.RotateTowards(playerOrientation, Vector3.up, Mathf.PI/4, 10000) * force, ForceMode.Impulse);
+    }
+
+    public void Detach()
+    {
+        transform.parent = null;
+        rigidBody.useGravity = true;
     }
 }
