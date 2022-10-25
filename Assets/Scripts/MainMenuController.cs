@@ -44,6 +44,7 @@ public class MainMenuController : MonoBehaviour
             sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity");
         } else {
             sensitivitySlider.value = 0.5f;
+            PlayerPrefs.SetFloat("Sensitivity", 0.5f);
         }
 
         curSessionSensitivity = sensitivitySlider.value;

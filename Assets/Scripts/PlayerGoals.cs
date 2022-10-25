@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class PlayerGoals : MonoBehaviour
 {
-    private TutorialController tc;
+    private GoalController gc;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        tc = GameObject.Find("TutorialController").GetComponent<TutorialController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gc = GameObject.Find("GoalController").GetComponent<GoalController>();
     }
 
     public void OnTriggerEnter(Collider other) {
-        GoalZone goalZone = other.gameObject.GetComponent<GoalZone>();
-        if (goalZone != null && !goalZone.levelComplete) {
-            tc.CompleteGoal(goalZone);
+        // handle goalzones that arent the level complete zone
+        GoalZone goal = other.gameObject.GetComponent<GoalZone>();
+        if (goal != null && !goal.levelComplete) {
+            gc.HandleGoal(goal);
         }
+    }
+
+    // handle goal objects
+    public void GoalRetrival(Goal goal)
+    {
+        gc.HandleGoal(goal);
     }
 }

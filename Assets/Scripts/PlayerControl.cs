@@ -206,6 +206,12 @@ public class PlayerControl : MonoBehaviour
                     heldObject = nearest;
                     isHolding = true;
                     playerAnimator.TriggerAttach();
+                    
+                    // trigger goal if object is a goal
+                    Goal goal = nearest.GetComponent<Goal>();
+                    if (goal != null) {
+                        GetComponent<PlayerGoals>().GoalRetrival(goal);
+                    }
                 }                
             }
         }
@@ -466,6 +472,10 @@ public class PlayerControl : MonoBehaviour
     public float GetHoldDistance()
     {
         return holdDistance;
+    }
+
+    public Vector3 GetPlayerPos() {
+        return this.gameObject.transform.position;
     }
 
 }
