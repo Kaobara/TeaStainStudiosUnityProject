@@ -100,6 +100,9 @@ public class LevelsController : MonoBehaviour
     // Pause the game by bringing up exit level prompt and changing the sensitivity to be 0
     // so the player can't use mouse movements to rotate the player and camera.
     public void PauseGame() {
+
+        Time.timeScale = 0f;
+        
         gamePaused = true;
 
         Cursor.lockState = CursorLockMode.None;
@@ -116,6 +119,9 @@ public class LevelsController : MonoBehaviour
     // Cursor is also locked again. The calling prompt will outside set themselves
     // to be inactive outside of this script.
     public void UnpauseGame() {
+
+        Time.timeScale = 1.0f;
+
         sensitivity = tempSensitivity;
 
         player.GetComponent<PlayerControl>().updateSensitivity(sensitivity);

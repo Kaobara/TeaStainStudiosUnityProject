@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GoalZone : MonoBehaviour
 {
-    [SerializeField] public string msg;
     [SerializeField] public bool levelComplete;
     [SerializeField] GameObject promptToShow;
     [SerializeField] GameObject levelController;
