@@ -207,8 +207,8 @@ public class PlayerControl : MonoBehaviour
                     isHolding = true;
                     playerAnimator.TriggerAttach();
                     
+                    // trigger goal if object is a goal
                     Goal goal = nearest.GetComponent<Goal>();
-
                     if (goal != null) {
                         GetComponent<PlayerGoals>().GoalRetrival(goal);
                     }

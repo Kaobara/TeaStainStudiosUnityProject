@@ -8,7 +8,6 @@ public class Goal : MonoBehaviour
 
     public void CompleteGoal()
     {
-        Debug.Log("Goal Complete");
         if (promptToShow != null) {
             promptToShow.SetActive(true);
             GameObject.Find("LevelController").GetComponent<LevelsController>().PauseGame();
