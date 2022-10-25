@@ -12,13 +12,8 @@ public class InteractiveObject : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
-
-    }
-
-    private void FixedUpdate() {
         if (transform.parent != null) {
             Transform parentTrans = transform.parent.transform.Find("PlayerOrientation");
             transform.position = parentTrans.position + parentTrans.forward * transform.parent.GetComponent<PlayerControl>().GetHoldDistance();

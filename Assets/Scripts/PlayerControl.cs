@@ -206,6 +206,12 @@ public class PlayerControl : MonoBehaviour
                     heldObject = nearest;
                     isHolding = true;
                     playerAnimator.TriggerAttach();
+                    
+                    Goal goal = nearest.GetComponent<Goal>();
+
+                    if (goal != null) {
+                        GetComponent<PlayerGoals>().GoalRetrival(goal);
+                    }
                 }                
             }
         }

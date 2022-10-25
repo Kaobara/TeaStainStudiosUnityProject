@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class GoalController : MonoBehaviour
 {
     [Header("Goals")]
-    [SerializeField] private GoalZone[] goals;
+    [SerializeField] private Goal[] goals;
 
     private int n;
 
@@ -21,13 +20,17 @@ public class GoalController : MonoBehaviour
         
     }
 
-    public void CompleteGoal(GoalZone goalZone)
+    public void HandleGoal(Goal goal)
     {
-        if (n < goals.Length && goalZone.Equals(goals[n])) {
-            goalZone.ShowPrompt();
+        if (n < goals.Length && goal.Equals(goals[n])) {
+            goal.CompleteGoal();
             n += 1;
         }
     }
 
+    public Vector3 GetGoalPos()
+    {
+        return goals[n].transform.position;
+    }
 
 }

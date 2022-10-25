@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Package : MonoBehaviour
+public class PackageWinDetect : MonoBehaviour
 {
     private LevelsController lc;
 
@@ -12,13 +12,8 @@ public class Package : MonoBehaviour
         lc = GameObject.Find("LevelController").GetComponent<LevelsController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    public void OnTriggerEnter(Collider other) {
         GoalZone goalZone = other.gameObject.GetComponent<GoalZone>();
         if (goalZone != null && goalZone.levelComplete) {
             lc.CompleteLevel();
