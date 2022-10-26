@@ -59,6 +59,7 @@ public class LevelsController : MonoBehaviour
             PauseGame();
         } else {
             Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1.0f;
         }
 
     }
