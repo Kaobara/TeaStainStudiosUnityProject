@@ -601,6 +601,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 352988634, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1127003699}
+    - target: {fileID: 352988634, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 2104610976059291989, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
       propertyPath: m_Name
       value: CompleteLevelPromptObjects
@@ -696,6 +704,14 @@ PrefabInstance:
     - target: {fileID: 2104610976508751412, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2104610977308427620, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1127003699}
+    - target: {fileID: 2104610977308427620, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitLevel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
