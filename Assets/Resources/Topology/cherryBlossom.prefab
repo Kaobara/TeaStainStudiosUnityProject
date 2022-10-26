@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4335035433776719128}
   - component: {fileID: 830624233992301245}
   - component: {fileID: 3198135310716362359}
+  - component: {fileID: 5852145195863142853}
   m_Layer: 0
   m_Name: cherryBlossom
   m_TagString: Untagged
@@ -86,6 +87,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5852145195863142853
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991019877137547170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4022216199117327775, guid: 70b5e3d18a207df47965b46d191c164e, type: 3}
 --- !u!1001 &360794746163950455
 PrefabInstance:
   m_ObjectHideFlags: 0
