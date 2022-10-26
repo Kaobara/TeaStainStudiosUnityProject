@@ -34,11 +34,12 @@ public class PlayerControl : MonoBehaviour
     [Header("Interacting")]
     [SerializeField] private KeyCode useKey;
     [SerializeField] private float useRange = 2f;
-    [SerializeField] private float detachForce = 5f;
+    [SerializeField] private float ejectForce = 5f;
     [SerializeField] private bool useInput;
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
     [SerializeField] private float holdDistance = 1.5f;
+    [SerializeField] private float detachDistThreshold = 0.15f;
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
@@ -178,9 +179,10 @@ public class PlayerControl : MonoBehaviour
         // player pressing use key and not gliding
         if (useInput && state != PlayerState.Glide) {
 
-            // if holding object, detach
+            // if holding object, eject
             if (isHolding) {
-                heldObject.Detach(orientation.forward, detachForce);
+                heldObject.Eject(orientation.forward, ejectForce);
+                heldObject = null;
                 isHolding = false;
                 playerAnimator.TriggerDetach();
             }
@@ -202,7 +204,10 @@ public class PlayerControl : MonoBehaviour
                 }
                 // attach nearest object
                 if (nearest != null) {
-                    nearest.Attach(gameObject);
+
+                    Debug.Log(orientation.localPosition + Vector3.forward * holdDistance);
+
+                    nearest.Attach(gameObject, orientation.localPosition + Vector3.forward * holdDistance);
                     heldObject = nearest;
                     isHolding = true;
                     playerAnimator.TriggerAttach();
@@ -224,6 +229,9 @@ public class PlayerControl : MonoBehaviour
     {
         // move player
         MovePlayer();
+
+        // check if held object has moved significantly from relative pos
+        AutoDetachHeldObject();
 
         // conditionally make footsteps
         MakeFootsteps();
@@ -285,7 +293,7 @@ public class PlayerControl : MonoBehaviour
             //rigidBody.useGravity = true;
         }
 
-        rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
+        rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
 
         // set idle or walk animation triggers
         if (forwardsInput == 0 && sidewaysInput == 0) {
@@ -458,6 +466,20 @@ public class PlayerControl : MonoBehaviour
         } 
     }
 
+    // auto detaches held object if it gets too far away from in front of player
+    private void AutoDetachHeldObject()
+    {
+        if (!isHolding) return;
+
+        Vector3 posDiff = heldObject.transform.position - transform.TransformPoint(heldObject.localPos);
+
+        if (posDiff.sqrMagnitude > detachDistThreshold) {
+            heldObject.Detach();
+            isHolding = false;
+            heldObject = null;
+            playerAnimator.TriggerDetach();
+        }
+    }
 
     public PlayerState GetPlayerState()
     {
@@ -468,12 +490,6 @@ public class PlayerControl : MonoBehaviour
         this.sensitivity = sensitivity;
     }
     
-
-    public float GetHoldDistance()
-    {
-        return holdDistance;
-    }
-
     public Vector3 GetPlayerPos() {
         return this.gameObject.transform.position;
     }
