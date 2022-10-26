@@ -11,8 +11,7 @@ public class faceCam : MonoBehaviour
        
         Vector3 newPos = player.position + new Vector3(0, 0.6f, 1f); 
         transform.position = newPos;
-        transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-       
+        transform.rotation = Quaternion.Euler(0, 180f, 0);       
     }
 
 }

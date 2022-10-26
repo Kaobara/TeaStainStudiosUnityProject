@@ -753,9 +753,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Package
       objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256820, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: promptToShow
+      value: 
+      objectReference: {fileID: 863075319}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+--- !u!114 &505741711 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8167879085428256820, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+  m_PrefabInstance: {fileID: 505741710}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd52e36e3d796048bdbbcb3b5f1420c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &511407701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1087,7 +1102,7 @@ PrefabInstance:
     - target: {fileID: 3172968988591259186, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
       propertyPath: goals.Array.data[0]
       value: 
-      objectReference: {fileID: 1393426521}
+      objectReference: {fileID: 505741711}
     - target: {fileID: 3172968988591259186, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
       propertyPath: goals.Array.data[1]
       value: 
@@ -1239,6 +1254,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1479529903}
   zoomOutCamera: {fileID: 1479529901}
   goalDistanceTMP: {fileID: 1437925442}
+  goalController: {fileID: 0}
   exitLevelPrompt: {fileID: 511407702}
   currentTimeTMP: {fileID: 863075323}
   bestTimeTMP: {fileID: 863075322}
@@ -1557,17 +1573,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e3c6d1ba08e19274abbda17d0f4b85ca, type: 3}
---- !u!114 &1393426521 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2096642622781936664, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
-  m_PrefabInstance: {fileID: 505741710}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd52e36e3d796048bdbbcb3b5f1420c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1437925441
 PrefabInstance:
   m_ObjectHideFlags: 0
