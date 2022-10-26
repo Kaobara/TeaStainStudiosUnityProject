@@ -1262,7 +1262,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1479529903}
   zoomOutCamera: {fileID: 1479529901}
   goalDistanceTMP: {fileID: 1437925442}
-  goalController: {fileID: 0}
+  goalController: {fileID: 1256363790}
   exitLevelPrompt: {fileID: 511407702}
   currentTimeTMP: {fileID: 863075323}
   bestTimeTMP: {fileID: 863075322}
@@ -1445,6 +1445,11 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7572357948661822163, guid: c61b0106ef71e5748a9260c931e78ae8, type: 3}
   m_PrefabInstance: {fileID: 1167454652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1256363790 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3172968988591259185, guid: c1419e0ea6d112347a5ae46494e32598, type: 3}
+  m_PrefabInstance: {fileID: 953405008}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1273361551
 PrefabInstance:
