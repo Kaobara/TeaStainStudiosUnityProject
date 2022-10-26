@@ -4,32 +4,55 @@ using UnityEngine;
 
 public class InteractiveObject : MonoBehaviour
 {
-    [SerializeField] Rigidbody rigidBody;
+    [SerializeField] public Rigidbody rigidBody {get; private set; }
+    [SerializeField] public Vector3 localPos {get; private set; }
+    [SerializeField] private SpringJoint spring;
 
     // Start is called before the first frame update
-    private void Start()
+    private void Start() 
     {
         rigidBody = GetComponent<Rigidbody>();
+
+        // connect spring to dummy rigidbody when not held
+        spring = GetComponent<SpringJoint>();
+        spring.connectedBody = transform.Find("SpringOff").GetComponent<Rigidbody>();
+
+        localPos = new Vector3(0f, 1.5f, 2f);
     }
 
-    private void FixedUpdate()
+    public void Attach(GameObject newParent, Vector3 localPos)
     {
-        if (transform.parent != null) {
-            Transform parentTrans = transform.parent.transform.Find("PlayerOrientation");
-            transform.position = parentTrans.position + parentTrans.forward * transform.parent.GetComponent<PlayerControl>().GetHoldDistance();
-        }        
-    }
-
-    public void Attach(GameObject newParent)
-    {
-        transform.SetParent(newParent.transform);
+        // disable gravity for object while held
         rigidBody.useGravity = false;
+
+        // store desired local pos relative to player (rigidbody)
+        this.localPos = localPos;
+
+        transform.position = newParent.transform.TransformPoint(localPos);
+
+        // connect spring joint to player rigidbody and set spring constants
+        spring.connectedBody = newParent.GetComponent<Rigidbody>();
+        spring.anchor = Vector3.zero;
+        spring.connectedAnchor = localPos; 
+        spring.spring = 100f;
+        spring.damper = 5f;
     }
 
-    public void Detach(Vector3 playerOrientation, float force)
+    public void Eject(Vector3 playerOrientation, float force)
     {
-        transform.parent = null;
-        rigidBody.useGravity = true;
+        Detach();
+
+        // add impulse force to throw object
         rigidBody.AddForce(Vector3.RotateTowards(playerOrientation, Vector3.up, Mathf.PI/4, 10000) * force, ForceMode.Impulse);
+    }
+
+    public void Detach()
+    {
+        rigidBody.useGravity = true;
+
+        // set spring constants to 0 and connect spring to dummy child rigidbody
+        spring.connectedBody = transform.Find("SpringOff").GetComponent<Rigidbody>();
+        spring.spring = 0f;
+        spring.damper = 0f;
     }
 }
