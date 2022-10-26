@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144891538777373158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1297,7 +1297,7 @@ Transform:
   - {fileID: 8838440130943091057}
   - {fileID: 2478721016511694843}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2580114113124444771
 Rigidbody:
@@ -1337,12 +1337,12 @@ MonoBehaviour:
   glideInput: 0
   canGlide: 0
   useKey: 101
-  useRange: 2
-  detachForce: 1
+  useRange: 1.5
+  ejectForce: 1.5
   useInput: 0
   isHolding: 0
   heldObject: {fileID: 0}
-  holdDistance: 1.25
+  holdDistance: 2
   heightEpsilon: 0.01
   playerHeight: 0.8
   collider: {fileID: 0}

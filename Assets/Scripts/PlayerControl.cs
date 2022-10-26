@@ -39,6 +39,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
     [SerializeField] private float holdDistance = 1.5f;
+    [SerializeField] private float detachDistThreshold = 0.15f;
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
@@ -203,7 +204,10 @@ public class PlayerControl : MonoBehaviour
                 }
                 // attach nearest object
                 if (nearest != null) {
-                    nearest.Attach(gameObject);
+
+                    Debug.Log(orientation.localPosition + Vector3.forward * holdDistance);
+
+                    nearest.Attach(gameObject, orientation.localPosition + Vector3.forward * holdDistance);
                     heldObject = nearest;
                     isHolding = true;
                     playerAnimator.TriggerAttach();
@@ -227,7 +231,7 @@ public class PlayerControl : MonoBehaviour
         MovePlayer();
 
         // check if held object has moved significantly from relative pos
-        DetectHeldObjectDesync();
+        AutoDetachHeldObject();
 
         // conditionally make footsteps
         MakeFootsteps();
@@ -289,11 +293,7 @@ public class PlayerControl : MonoBehaviour
             //rigidBody.useGravity = true;
         }
 
-        rigidBody.AddForce(playerDir.normalized * rigidBody.mass * accel);
-
-        if (isHolding) {
-            heldObject.rigidBody.AddForce(playerDir.normalized * heldObject.rigidBody.mass * accel);
-        }
+        rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
 
         // set idle or walk animation triggers
         if (forwardsInput == 0 && sidewaysInput == 0) {
@@ -466,13 +466,18 @@ public class PlayerControl : MonoBehaviour
         } 
     }
 
-    private void DetectHeldObjectDesync()
+    // auto detaches held object if it gets too far away from in front of player
+    private void AutoDetachHeldObject()
     {
-        if (isHolding && (heldObject.transform.localPosition - heldObject.localPos).sqrMagnitude > heldObject.maxLocalDiffSq) {
+        if (!isHolding) return;
+
+        Vector3 posDiff = heldObject.transform.position - transform.TransformPoint(heldObject.localPos);
+
+        if (posDiff.sqrMagnitude > detachDistThreshold) {
+            heldObject.Detach();
             isHolding = false;
             heldObject = null;
             playerAnimator.TriggerDetach();
-            heldObject.Detach();
         }
     }
 
@@ -485,11 +490,6 @@ public class PlayerControl : MonoBehaviour
         this.sensitivity = sensitivity;
     }
     
-    public float GetHoldDistance()
-    {
-        return holdDistance;
-    }
-
     public Vector3 GetPlayerPos() {
         return this.gameObject.transform.position;
     }
