@@ -116,6 +116,7 @@ The querying technique used was a Questionnaire. The questionnaire consists of a
 Participants were asked to complete the tutorial level of the game, and immediately take the questionnaire after. The questionnaire prompted the participants to rate several aspects of the game such as the Player and Camera Control Scheme, Menu and UI, Level Design, Aesthetics. Participants were also prompted to provide suggestions on improvements they would like to see with regard to these aspects. During the questionnaire, participants were encouraged to first write down their initial impressions and then revisit the game if they wish to. 
 
 The questions asked on the survey were:
+
 **What is your gender?** (Male, Female, Binary, Prefer not to say)
 
 **Which of the age ranges below do you fall under?** (18-24, 25-34, 35-44, 45-54, 55-64, 64 and above)
@@ -188,4 +189,3 @@ Some participants have also expressed their desire for more verticality in Level
 The build given to the participants to playtest also did not have the respawn mechanic implemented when Chiki lands in the water. The majority of participants expressed dissatisfaction at this. Hence, the team made it a priority to quickly implement the mechanic and thus it is now functional.
 
 Most participants were satisfied with the level environments and the aesthetics chosen. However, one participant pointed out that the sky looked strange and could use improvement. The build given to the participants was indeed just using the default Unity “sky” and thus the team also implemented a sky asset to make the level environment look more polished and detailed, in order to provide a better gameplay experience.
-
