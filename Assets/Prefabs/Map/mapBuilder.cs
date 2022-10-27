@@ -196,8 +196,8 @@ public class mapBuilder : MonoBehaviour
         r = new System.Random(seed);
         if (exploreMode)
         {
-            this.length = r.Next(5, 15);
-            this.width = r.Next(5, 15);
+            this.length = r.Next(5, 30);
+            this.width = r.Next(5, 30);
         }
         worldBoundCreator = new WorldBoundCreator(TILE_SIZE, this.length, this.width, this.Tile_offset);
         worldBoundCreator.create();
