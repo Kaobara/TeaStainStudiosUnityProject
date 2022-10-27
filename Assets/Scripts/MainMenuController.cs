@@ -13,9 +13,6 @@ using UnityEngine.SceneManagement;
 // Unity PlayerPrefs Documentation: https://docs.unity3d.com/2020.1/Documentation/ScriptReference/PlayerPrefs.html
 public class MainMenuController : MonoBehaviour
 {   
-    [Header("Other Menu Navigation")]
-    [SerializeField] string LevelSelectMenu;
-
     [Header("Audio Options")]
     [SerializeField] Slider volumeSlider;
     private float curSessionVolume;
@@ -50,8 +47,8 @@ public class MainMenuController : MonoBehaviour
         curSessionSensitivity = sensitivitySlider.value;
     }
 
-    public void LoadLevelSelectMenu() {
-        SceneManager.LoadScene(LevelSelectMenu);
+    public void LoadScene(string sceneName) {
+        SceneManager.LoadScene(sceneName);
     }
 
     // Set temporary volume as player moves slider around
