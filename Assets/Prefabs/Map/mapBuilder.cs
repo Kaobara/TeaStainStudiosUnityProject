@@ -26,6 +26,7 @@ public class mapBuilder : MonoBehaviour
     [SerializeField] private TopologyPlotter topologyPlotter;
     [SerializeField] private int chunkSize = 5;
     [SerializeField] private bool debugMode;
+    [SerializeField] private bool exploreMode;
     private int maxSearchDepth;
 
     [System.Serializable]
@@ -190,6 +191,14 @@ public class mapBuilder : MonoBehaviour
     System.Random r;
     void Start()
     {
+                
+        seed = exploreMode? PlayerPrefs.GetInt("Exploration Seed"):seed;
+        r = new System.Random(seed);
+        if (exploreMode)
+        {
+            this.length = r.Next(5, 15);
+            this.width = r.Next(5, 15);
+        }
         worldBoundCreator = new WorldBoundCreator(TILE_SIZE, this.length, this.width, this.Tile_offset);
         worldBoundCreator.create();
         maxSearchDepth = 2 * this.chunkSize;
@@ -322,7 +331,6 @@ public class mapBuilder : MonoBehaviour
 
     private void setGridskt(socket skt, (int, int) Loc)
     {
-
         socketType[] neighbourskts = new socketType[skt.initial_cordRot.Count];
         List<int> idxToAvoid = new List<int>();
         int k = -1;
@@ -357,7 +365,7 @@ public class mapBuilder : MonoBehaviour
     private void initialiseMap()
     {
         // intialise the radnom number generator
-        r = new System.Random(seed);
+        
         // initialise all points with a list of all possible states
         for (int i = 0; i < this.length; i++)
         {
@@ -376,8 +384,9 @@ public class mapBuilder : MonoBehaviour
         var y = r.Next(0, this.width);*/
         var x = 0;
         var y = 0;
-        var skt = getRandomSocket(allStates);
+        var skt = exploreMode?getPrefabSocket(socketType.grass):getRandomSocket(allStates);
         CSPMap[(x, y)].Clear();
+        
         CSPMap[(x, y)].Add(skt.type);
         List<(int, int)> bounds = getChunkBounds(x, y);
         (int, int) xBounds = bounds[0];
