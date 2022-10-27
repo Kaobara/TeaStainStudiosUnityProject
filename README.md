@@ -38,7 +38,7 @@ For more details you can find a guide [here](https://docs.github.com/en/github/w
 
 ### Table of contents
 * [Game Summary](#game-summary)
-* [How To Play The Game] (#how-to-play-the-game)
+* [How To Play The Game](#how-to-play-the-game)
 * [Technologies](#technologies)
 * [Using Images](#using-images)
 * [Code Snipets](#code-snippets)
@@ -46,7 +46,7 @@ For more details you can find a guide [here](https://docs.github.com/en/github/w
 ### Game Summary
 _Exciting title_ is a first-person shooter (FPS) set in...
 
-### How To Play The Game <a name = "how-to-play-the-game"> </a>
+### How To Play The Game
 As briefly outlined, Chiki’s Delivery Service is a game where players traverse a level to pick up packages and then deliver them to the goal point as fast as possible. To do so, players can utilise the terrain and gameplay mechanics. Using Chiki’s strong legs and wings, players can jump up objects that have more height, allowing them to reach further places or perhaps even reach places faster through the glide mechanic.
 
 Standard WASD movement and spacebar jump is used to control Chiki. Additionally, players can also hold spacebar when Chiki is in the air to glide through the air. Be careful of falling in the water though as Chiki is not a good swimmer. Falling in the water means Chiki has to dry itself and start again!
