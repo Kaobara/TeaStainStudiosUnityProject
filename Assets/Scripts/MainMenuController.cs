@@ -25,6 +25,10 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] AudioSource mainMenuUIAudio;
     [SerializeField] AudioClip clickButtonSound;
 
+    [Header("Exploration Seed Input")]
+    [SerializeField] GameObject seedInputFieldText;
+    [SerializeField] GameObject seedInputErrorText;
+
     void Awake() {
         // If there is a volume setting found in the player preferences file, then use that value
         if(PlayerPrefs.HasKey("Volume")) {
@@ -86,6 +90,26 @@ public class MainMenuController : MonoBehaviour
 
     public void ExitGame() {
         Application.Quit();
+    }
+
+    // Parses the seed and determine if it's a valid int. If it is, then save the
+    // seed to PlayerPrefs so it can be accessed in the "Exploration" scene and 
+    // load the scene up. Otherwise, display input error text.
+    public void SaveSeed() {
+        string seedText = seedInputFieldText.GetComponent<TMPro.TextMeshProUGUI>().text;
+        // Remove null character at the end of the string to ensure TryParse does not fail for integers.
+        // If there is no number input, then there length of string is 0, and so there is no substring.
+        // This logic works fine with the TryParse logic.
+        seedText = seedText.Substring(0, seedText.Length - 1);
+        
+        int seed;
+
+        if(int.TryParse(seedText, out seed)) {
+            PlayerPrefs.SetInt("Exploration Seed", seed);
+            LoadScene("Exploration");
+        } else {
+            seedInputErrorText.SetActive(true);
+        }
     }
 
 }
