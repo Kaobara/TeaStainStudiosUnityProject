@@ -49,6 +49,7 @@ For more details you can find a guide [here](https://docs.github.com/en/github/w
   + [Medal System](#medal-system)
 * [Querying Technique](#querying-technique)
   + [Questionnaire Results](#questionnaire-results)
+* [Improvements from Evaluation Information]()
 
 ### Game Summary
 _Exciting title_ is a first-person shooter (FPS) set in...
@@ -177,3 +178,14 @@ The questions asked on the survey were:
 **Overall Satisfaction**: 92% of the participants were moderately to very satisfied (4-5/5) with the game and 8% were somewhat satisfied. 
 
 As outlined, Chiki’s Delivery Service is a casual 3D platformer simulation game. Furthermore, it is likely that the playtesters will draw on their knowledge and experiences of games similar to Chiki’s Delivery Service to provide us feedback. Hence, we deemed that the playtesters showing a high interest in game genres which are more casual-friendly and related to Chiki’s Delivery Service such as Party games and Simulation and Sports' games (40% interest) would provide us specialised feedback to act upon. Due to diversity of interest in games, we are also able to obtain general feedback from a diverse range of people. Leveraging both general and specialised feedback allows us to improve the game for people who have no experiences in playing such games as well as drawing upon the knowledge and experiences of the people who have played such games and the comparisons they make to other similar games.
+
+### Improvements from Evaluation Information
+Certain aspects which had a lower rating than others had more focus put into them by the team for improvement based on reviewing suggestions provided by the participants. Not all the suggestions were deemed to be helpful but there were a handful of helpful suggestions that the team agreed on implementing that would improve the gameplay experience. Furthermore, the team was also limited in regard to the resources available to improvement of the game. For example, one suggestion from the questionnaire was to introduce a hard mode where enemies would chase you down while delivering the package. This represents a huge shift in the core gameplay and we deemed that we did not have enough time and resources in order to implement changes such as this.
+
+Certain participants indicated that the camera angle was too zoomed into Chiki, and hence they could not see the environment around Chiki. To counteract this, an additional camera angle which is more zoomed out has been implemented. Players can use the “c” key whenever they are in the level to switch between the default camera angle and the zoomed out camera angle. The cooldown for switching the camera angle is set to be 1s to prevent the switching from occurring too fast and potentially causing dizziness and photosensitive epilepsy.
+
+Some participants have also expressed their desire for more verticality in Level Design. While verticality was implemented in the build that the participants were playtesting on, such as jumping on mailboxes and houses, it was extremely hard and inconsistent to do so. Most of the participants did not even notice that it was possible. As such, we increased the jump force parameter of Chiki which allows Chiki to jump higher and get up to houses and trees. Hence, we are also able to more easily and creatively design levels incorporating this feature of the gameplay. This change should hopefully provide players with a more enjoyable and exciting gameplay experience. 
+The build given to the participants to playtest also did not have the respawn mechanic implemented when Chiki lands in the water. The majority of participants expressed dissatisfaction at this. Hence, the team made it a priority to quickly implement the mechanic and thus it is now functional.
+
+Most participants were satisfied with the level environments and the aesthetics chosen. However, one participant pointed out that the sky looked strange and could use improvement. The build given to the participants was indeed just using the default Unity “sky” and thus the team also implemented a sky asset to make the level environment look more polished and detailed, in order to provide a better gameplay experience.
+
