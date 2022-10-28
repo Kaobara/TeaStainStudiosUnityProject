@@ -23,6 +23,7 @@ public class LevelsController : MonoBehaviour
     [SerializeField] GameObject bestTimeTMP;
     [SerializeField] GameObject levelCompletePrompt;
     [SerializeField] int levelNum;
+    [SerializeField] bool ExploreMode;
 
     [Header("Game Options")]
     public float sensitivity;
@@ -87,7 +88,9 @@ public class LevelsController : MonoBehaviour
             zoomOutCamera.SetActive(!zoomOutCamera.activeInHierarchy);
         }
 
-        updateGoalDistance();
+        if(!ExploreMode){
+            updateGoalDistance();
+        }
     }
 
     private void updateGoalDistance() {
