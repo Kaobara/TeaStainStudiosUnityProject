@@ -53,7 +53,15 @@ public class LevelSelectMenuController : MonoBehaviour
             
             if(PlayerPrefs.HasKey("Level " + i)) {
                 GameObject levelMedal = levelContainers[i].transform.GetChild(1).gameObject;
-                levelMedal.GetComponent<Image>().sprite = goldMedal;
+                
+                string medal = PlayerPrefs.GetString("Level " + i);
+                if(medal == "Gold") {
+                    levelMedal.GetComponent<Image>().sprite = goldMedal;
+                } else if (medal == "Silver") {
+                    levelMedal.GetComponent<Image>().sprite = silverMedal;
+                } else {
+                    levelMedal.GetComponent<Image>().sprite = bronzeMedal;
+                }
                 levelMedal.SetActive(true);
             }
         }

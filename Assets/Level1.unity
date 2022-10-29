@@ -711,7 +711,7 @@ PrefabInstance:
       objectReference: {fileID: 1127003699}
     - target: {fileID: 2104610977308427620, guid: caccac2f7b1b8354d9ff02522ef6b524, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitLevel
+      value: ExitToLevelSelect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -780,10 +780,11 @@ MonoBehaviour:
   bestTimeTMP: {fileID: 1094692451}
   levelCompletePrompt: {fileID: 1094692448}
   levelNum: 1
+  ExploreMode: 0
   sensitivity: 0
   cameraSwitchTimeThreshold: 1
-  goldTimeThreshold: 0
-  silverTimeThreshold: 0
+  goldTimeThreshold: 35
+  silverTimeThreshold: 50
   silverTimeThresholdTMP: {fileID: 1094692450}
   goldTimeThresholdTMP: {fileID: 1094692449}
 --- !u!4 &1127003700
@@ -2255,7 +2256,7 @@ PrefabInstance:
       objectReference: {fileID: 1127003699}
     - target: {fileID: 3683769882089019255, guid: aa48b049b28ff3a498d2695c30a57d71, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitLevel
+      value: ExitToLevelSelect
       objectReference: {fileID: 0}
     - target: {fileID: 3683769882089019255, guid: aa48b049b28ff3a498d2695c30a57d71, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
