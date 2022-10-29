@@ -4,7 +4,6 @@ Shader "Unlit/FogShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
         _Color ("Main Color", Color) = (1,0.5,0.5,1)
         _BgColor ("Background Color", Color) = (1,0.5,0.5,1)
         _MaxDist("Maximum Distance", Float) = 100
@@ -37,14 +36,11 @@ Shader "Unlit/FogShader"
             struct Interpolators
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 float3 cameraDistance : TEXCOORD1;
                 float4 worldDistance : TEXCOORD2;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
             float _MaxDist;
             float _MinDist;
             float4 _Color;
@@ -66,7 +62,7 @@ Shader "Unlit/FogShader"
                 Interpolators o;
                 o.cameraDistance = UnityObjectToViewPos(v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.worldDistance = mul(unity_ObjectToWorld, v.vertex);
 
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
@@ -75,11 +71,24 @@ Shader "Unlit/FogShader"
 
             fixed4 frag (Interpolators i) : SV_Target
             {
-                // sample the texture
+                // Include Fog
                 float fogAmount = getFogFactor(-i.cameraDistance.z);
-
                 fixed4 blend = mix(_Color, _BgColor, fogAmount);
-                return blend;
+
+                // Add Watercolour pattern. Mulitiplied by 0.04 to increase size of pattern
+                fixed3 waterColorVertex = (i.worldDistance)*0.04;
+
+                // For loop for stilness of watercolour pattern
+                for(int n = 1; n<2; n++) {
+                    float i = float(n);
+                    waterColorVertex = waterColorVertex + float3(0.5/i*sin(i*waterColorVertex.y + _Time.y + 0.3*i) + 0.8, 0.5/i*sin(waterColorVertex.z + _Time.y + 0.3*i) + 0.8, 0.5/i*sin(waterColorVertex.x + _Time.y + 0.3*i) + 0.8);
+                }
+
+                // black and white water pattern on all three axis
+                fixed4 col = float4(sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z),sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z),sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z), sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z));
+
+                
+                return blend+(col/40);
             }
             ENDCG
         }
