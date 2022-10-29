@@ -181,7 +181,7 @@ The questions asked on the survey were:
 
 **Menu Navigation**: 60% gave 5/5 for ease of navigation, 35% gave 4/5 and 4% gave 3/5.
 
-**Additional features to implement**: “Back button”, “Visual instructions”, “Best time (goal/something to aim for)”, “Being able to see where I am in the navigation part”, “Change key options - e.g. customised keys; “Just a start game option as opposed to a level select”. 	We considered all of the feedback provided and implemented some of the suggestions. Some suggestions were discussed and tried but ultimately removed in the final build.
+**Additional features to implement in Menus**: “Back button”, “Visual instructions”, “Best time (goal/something to aim for)”, “Being able to see where I am in the navigation part”, “Change key options - e.g. customised keys; “Just a start game option as opposed to a level select”. 	We considered all of the feedback provided and implemented some of the suggestions. Some suggestions were discussed and tried but ultimately removed in the final build.
 
 **Tutorial completion time**: The time varied drastically from 15 seconds to over 5 minutes. 50% of the playtesters finished the tutorial in under 1 minute. Further 30% taking somewhere between 1-2 minutes, another 15% finishing within 2-3 minutes and 5% taking over 5 minutes to finish. 
 
