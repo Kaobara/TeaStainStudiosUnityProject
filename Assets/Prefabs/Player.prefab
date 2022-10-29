@@ -1422,6 +1422,8 @@ MonoBehaviour:
   glideInput: 0
   canGlide: 0
   useKey: 101
+  canUse: 0
+  useCooldown: 0.2
   useRange: 1.5
   ejectForce: 1.5
   useInput: 0

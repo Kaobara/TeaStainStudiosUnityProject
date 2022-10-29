@@ -33,6 +33,8 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Interacting")]
     [SerializeField] private KeyCode useKey;
+    [SerializeField] private bool canUse;
+    [SerializeField] private float useCooldown = 0.2f;
     [SerializeField] private float useRange = 2f;
     [SerializeField] private float ejectForce = 5f;
     [SerializeField] private bool useInput;
@@ -111,9 +113,10 @@ public class PlayerControl : MonoBehaviour
         // freeze player rigidbody rotation
         rigidBody.freezeRotation = true;
 
-        // initialise jump & glide bools
+        // initialise control bools
         canJump = true;
         canGlide = false;
+        canUse = true;
 
         // initialise max speed squared variable for faster calculations
         maxSpeedSq = maxSpeed * maxSpeed;
@@ -131,7 +134,7 @@ public class PlayerControl : MonoBehaviour
         if (GroundCheck() && state != PlayerState.Rise) {
             if (state != PlayerState.Ground) {
 
-                // disallow jumping for set time
+                // disallow jumping for set time after landing
                 Invoke(nameof(MakeReadyToJump), jumpCooldown);
             }
             state = PlayerState.Ground;
@@ -177,13 +180,14 @@ public class PlayerControl : MonoBehaviour
         }
 
         // player pressing use key and not gliding
-        if (useInput && state != PlayerState.Glide) {
+        if (useInput && state != PlayerState.Glide && canUse) {
 
             // if holding object, eject
             if (isHolding) {
                 heldObject.Eject(orientation.forward, ejectForce);
                 heldObject = null;
                 isHolding = false;
+                canUse = false;
                 playerAnimator.TriggerDetach();
             }
             // if not holding object, pick up naerest object within range
@@ -210,6 +214,7 @@ public class PlayerControl : MonoBehaviour
                     nearest.Attach(gameObject, orientation.localPosition + Vector3.forward * holdDistance);
                     heldObject = nearest;
                     isHolding = true;
+                    canUse = false;
                     playerAnimator.TriggerAttach();
                     
                     // trigger goal if object is a goal
@@ -218,6 +223,10 @@ public class PlayerControl : MonoBehaviour
                         GetComponent<PlayerGoals>().GoalRetrival(goal);
                     }
                 }                
+            }
+
+            if (! canUse) {
+                Invoke(nameof(MakeReadyToUse), useCooldown);
             }
         }
         
@@ -452,6 +461,12 @@ public class PlayerControl : MonoBehaviour
     private void MakeReadyToJump()
     {
         canJump = true;
+    }
+
+    // allow player to use again
+    private void MakeReadyToUse()
+    {
+        canUse = true;
     }
 
     // set accel and drag multipliers according to player state
