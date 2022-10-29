@@ -137,8 +137,12 @@ public class LevelsController : MonoBehaviour
         gamePaused = false;
     }
 
-    public void ExitLevel() {
+    public void ExitToLevelSelect() {
         SceneManager.LoadScene("LevelSelectMenu");
+    }
+
+    public void ExitToMainMenu() {
+        SceneManager.LoadScene("StartScene");
     }
 
     public void RestartLevel() {
