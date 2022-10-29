@@ -1424,16 +1424,15 @@ MonoBehaviour:
   useKey: 101
   canUse: 0
   useCooldown: 0.2
-  useRange: 1.5
+  useRange: 0.7
   ejectForce: 1.5
   useInput: 0
   isHolding: 0
   heldObject: {fileID: 0}
-  holdDistance: 2
+  holdDistance: 1.5
   detachDistThreshold: 0.15
   heightEpsilon: 0.01
   playerHeight: 0.8
-  collider: {fileID: 0}
   groundMask:
     serializedVersion: 2
     m_Bits: 256

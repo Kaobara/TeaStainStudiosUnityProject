@@ -35,18 +35,19 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private KeyCode useKey;
     [SerializeField] private bool canUse;
     [SerializeField] private float useCooldown = 0.2f;
-    [SerializeField] private float useRange = 2f;
+    [SerializeField] private float useRange = 1f;
     [SerializeField] private float ejectForce = 5f;
     [SerializeField] private bool useInput;
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
     [SerializeField] private float holdDistance = 1.5f;
+    private Vector3 localHoldPos;
     [SerializeField] private float detachDistThreshold = 0.15f;
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
     [SerializeField] private float playerHeight;
-    [SerializeField] private new CapsuleCollider collider;
+    private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
     [SerializeField] private readonly float playerScaleFactor;
@@ -123,6 +124,9 @@ public class PlayerControl : MonoBehaviour
 
         // stores the global positions from which groundcheck rays are casted
         firingPoints = new Vector3[5];
+
+        // store local position of held objects
+        localHoldPos = orientation.localPosition + Vector3.forward * holdDistance;
     }
 
     private void Update()
@@ -199,7 +203,10 @@ public class PlayerControl : MonoBehaviour
 
                 // loop through interactive objects in scene
                 foreach (InteractiveObject obj in objs) {
-                    float distance = Vector3.Distance(transform.position, obj.transform.position);
+
+                    // calculate distance between player and object
+                    float distance = Vector3.Distance(transform.TransformPoint(localHoldPos), obj.transform.position);
+                
                     // only consider objects in range
                     if (distance < minDist) {
                         minDist = distance;
@@ -209,9 +216,7 @@ public class PlayerControl : MonoBehaviour
                 // attach nearest object
                 if (nearest != null) {
 
-                    Debug.Log(orientation.localPosition + Vector3.forward * holdDistance);
-
-                    nearest.Attach(gameObject, orientation.localPosition + Vector3.forward * holdDistance);
+                    nearest.Attach(gameObject, localHoldPos);
                     heldObject = nearest;
                     isHolding = true;
                     canUse = false;
