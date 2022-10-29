@@ -8,6 +8,9 @@ Shader "Unlit/WaveCornerShader"
 		_Period ("Period", Float) = 1
 		_Amplitude ("Amplitude", Float) = 1
 		_Gloss("Gloss", Float) = 1
+		_fAtt("fAtt", Float) = 1
+		_Kd("Kd", Float) = 1
+		_Ka("Ka", Float) = 1
 	}
 	SubShader
 	{
@@ -30,6 +33,9 @@ Shader "Unlit/WaveCornerShader"
             float4 _MainTex_ST;
 
 			float _Gloss;
+			float _fAtt;
+			float _Kd;
+			float _Ka;
 
 			float _Period;
 			float _Amplitude;
@@ -46,10 +52,8 @@ Shader "Unlit/WaveCornerShader"
 				float wave : TEXCOORD1;
 				float3 normal : TEXCOORD2;
 				float3 worldPos : TEXCOORD3;
-				SHADOW_COORDS(4) // put shadows data into TEXCOORD1
+				SHADOW_COORDS(4) // put shadows data into TEXCOORD
 			};
-
-			// UNITY_MATRIX_MP = ;
 
 			// Vertex Shader
 			// Implementation of the vertex shader
@@ -76,13 +80,17 @@ Shader "Unlit/WaveCornerShader"
 			// Fragment Shader
 			// Implementation of the fragment shader
 			fixed4 frag(Interpolators i) : SV_Target {
-				fixed4 col = tex2D(_MainTex, i.uv);
+				fixed4 unlitCol = tex2D(_MainTex, i.uv);
+
+				// Calculate ambient RGB intensities
+				float3 amb = unlitCol.rgb * UNITY_LIGHTMODEL_AMBIENT.rgb * _Ka;
+				float4 ambientLightF4 = float4(amb,1);
 				
 				// Phong Illumination -> Lambertian diffusion
                 float3 N = i.normal;
-                float3 L = _WorldSpaceLightPos0.xyz; // Light Direction
-                float3 lambertianDiffuse = saturate(dot(N,L));
-                float3 diffuseLight = lambertianDiffuse * _LightColor0.xyz;
+                float3 L = _WorldSpaceLightPos0.xyz; // Light Direction from the world light
+                float3 lambertianDiffuse = saturate(dot(N,L)); // L dot N clamped between 0 and 1
+                float3 diffuseLight = lambertianDiffuse * _LightColor0.xyz * _fAtt * _Kd;
                 float4 diffuseLightF4 = float4(diffuseLight.xxx, 1);
                 
                 // Specular light through Blinn Phong
@@ -91,9 +99,9 @@ Shader "Unlit/WaveCornerShader"
                 float3 specLight = saturate(dot(HalfVector, N)) * (lambertianDiffuse > 0);
                 specLight = pow(specLight, _Gloss);
                 float4 specLightF4 = float4(specLight.xxx, 1);
-
+				
 				fixed shadow = SHADOW_ATTENUATION(i);
-				return col * diffuseLightF4 *(shadow+0.5) + i.wave*shadow + specLightF4*shadow;
+				return unlitCol * diffuseLightF4 *(shadow+0.5) + i.wave*shadow + specLightF4*shadow + ambientLightF4;
 			}
 			ENDCG
 		}
