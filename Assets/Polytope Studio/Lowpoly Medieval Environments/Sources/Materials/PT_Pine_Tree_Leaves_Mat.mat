@@ -8,16 +8,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PT_Pine_Tree_Leaves_Mat
-  m_Shader: {fileID: 4800000, guid: 77e1a76a38ecd5a46a270afb12894dd5, type: 3}
+  m_Shader: {fileID: 10601, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _CUSTOMWIND1_ON
-  - _TRANSLUCENCYONOFF_ON
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _CUSTOMCOLORSTINTING_ON
+  - _CUSTOMWIND1_ON
   - _CUSTOMWIND_ON
+  - _TRANSLUCENCYONOFF_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -52,6 +52,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 47c82777887e3fc46bc141849b1b3ccb, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -65,6 +69,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowOffset:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TranslucencyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -94,12 +106,14 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SNOWONOFF: 0
+    - _Shininess: 0.078125
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SnowAmount: 1
     - _SnowCoverage: 0.453
     - _SnowGradient: 0.446
     - _SpecularHighlights: 1
+    - _SquashAmount: 1
     - _SrcBlend: 1
     - _TRANSLUCENCYONOFF: 1
     - _TransAmbient: 0.7
@@ -123,4 +137,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundColor: {r: 0.010346207, g: 0.07075471, b: 0.040550455, a: 1}
     - _TopColor: {r: 0.01815593, g: 0.19695005, b: 0.2264151, a: 1}
+    - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
