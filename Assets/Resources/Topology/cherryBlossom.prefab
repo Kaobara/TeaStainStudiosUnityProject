@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 830624233992301245}
   - component: {fileID: 3198135310716362359}
   - component: {fileID: 5852145195863142853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: cherryBlossom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,10 @@ PrefabInstance:
     - target: {fileID: 1507249353296474591, guid: f591966a67672bb45ad3d800ffd0d4ac, type: 3}
       propertyPath: m_Name
       value: Leaf System
+      objectReference: {fileID: 0}
+    - target: {fileID: 1507249353296474591, guid: f591966a67672bb45ad3d800ffd0d4ac, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3599052647005161588, guid: f591966a67672bb45ad3d800ffd0d4ac, type: 3}
       propertyPath: m_RootOrder
