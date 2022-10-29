@@ -42,6 +42,7 @@ For more details you can find a guide [here](https://docs.github.com/en/github/w
 * [Using Images](#using-images)
 * [Code Snipets](#code-snippets)
 * [How To Play The Game](#how-to-play-the-game)
+* [UI Design](#ui-design)
 * [Gameplay Design](#gameplay-design)
   + [Player Movement](#player-movement)
   + [Camera Perspective and Control](#camera-perspective-and-control)
@@ -103,6 +104,11 @@ There are 2 modes of gameplay available for the player in Chiki’s Delivery Ser
 Delivery mode is the standard mode where the players are able to enter levels in which they need to find the package and then deliver it to a destination as fast as they can. Clearing a level awards the player (and Chiki) a bronze medal for the level. In order to achieve silver medals and gold medals, players will need to utilise their proficiency in gameplay mechanics and knowledge of the level in order to deliver the package and complete the level within a shorter duration of time. After all, customers always want their packages to be delivered quickly.
 
 Exploration mode is an alternative mode which is offered to players which are concerned with just generating a random level in which they can just navigate around and explore in, without concern of package deliveries. Of course, exploration mode also allows players to experiment and train their gameplay mechanics for package deliveries.
+
+### UI Design
+Focusing on the theme of simplicity, Chiki’s Delivery Service provides the players simplistic and modern-looking UIs to interact with. All of the UI utilises white text on black translucent backgrounds. The simple color scheme was chosen in order to prevent imposing eye fatigue on the players.
+
+Furthermore, a minimap and goal distance indicator have also been provided to the user as part of the gameplay experience. This helps the player navigate around the levels more easily in order to complete them, providing them with a smoother and more enjoyable gameplay experience instead of deliberately imposing unnecessary frustration for players in searching for the goals around the level themselves, especially on initial playthroughs.
 
 ### Gameplay Design 
 As highlighted in an earlier section, the theme of Chiki’s Delivery Service is simplicity. Undoubtedly, the theme dictated many of the gameplay design decisions taken. 
@@ -181,7 +187,7 @@ The questions asked on the survey were:
 
 **Menu Navigation**: 60% gave 5/5 for ease of navigation, 35% gave 4/5 and 4% gave 3/5.
 
-**Additional features to implement in Menus**: “Back button”, “Visual instructions”, “Best time (goal/something to aim for)”, “Being able to see where I am in the navigation part”, “Change key options - e.g. customised keys; “Just a start game option as opposed to a level select”. 	We considered all of the feedback provided and implemented some of the suggestions. Some suggestions were discussed and tried but ultimately removed in the final build.
+**Additional features to implement in Menus**: “Back button”, “Visual instructions”, “Best time (goal/something to aim for)”, “Change key options - e.g. customised keys; “Just a start game option as opposed to a level select”. We considered all of the feedback provided and implemented some of the suggestions. Certain suggestions simply took too much time to implement for it’s returns such as “Visual Instructions” as we deemed that the menu was already very simple and standard enough to navigate through. 
 
 **Tutorial completion time**: The time varied drastically from 15 seconds to over 5 minutes. 50% of the playtesters finished the tutorial in under 1 minute. Further 30% taking somewhere between 1-2 minutes, another 15% finishing within 2-3 minutes and 5% taking over 5 minutes to finish. 
 
@@ -204,7 +210,7 @@ The questions asked on the survey were:
 As outlined, Chiki’s Delivery Service is a casual 3D platformer simulation game. Furthermore, it is likely that the playtesters will draw on their knowledge and experiences of games similar to Chiki’s Delivery Service to provide us feedback. Hence, we deemed that the playtesters showing a high interest in game genres which are more casual-friendly and related to Chiki’s Delivery Service such as Party games and Simulation and Sports' games (40% interest) would provide us specialised feedback to act upon. Due to diversity of interest in games, we are also able to obtain general feedback from a diverse range of people. Leveraging both general and specialised feedback allows us to improve the game for people who have no experiences in playing such games as well as drawing upon the knowledge and experiences of the people who have played such games and the comparisons they make to other similar games.
 
 ### Improvements from Evaluation Information
-Certain aspects which had a lower rating than others had more focus put into them by the team for improvement based on reviewing suggestions provided by the participants. Not all the suggestions were deemed to be helpful but there were a handful of helpful suggestions that the team agreed on implementing that would improve the gameplay experience. Furthermore, the team was also limited in regard to the resources available to improvement of the game. For example, one suggestion from the questionnaire was to introduce a hard mode where enemies would chase you down while delivering the package. This represents a huge shift in the core gameplay and we deemed that we did not have enough time and resources in order to implement changes such as this.
+Certain aspects which had a lower rating than others had more focus put into them by the team for improvement based on reviewing suggestions provided by the participants. Not all the suggestions were deemed to be helpful but there were a handful of helpful suggestions that the team agreed on implementing that would improve the gameplay experience. Furthermore, the team was also limited in regard to the resources available to improvement of the game. For example, one suggestion from the questionnaire was to introduce a hard mode where enemies would chase you down while delivering the package. This represents a huge shift in the core gameplay and we deemed that we did not have enough time and resources in order to implement changes such as this. Thus, based on the resources available, the project team roughly established a priority hierarchy of changes to be conducted based on the time and knowledge required to implement the change as well as how much the change would improve the game. Given the amount of feedback received, we were unable to implement many of the suggestions, but we were still able to implement a significant amount of suggestions that we deem were very helpful in improving the game.
 
 Certain participants indicated that the camera angle was too zoomed into Chiki, and hence they could not see the environment around Chiki. To counteract this, an additional camera angle which is more zoomed out has been implemented. Players can use the “c” key whenever they are in the level to switch between the default camera angle and the zoomed out camera angle. The cooldown for switching the camera angle is set to be 1s to prevent the switching from occurring too fast and potentially causing dizziness and photosensitive epilepsy.
 
