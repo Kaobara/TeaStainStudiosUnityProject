@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &41207008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4416,6 +4416,7 @@ MonoBehaviour:
   bestTimeTMP: {fileID: 700007833}
   levelCompletePrompt: {fileID: 825556305}
   levelNum: 0
+  ExploreMode: 0
   sensitivity: 0
   cameraSwitchTimeThreshold: 1
   goldTimeThreshold: 25
