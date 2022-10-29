@@ -830,11 +830,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 83.8
+      value: 19.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 68.17
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1362,8 +1366,8 @@ MonoBehaviour:
   ExploreMode: 0
   sensitivity: 0
   cameraSwitchTimeThreshold: 1
-  goldTimeThreshold: 70
-  silverTimeThreshold: 100
+  goldTimeThreshold: 40
+  silverTimeThreshold: 60
   silverTimeThresholdTMP: {fileID: 863075321}
   goldTimeThresholdTMP: {fileID: 863075320}
 --- !u!4 &1146544653
