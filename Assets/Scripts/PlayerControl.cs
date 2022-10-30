@@ -46,7 +46,6 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
-    //[SerializeField] private float playerHeight;
     private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
@@ -57,7 +56,6 @@ public class PlayerControl : MonoBehaviour
     [Header("Walking on Slopes")]
     [SerializeField] private float maxAngle = 30f;
     [SerializeField] private float slopeThresholdAngle = 5f;
-    [SerializeField] private float playerLength;
     [SerializeField] private Vector3 slopeNormal;
     [SerializeField] private float slopeAngle;
 
