@@ -13,8 +13,8 @@ We will be using Confluence to keep track of our weekly progress and organising 
 |Role | Who |
 | ----------- | ----------- |
 | Physics | Sebastian |
-| Gameplay | Mukul, Sebastian, Daniel, Jason |
-| General Pixel Shaders | Sebastion & Daniel |
+| Gameplay | Mukul, Sebastian, Jason |
+| General Vertex and Pixel Shaders | Daniel |
 | Particle| Daniel |
 | Animation | Daniel and Seastian|
 | Objs and Assets | Mukul |
@@ -23,7 +23,7 @@ We will be using Confluence to keep track of our weekly progress and organising 
 | Camera Orientation and Controlling | Jason |
 | Querying and Playtesting and Surveying | Jason and Mukul |
 | Level Design | Mukul and everyone |
-| Storytelling and Objectives | Daniel and Mukul |
+| Storytelling and Objectives | Mukul |
 
 
 <!-- [[EndTeamworkPlan]] PLEASE LEAVE THIS LINE UNTOUCHED -->
