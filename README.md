@@ -116,9 +116,39 @@ The minimap and goal distance indicator help the player navigate around the leve
 As highlighted in an earlier section, the theme of Chiki’s Delivery Service is simplicity. Undoubtedly, the theme dictated many of the gameplay design decisions taken. 
 
 #### Player Movement
-In order to achieve simplicity, Chiki’s Delivery Service was implemented with a simple control scheme for the player. For player (Chiki’s) movement, standard WASD keys were used as this control scheme is a simple yet effective standard in the games industry, being used across many games. We deemed that the players would appreciate the intuitive control scheme that they may already be used to from other games. Even if this were their first-ever game, the WASD movement would be extremely easy to learn as well. In keeping with the goal of intuitive movement control, SPACE was chosen as the jump key, with gliding achieved by holding SPACE. This ensures gliding feels natural to use in conjunction with jumping to perform air maneuvers.
+In order to achieve simplicity, Chiki’s Delivery Service was implemented with a simple control scheme for the player. For player (Chiki’s) movement, standard WASD keys were used as this control scheme is a simple yet effective standard in the games industry, being used across many games. We deemed that the players would appreciate the intuitive control scheme that they may already be used to from other games. Even if this were their first-ever game, the WASD movement would be extremely easy to learn as well. In keeping with the goal of intuitive movement control, SPACE was chosen as the jump key, with gliding achieved by holding space. This ensures gliding feels natural to use in conjunction with jumping to perform air maneuvers.
 
-A custom player control script was created to enable ‘movement feel’ to be finely tuned to align with other core aspects of the game. A key design choice was to store the player’s state as an enum which would then determine the effect of the controls as well as inform the animations played. For example, the simple case of the player being unable to jump while in the air, or the more subtle changes to acceleration and drag between aerial and ground states. To achieve smooth movement and physics, the Fixed Update abstraction within Unity was employed, allowing forces to be applied at a fixed rate of 50 times per second. Where smooth application of force wasn’t required, physics was calculated within the standard update method. This allowed actions such as jumping or changing the player’s state (and consequently the animation being played) to appear with lower latency when the framerate was in excess of 50 frames per second.
+A custom player control script was created to enable the ‘movement feel’ to be finely tuned to align with other core aspects of the game. To achieve this, we first modeled the player with the Rigidbody component, which provides an abstraction for assigning a game object with mass, moments of inertia, drag, and angular drag, along with methods for applying force and torque. The WASD movement system was implemented by calculating a movement direction vector and adding force to Chiki in that direction.
+
+```c#
+private void MovePlayer()
+{
+    playerDir = orientation.forward * forwardsInput + orientation.right * sidewaysInput;
+    
+    //...
+
+    rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
+}
+```
+
+In the case of walking on a slope, the GroundCheck method would determine the angle of the slope by performing basic trigonometry using the normal vector to the slope. For a sufficiently steep slope, this allowed the direction vector to be projected onto the plane defined by the normal vector to the slope, ensuring force was applied parallel to the slope as opposed to partially into the slope.
+
+```c#
+private void MovePlayer
+{
+    //...
+
+    // project direction onto plane of a slope, if on sufficiently steep slope
+    if (slopeAngle > slopeThresholdAngle && slopeAngle < maxAngle) {
+        playerDir = Vector3.ProjectOnPlane(playerDir, slopeNormal);
+    }
+
+    //...
+}
+```
+
+A key design choice was to store Chiki’s movement state as an enumeration which would then determine the effect of the controls as well as inform the animations played. For example, the simple case of being unable to jump while in the air, or the more subtle changes to acceleration and drag between aerial and ground states. To achieve smooth movement and physics, the Fixed Update abstraction within Unity was employed, allowing forces to be applied at a fixed rate of 50 times per second. Where the smooth application of force wasn’t required, physics was calculated within the standard update method. This allowed actions such as jumping or changing Chiki’s state (and consequently the animation being played) to appear with lower latency when the framerate was in excess of 50 frames per second.
+
 
 #### Picking Up and Throwing the Package
 A core game mechanic is the ability to pick up the package and release it into the goal area. To achieve this, we first modeled both the player and the package with the Rigidbody component, which provides an abstraction for assigning a game object with mass, moments of inertia, drag, and angular drag, along with methods for applying force and torque to the object. When the package is detected to be in range of the player, a spring joint is connected between the package and the player, with necessary offsets to hold the package in place in front of the player. If the package deviates in position above a certain threshold, the package is automatically detached, to reward the player for moving and rotating smoothly. Furthermore, the spring joint allows for interactions with the held package and other colliders to feel intuitive and remain predictable, aiding the player building skill with the game mechanic.
