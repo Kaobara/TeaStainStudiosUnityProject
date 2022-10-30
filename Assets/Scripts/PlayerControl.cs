@@ -46,7 +46,7 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
-    [SerializeField] private float playerHeight;
+    //[SerializeField] private float playerHeight;
     private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
@@ -296,15 +296,9 @@ public class PlayerControl : MonoBehaviour
         // calculate direction of player based on move keys and orientation
         playerDir = orientation.forward * forwardsInput + orientation.right * sidewaysInput;
         
-        // project direction onto plane of a slope, if on slope
-        // (disable gravity while on slope, to prevent sliding down,
-        // may be replaced with explicit slope type state handling)
+        // project direction onto plane of a slope, if on sufficiently steep slope
         if (slopeAngle > slopeThresholdAngle && slopeAngle < maxAngle) {
-            //rigidBody.useGravity = false;
             playerDir = Vector3.ProjectOnPlane(playerDir, slopeNormal);
-        }
-        else {
-            //rigidBody.useGravity = true;
         }
 
         rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
@@ -354,15 +348,25 @@ public class PlayerControl : MonoBehaviour
         // steepest walkable slope
         slopeAngle = 0;
 
-        Vector3 centre = transform.TransformPoint(collider.center);
-        float radius = collider.radius / 4;
+        Debug.Assert(
+            transform.localScale.x == transform.localScale.z &&
+            collider.transform.localScale.x == collider.transform.localScale.z
+        );
+
+        Vector3 centre = collider.transform.TransformPoint(collider.center);
+        float playerHeight = collider.height * transform.localScale.y * collider.transform.localScale.y;
+        float radius = collider.radius * transform.localScale.x * collider.transform.localScale.x;
+        float playerLength = radius * 2f;
+
+        Debug.Log(radius);
+        Debug.DrawLine(centre + Vector3.right * radius, centre + Vector3.left * radius, Color.red, 1f / 25f, false);
 
         // get current global positions of collider corners and centre
         firingPoints[0] = centre;
-        firingPoints[1] = new Vector3(centre.x + radius, centre.y, centre.z + radius);
-        firingPoints[2] = new Vector3(centre.x - radius, centre.y, centre.z + radius);
-        firingPoints[3] = new Vector3(centre.x + radius, centre.y, centre.z - radius);
-        firingPoints[4] = new Vector3(centre.x - radius, centre.y, centre.z - radius);
+        firingPoints[1] = new Vector3(centre.x + radius, centre.y, centre.z);
+        firingPoints[2] = new Vector3(centre.x - radius, centre.y, centre.z);
+        firingPoints[3] = new Vector3(centre.x, centre.y, centre.z + radius);
+        firingPoints[4] = new Vector3(centre.x, centre.y, centre.z - radius);
 
         // store data from each raycast
         List<float> angles = new List<float>();
@@ -376,9 +380,10 @@ public class PlayerControl : MonoBehaviour
                 firingPoints[i],
                 Vector3.down,
                 out slopeHit,
-                playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI) + heightEpsilon,
+                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             );
+            Debug.DrawRay(firingPoints[i], Vector3.down, Color.green, 1f / 25f, false);
             if (hit) {
                 angles.Add(Vector3.Angle(Vector3.up, slopeHit.normal));
                 distances.Add(slopeHit.distance);
@@ -386,51 +391,53 @@ public class PlayerControl : MonoBehaviour
             }           
         }
 
-        if (angles.Count != 0)
-        {
-            // calculate min angle and average angle
-            float minAngle = maxAngle;
-            float tempAngle = 0;
-            Vector3 tempNormal = Vector3.zero;
-            for (int i = 0; i < angles.Count; i++) {
-                if (angles[i] < minAngle) {
-                    minAngle = angles[i];
-                }
-                tempAngle += angles[i];
-                tempNormal += normals[i];
-            }
-            slopeAngle = tempAngle / angles.Count;
-            slopeNormal = tempNormal / normals.Count;
-
-            // false if min angle too steep
-            if (minAngle > maxAngle) {
-                return false;
-            }
-
-            // calculate maximum distance away from surface according to slope angle
-            float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
-
-            // calulate min distance
-            float minDist = maxDist;
-            for (int i=0; i<distances.Count; i++) {
-                if (distances[i] < minDist) {
-                    minDist = distances[i];
-                }
-            }
-
-            // make sure player isnt too far above any surfaces
-            if (minDist >= maxDist) {
-                return false;
-            }
-
-            // if just in air, set landing animation trigger
-            if (state == PlayerState.Fall || state == PlayerState.Glide) {
-                playerAnimator.TriggerLanding();
-            }
-
-            return true;
+        // return false if no hits
+        if (angles.Count == 0) {
+            return false;
         }
-        return false;
+
+        // calculate min angle and average angle
+        float minAngle = maxAngle;
+        float tempAngle = 0;
+        Vector3 tempNormal = Vector3.zero;
+        for (int i = 0; i < angles.Count; i++) {
+            if (angles[i] < minAngle) {
+                minAngle = angles[i];
+            }
+            tempAngle += angles[i];
+            tempNormal += normals[i];
+        }
+        slopeAngle = tempAngle / angles.Count;
+        slopeNormal = tempNormal / normals.Count;
+
+        // false if min angle too steep
+        if (minAngle > maxAngle) {
+            return false;
+        }
+
+        // calculate maximum distance away from surface according to slope angle
+        float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
+        //float minDist = 0.25f * Mathf.Sin((maxAngle / 180) * Mathf.PI) * playerHeight - heightEpsilon;
+
+        // calulate min distance
+        float smallestDist = maxDist;
+        for (int i = 0; i < distances.Count; i++) {
+            if (distances[i] < smallestDist) {
+                smallestDist = distances[i];
+            }
+        }
+
+        // make sure player isnt too far above any surfaces
+        if (smallestDist >= maxDist) {
+            return false;
+        }
+
+        // if just in air, set landing animation trigger
+        if (state == PlayerState.Fall || state == PlayerState.Glide) {
+            playerAnimator.TriggerLanding();
+        }
+
+        return true;
     }
 
     // cause the player to jump
