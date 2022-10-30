@@ -230,6 +230,7 @@ public class PlayerControl : MonoBehaviour
                 }                
             }
 
+            // if just attached or ejected, start use cooldown
             if (! canUse) {
                 Invoke(nameof(MakeReadyToUse), useCooldown);
             }
@@ -301,6 +302,7 @@ public class PlayerControl : MonoBehaviour
             playerDir = Vector3.ProjectOnPlane(playerDir, slopeNormal);
         }
 
+        // accelerate player in desired direction
         rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
 
         // set idle or walk animation triggers
@@ -348,25 +350,26 @@ public class PlayerControl : MonoBehaviour
         // steepest walkable slope
         slopeAngle = 0;
 
+        // ensure x and z scale factors which affect collider are equal,
+        // so calculations with radius produce intended effect
         Debug.Assert(
             transform.localScale.x == transform.localScale.z &&
             collider.transform.localScale.x == collider.transform.localScale.z
         );
 
+        // store vars and constants needed for calculations
         Vector3 centre = collider.transform.TransformPoint(collider.center);
         float playerHeight = collider.height * transform.localScale.y * collider.transform.localScale.y;
         float radius = collider.radius * transform.localScale.x * collider.transform.localScale.x;
         float playerLength = radius * 2f;
+        float RADIUS_OVER_ROOT2 = radius / Mathf.Sqrt(2);
 
-        Debug.Log(radius);
-        Debug.DrawLine(centre + Vector3.right * radius, centre + Vector3.left * radius, Color.red, 1f / 25f, false);
-
-        // get current global positions of collider corners and centre
+        // set global position vectors for points to fire downward rays
         firingPoints[0] = centre;
-        firingPoints[1] = new Vector3(centre.x + radius, centre.y, centre.z);
-        firingPoints[2] = new Vector3(centre.x - radius, centre.y, centre.z);
-        firingPoints[3] = new Vector3(centre.x, centre.y, centre.z + radius);
-        firingPoints[4] = new Vector3(centre.x, centre.y, centre.z - radius);
+        firingPoints[1] = new Vector3(centre.x + RADIUS_OVER_ROOT2, centre.y, centre.z + RADIUS_OVER_ROOT2);
+        firingPoints[2] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z + RADIUS_OVER_ROOT2);
+        firingPoints[3] = new Vector3(centre.x + RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
+        firingPoints[4] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
 
         // store data from each raycast
         List<float> angles = new List<float>();
@@ -383,7 +386,6 @@ public class PlayerControl : MonoBehaviour
                 0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             );
-            Debug.DrawRay(firingPoints[i], Vector3.down, Color.green, 1f / 25f, false);
             if (hit) {
                 angles.Add(Vector3.Angle(Vector3.up, slopeHit.normal));
                 distances.Add(slopeHit.distance);
@@ -416,8 +418,8 @@ public class PlayerControl : MonoBehaviour
         }
 
         // calculate maximum distance away from surface according to slope angle
+        // for player to be on the ground
         float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
-        //float minDist = 0.25f * Mathf.Sin((maxAngle / 180) * Mathf.PI) * playerHeight - heightEpsilon;
 
         // calulate min distance
         float smallestDist = maxDist;
@@ -463,6 +465,7 @@ public class PlayerControl : MonoBehaviour
     // for fixed timestep in which its called
     private void Glide()
     {
+        // add force opposing gravity with magnitude as a proportion of gravity
         rigidBody.AddForce(Physics.gravity * rigidBody.mass * -glideGravProp);
 
         // set glider animation trigger
