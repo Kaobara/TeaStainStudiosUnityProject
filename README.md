@@ -28,6 +28,13 @@ We will be using Confluence to keep track of our weekly progress and organising 
 
 <!-- [[EndTeamworkPlan]] PLEASE LEAVE THIS LINE UNTOUCHED -->
 
+## Shaders and Particles to be marked
+### Shaders
+* [Water/River Shader](Assets/Prefabs/Map/Shaders/WaveShader.shader)
+* [Cloud/Fog Shader](Assets/Prefabs/Map/Shaders/CloudShader.shader)
+### Particles
+* [Leaf Particle System](Assets/Prefabs/ParticleSystemPrefabs/Leaf%20System%20Base.prefab)
+
 ## Final report
 
 ### Table of contents
@@ -234,7 +241,7 @@ Fig. - Medal design (Made in Adobe Illustrator).
 Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, it does enhance the game’s visuals in a way that does not directly clash with our envisioned aesthetics.
 
 #### Water/River Shader
-As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “WaveShader.shader”.
+As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in /Assets/Prefabs/Map/Shaders under the name “[WaveShader.shader](Assets/Prefabs/Map/Shaders/WaveShader.shader)”.
 <p align="center">
   <img src="Media/Shader 1 River Tile Image.png" height="250">
 </p>
@@ -367,7 +374,10 @@ Fig. - Final Wave Shader.
 
 #### Cloud/Fog Shader
 
-The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “CloudShader.shader”.
+The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in Assets/Prefabs/Map/Shaders under the name “[CloudShader.shader](Assets/Prefabs/Map/Shaders/CloudShader.shader)”.
+
+### Particles
+* [Leaf Particle System](Assets/Prefabs/ParticleSystemPrefabs/Leaf System Base.prefab)
 
 ##### Fog Implementation
 ###### Colour Mixing and Fog Factor
@@ -491,7 +501,7 @@ After a collapsed CSP map, we can put base tiles of the socket type on the map. 
 
 ### Particle System
 Wanting to keep the simple and calm aesthetics of the game, we wanted to keep most particles to the minimum and use it as an environmental aspect to enhance the visuals of the game. So, we made an environmental leaf particle system using the in-built Particle System in unity [40] that can be attached to all tree prefabs to be used during level generation, with slight modifications to its shape and lifetime to accommodate the height and canopy shape of each tree.
-The specific base leaf system that was used for the Sakura trees can be found in /Assets/Prefabs/ParticleSystemPrefabs/ under the name of “Leaf System Base.prefab”.
+The specific base leaf system that was used for the Sakura trees can be found in /Assets/Prefabs/ParticleSystemPrefabs/ under the name of “[Leaf System Base.prefab](Assets/Prefabs/ParticleSystemPrefabs/Leaf%20System%20Base.prefab)”.
 
 The particles were rendered as billboards using a custom texture sheet. This texture sheet had four leaf sprites along different rows. Using the Texture Sheet Animation component, we had the particle animated by “single row” with a “random” row mode in order for each particle to randomly choose between the four sprites. 
 
