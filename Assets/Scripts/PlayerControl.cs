@@ -33,18 +33,20 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Interacting")]
     [SerializeField] private KeyCode useKey;
-    [SerializeField] private float useRange = 2f;
+    [SerializeField] private bool canUse;
+    [SerializeField] private float useCooldown = 0.2f;
+    [SerializeField] private float useRange = 1f;
     [SerializeField] private float ejectForce = 5f;
     [SerializeField] private bool useInput;
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
     [SerializeField] private float holdDistance = 1.5f;
+    private Vector3 localHoldPos;
     [SerializeField] private float detachDistThreshold = 0.15f;
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.005f;
-    [SerializeField] private float playerHeight;
-    [SerializeField] private new CapsuleCollider collider;
+    private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
     [SerializeField] private readonly float playerScaleFactor;
@@ -54,7 +56,6 @@ public class PlayerControl : MonoBehaviour
     [Header("Walking on Slopes")]
     [SerializeField] private float maxAngle = 30f;
     [SerializeField] private float slopeThresholdAngle = 5f;
-    [SerializeField] private float playerLength;
     [SerializeField] private Vector3 slopeNormal;
     [SerializeField] private float slopeAngle;
 
@@ -111,15 +112,19 @@ public class PlayerControl : MonoBehaviour
         // freeze player rigidbody rotation
         rigidBody.freezeRotation = true;
 
-        // initialise jump & glide bools
+        // initialise control bools
         canJump = true;
         canGlide = false;
+        canUse = true;
 
         // initialise max speed squared variable for faster calculations
         maxSpeedSq = maxSpeed * maxSpeed;
 
         // stores the global positions from which groundcheck rays are casted
         firingPoints = new Vector3[5];
+
+        // store local position of held objects
+        localHoldPos = orientation.localPosition + Vector3.forward * holdDistance;
     }
 
     private void Update()
@@ -131,7 +136,7 @@ public class PlayerControl : MonoBehaviour
         if (GroundCheck() && state != PlayerState.Rise) {
             if (state != PlayerState.Ground) {
 
-                // disallow jumping for set time
+                // disallow jumping for set time after landing
                 Invoke(nameof(MakeReadyToJump), jumpCooldown);
             }
             state = PlayerState.Ground;
@@ -177,13 +182,14 @@ public class PlayerControl : MonoBehaviour
         }
 
         // player pressing use key and not gliding
-        if (useInput && state != PlayerState.Glide) {
+        if (useInput && state != PlayerState.Glide && canUse) {
 
             // if holding object, eject
             if (isHolding) {
                 heldObject.Eject(orientation.forward, ejectForce);
                 heldObject = null;
                 isHolding = false;
+                canUse = false;
                 playerAnimator.TriggerDetach();
             }
             // if not holding object, pick up naerest object within range
@@ -195,7 +201,10 @@ public class PlayerControl : MonoBehaviour
 
                 // loop through interactive objects in scene
                 foreach (InteractiveObject obj in objs) {
-                    float distance = Vector3.Distance(transform.position, obj.transform.position);
+
+                    // calculate distance between player and object
+                    float distance = Vector3.Distance(transform.TransformPoint(localHoldPos), obj.transform.position);
+                
                     // only consider objects in range
                     if (distance < minDist) {
                         minDist = distance;
@@ -205,11 +214,10 @@ public class PlayerControl : MonoBehaviour
                 // attach nearest object
                 if (nearest != null) {
 
-                    Debug.Log(orientation.localPosition + Vector3.forward * holdDistance);
-
-                    nearest.Attach(gameObject, orientation.localPosition + Vector3.forward * holdDistance);
+                    nearest.Attach(gameObject, localHoldPos);
                     heldObject = nearest;
                     isHolding = true;
+                    canUse = false;
                     playerAnimator.TriggerAttach();
                     
                     // trigger goal if object is a goal
@@ -218,6 +226,11 @@ public class PlayerControl : MonoBehaviour
                         GetComponent<PlayerGoals>().GoalRetrival(goal);
                     }
                 }                
+            }
+
+            // if just attached or ejected, start use cooldown
+            if (! canUse) {
+                Invoke(nameof(MakeReadyToUse), useCooldown);
             }
         }
         
@@ -282,17 +295,12 @@ public class PlayerControl : MonoBehaviour
         // calculate direction of player based on move keys and orientation
         playerDir = orientation.forward * forwardsInput + orientation.right * sidewaysInput;
         
-        // project direction onto plane of a slope, if on slope
-        // (disable gravity while on slope, to prevent sliding down,
-        // may be replaced with explicit slope type state handling)
+        // project direction onto plane of a slope, if on sufficiently steep slope
         if (slopeAngle > slopeThresholdAngle && slopeAngle < maxAngle) {
-            //rigidBody.useGravity = false;
             playerDir = Vector3.ProjectOnPlane(playerDir, slopeNormal);
         }
-        else {
-            //rigidBody.useGravity = true;
-        }
 
+        // accelerate player in desired direction
         rigidBody.AddForce(playerDir.normalized * accel, ForceMode.Acceleration);
 
         // set idle or walk animation triggers
@@ -340,15 +348,26 @@ public class PlayerControl : MonoBehaviour
         // steepest walkable slope
         slopeAngle = 0;
 
-        Vector3 centre = transform.TransformPoint(collider.center);
-        float radius = collider.radius / 4;
+        // ensure x and z scale factors which affect collider are equal,
+        // so calculations with radius produce intended effect
+        Debug.Assert(
+            transform.localScale.x == transform.localScale.z &&
+            collider.transform.localScale.x == collider.transform.localScale.z
+        );
 
-        // get current global positions of collider corners and centre
+        // store vars and constants needed for calculations
+        Vector3 centre = collider.transform.TransformPoint(collider.center);
+        float playerHeight = collider.height * transform.localScale.y * collider.transform.localScale.y;
+        float radius = collider.radius * transform.localScale.x * collider.transform.localScale.x;
+        float playerLength = radius * 2f;
+        float RADIUS_OVER_ROOT2 = radius / Mathf.Sqrt(2);
+
+        // set global position vectors for points to fire downward rays
         firingPoints[0] = centre;
-        firingPoints[1] = new Vector3(centre.x + radius, centre.y, centre.z + radius);
-        firingPoints[2] = new Vector3(centre.x - radius, centre.y, centre.z + radius);
-        firingPoints[3] = new Vector3(centre.x + radius, centre.y, centre.z - radius);
-        firingPoints[4] = new Vector3(centre.x - radius, centre.y, centre.z - radius);
+        firingPoints[1] = new Vector3(centre.x + RADIUS_OVER_ROOT2, centre.y, centre.z + RADIUS_OVER_ROOT2);
+        firingPoints[2] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z + RADIUS_OVER_ROOT2);
+        firingPoints[3] = new Vector3(centre.x + RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
+        firingPoints[4] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
 
         // store data from each raycast
         List<float> angles = new List<float>();
@@ -362,7 +381,7 @@ public class PlayerControl : MonoBehaviour
                 firingPoints[i],
                 Vector3.down,
                 out slopeHit,
-                playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI) + heightEpsilon,
+                0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             );
             if (hit) {
@@ -372,51 +391,53 @@ public class PlayerControl : MonoBehaviour
             }           
         }
 
-        if (angles.Count != 0)
-        {
-            // calculate min angle and average angle
-            float minAngle = maxAngle;
-            float tempAngle = 0;
-            Vector3 tempNormal = Vector3.zero;
-            for (int i = 0; i < angles.Count; i++) {
-                if (angles[i] < minAngle) {
-                    minAngle = angles[i];
-                }
-                tempAngle += angles[i];
-                tempNormal += normals[i];
-            }
-            slopeAngle = tempAngle / angles.Count;
-            slopeNormal = tempNormal / normals.Count;
-
-            // false if min angle too steep
-            if (minAngle > maxAngle) {
-                return false;
-            }
-
-            // calculate maximum distance away from surface according to slope angle
-            float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
-
-            // calulate min distance
-            float minDist = maxDist;
-            for (int i=0; i<distances.Count; i++) {
-                if (distances[i] < minDist) {
-                    minDist = distances[i];
-                }
-            }
-
-            // make sure player isnt too far above any surfaces
-            if (minDist >= maxDist) {
-                return false;
-            }
-
-            // if just in air, set landing animation trigger
-            if (state == PlayerState.Fall || state == PlayerState.Glide) {
-                playerAnimator.TriggerLanding();
-            }
-
-            return true;
+        // return false if no hits
+        if (angles.Count == 0) {
+            return false;
         }
-        return false;
+
+        // calculate min angle and average angle
+        float minAngle = maxAngle;
+        float tempAngle = 0;
+        Vector3 tempNormal = Vector3.zero;
+        for (int i = 0; i < angles.Count; i++) {
+            if (angles[i] < minAngle) {
+                minAngle = angles[i];
+            }
+            tempAngle += angles[i];
+            tempNormal += normals[i];
+        }
+        slopeAngle = tempAngle / angles.Count;
+        slopeNormal = tempNormal / normals.Count;
+
+        // false if min angle too steep
+        if (minAngle > maxAngle) {
+            return false;
+        }
+
+        // calculate maximum distance away from surface according to slope angle
+        // for player to be on the ground
+        float maxDist = 0.5f * (playerHeight + playerLength * Mathf.Tan((slopeAngle / 180) * Mathf.PI)) + heightEpsilon;
+
+        // calulate min distance
+        float smallestDist = maxDist;
+        for (int i = 0; i < distances.Count; i++) {
+            if (distances[i] < smallestDist) {
+                smallestDist = distances[i];
+            }
+        }
+
+        // make sure player isnt too far above any surfaces
+        if (smallestDist >= maxDist) {
+            return false;
+        }
+
+        // if just in air, set landing animation trigger
+        if (state == PlayerState.Fall || state == PlayerState.Glide) {
+            playerAnimator.TriggerLanding();
+        }
+
+        return true;
     }
 
     // cause the player to jump
@@ -442,6 +463,7 @@ public class PlayerControl : MonoBehaviour
     // for fixed timestep in which its called
     private void Glide()
     {
+        // add force opposing gravity with magnitude as a proportion of gravity
         rigidBody.AddForce(Physics.gravity * rigidBody.mass * -glideGravProp);
 
         // set glider animation trigger
@@ -452,6 +474,12 @@ public class PlayerControl : MonoBehaviour
     private void MakeReadyToJump()
     {
         canJump = true;
+    }
+
+    // allow player to use again
+    private void MakeReadyToUse()
+    {
+        canUse = true;
     }
 
     // set accel and drag multipliers according to player state

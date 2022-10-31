@@ -53,8 +53,8 @@ Shader "Unlit/FogShader"
                 return 1 - (_MaxDist - d) / (_MaxDist - _MinDist);
             }
 
-            float4 mix(float4 x, float4 y, float a) {
-                return x*(1-a)+y*a;
+            float4 mix(float4 originalColor, float4 fogColor, float fogFactor) {
+                return originalColor*(1-fogFactor)+fogColor*fogFactor;
             }
 
             Interpolators vert (MeshData v)
