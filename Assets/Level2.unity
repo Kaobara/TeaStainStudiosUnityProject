@@ -753,17 +753,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: Package
       objectReference: {fileID: 0}
+    - target: {fileID: 8167879084832104705, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256820, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: promptToShow
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.598412
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.4
+      value: 38.315567
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9999751
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0000009317628
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0070651565
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.00000044789664
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256829, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_EnableCollision
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879086193253108, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1358,8 +1390,8 @@ MonoBehaviour:
   ExploreMode: 0
   sensitivity: 0
   cameraSwitchTimeThreshold: 1
-  goldTimeThreshold: 25
-  silverTimeThreshold: 40
+  goldTimeThreshold: 20
+  silverTimeThreshold: 30
   silverTimeThresholdTMP: {fileID: 863075321}
   goldTimeThresholdTMP: {fileID: 863075320}
 --- !u!4 &1146544653
@@ -1839,9 +1871,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 484061222092258367, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: holdDistance
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 484061222092258367, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1146544651}
+    - target: {fileID: 1745010341279850878, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
     - target: {fileID: 1835640077815452080, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_RootOrder
       value: 3

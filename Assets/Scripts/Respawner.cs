@@ -24,6 +24,9 @@ public class Respawner : MonoBehaviour
         transform.position = spawnPos;
         transform.rotation = spawnRot;
         transform.localScale = spawnScale;
-        rigidBody.velocity = Vector3.zero;
+        if (rigidBody != null) {
+            rigidBody.velocity = Vector3.zero;
+            rigidBody.angularVelocity = Vector3.zero;
+        }
     }
 }

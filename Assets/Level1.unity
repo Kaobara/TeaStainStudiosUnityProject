@@ -783,8 +783,8 @@ MonoBehaviour:
   ExploreMode: 0
   sensitivity: 0
   cameraSwitchTimeThreshold: 1
-  goldTimeThreshold: 35
-  silverTimeThreshold: 50
+  goldTimeThreshold: 20
+  silverTimeThreshold: 30
   silverTimeThresholdTMP: {fileID: 1094692450}
   goldTimeThresholdTMP: {fileID: 1094692449}
 --- !u!4 &1127003700
@@ -1818,9 +1818,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 484061222092258367, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: landCooldown
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 484061222092258367, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1127003698}
+    - target: {fileID: 973896780618441994, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c474f0bed6bdc784fa2b3da3beebbc21, type: 2}
+    - target: {fileID: 2580114113124444771, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5242255231004622753, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: levelController
       value: 
@@ -2382,17 +2394,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Package
       objectReference: {fileID: 0}
+    - target: {fileID: 8167879084832104705, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256820, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: promptToShow
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.4
+      value: 33.6
       objectReference: {fileID: 0}
     - target: {fileID: 8167879085428256828, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8167879086193253108, guid: 512dfadbaaebda9409366275d88c2dd9, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
