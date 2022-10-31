@@ -43,6 +43,12 @@ We will be using Confluence to keep track of our weekly progress and organising 
   + [Verticality](#verticality)
   + [Rivers and Respawn Mechanic](#rivers-and-respawn-mechanics)
   + [Medal System](#medal-system)
+* [Custom assets](#custom-assets)
+  + [Chiki: Model](#chiki-model)
+  + [Chiki: Animation](#chiki-animation)
+  + [Package](#package)
+  + [Base Tiles](#base-tiles)
+  + [Buildings](#buildings)
 * [Querying Technique](#querying-technique)
   + [Questionnaire Results](#questionnaire-results)
 * [Improvements from Evaluation Information]()
@@ -181,6 +187,58 @@ _Phong Illumination_
 
 We wanted the river to have some form of interaction with lighting in order to show off more depth as well as to better blend the shading of the material with the rest of the environment assets. We therefore decided to use Phong Illumination, which is the sum of ambient, diffused, and specular lighting, in order to achieve a “realistic” illumination in the context of a cartoon aesthetic. In addition, we decided to do this through Phong Shading, or in other words, apply the technique in the pixel shader as we thought that would achieve a more smoother shade across the vertices of the plane in addition to being able to interact with other illumination techniques.
 
+### Custom assets
+#### Chiki: Model
+To provide our game with a unique feel we decided to create our main character ourselves. Our game name took inspiration from Studio Ghibli’s famous movie Kiki’s delivery service. So to make Chiki for our Chiki’s delivery service, we decided to explore Miyazaki’s universe even further. 
+From our extensive research, we fell in love with Ōtori-Sama from another famous production Spirited Away [3]. Ōtori-Sama resembles a big duck. We knew from then we wanted our Chiki to be a big chicken with similar aesthetics to Ōtori-Sama. 
+
+<p align="center">
+  <img src="Media/chikiInspiration.png" height="250">
+</p>
+<p align = "center">
+Fig. - Ōtori-Sama [3]
+</p>
+
+We used Blender to make Chiki. Red freckles and a crown were added to give our model a chicken-like appearance. The model has small feet, a small head and a large body to emphasise its cute aesthetic. 
+We wanted players to feel comfortable and love Chiki not only in-game but also outside. Our plan is to make everyone fall in love with Chiki and make it into a brand.
+
+<p align="center">
+  <img src="Media/chikiFace.png" height="250">
+  <img src="Media/chikiBody.png" height="250">
+</p>
+
+<p align = "center">
+Fig. - Chiki Design. Made in Blender.
+</p>
+
+
+#### Chiki: Animation
+Using blender, we then created a custom skeleton rig for Chiki, and through the help of tutorials [32][33], created animations for her. The animations we made for her included a state for being idle, running, starting to jump, middle of a jump, the end of a jump, and gliding. In addition, all animations excluding gliding had a “package” variant where both of Chiki’s hands are stretched outwards for the cases where Chiki is holding a package.
+
+The animated model was then exported as a .fbx file and imported into our unity project to be used for gameplay.
+| gif of chiki running and idle
+
+
+#### Package
+Package asset was taken from sketchfab[24]. We decided to keep the mesh the same but modify the texture to match our game. The texture was edited and enhanced using Adobe Illustrator. 
+
+#### Base Tiles
+Tiles are the fundamental object of our maps. Tiles are used to define the base of our world, and more objects are built on top of these. The look of these tiles had to be carefully created to set the basic ambience and theme of the world. We kept the styling of these tiles simple, so when they come together there isn't much of a mesh merge conflict. The dimensions were kept to 8x8x4 (W x L x D). Currently ‘base tiles’ consist of a road, grass, a building, and two river tiles: straight and corner.
+
+<p align="center">
+  <img src="Media/roadTile.png" height="250">
+  <img src="Media/grassTile.png" height="250">
+  <img src="Media/rover0Tile.png" height="250">
+  <img src="Media/river1Tile.png" height="250">
+  <img src="Media/buildingTile.png" height="250">
+</p>
+
+<p align = "center">
+Fig. - Base Tiles (Made in Blender).
+</p>
+
+#### Buildings
+Currently, Chiki’s Delivery Service only has 1 type of Building, i.e. house. These buildings are procedurally generated with a random height. The max building height is set to 4. The height of the building is weighted towards a smaller number, so a house with 1 floor is more likely than one with 4 floors. We created the buildings in a way that makes them easy to procedurally generate, i.e. parts are made to fit together nicely. The inspiration for the building style came from ‘polygonrunaway’ [29]
 
 ### Querying Technique
 The querying technique used was a Questionnaire. The questionnaire consists of a combination of open-ended and scalar questions which were designed through the inspirations of using past experience in answering game questionnaires and searching online for questions that could be used in game questionnaires. The questionnaire had 25 participants in total, in which the population was random University of Melbourne students that were all aged 18-24. The gender distribution was 52% female and 48% male with no non-binary participants.
