@@ -145,22 +145,6 @@ We made the conscious decision to design the rivers as “kill zones” that ser
 #### Medal System
 The intention of the Medal System is to increase the replayability of the game as well as reward the player with a sense of accomplishment. In order to decide the time thresholds for the Silver and Gold medals, we extensively playtest the level in order to determine reasonable timeframes that we can complete the levels in. We then added some additional time to those thresholds to allow for players who are more inexperienced to still be able to achieve the medals. Additionally, while some of the time thresholds may allow the player to be able to achieve the medals on their first playthrough of the level, the general idea is that the players are more likely to achieve medals from subsequent playthroughs, when they are familiar with the level environment and terrain, as well as the locations where they may need to navigate to. 
 
-### Graphics Pipeline
-Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, does enhance the game’s visuals in a way that does not directly clash with our envisioned aethstetics.
-
-### Water/River Shader
-As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “WaveShader.shader”.
-
-#### River Vertex Shader
-As it is a river, we wanted the vertices of the mesh to move in a wave-pattern, not unlike what was practiced in Workshop 7. In the vertex shader, the vertices along the x-axis of the mesh is displaced along the y-axis through a wave function. The value of the amplitude and the period of the wave could thus be changed as parameters of the material, with higher amplitudes and shorter periods to be used for stronger water currents if we were to extend the project further.
-
-In addition to this, since the shader uses UV mapping to project a premade texture onto the surface of the plane, we had found that the UV values of the mesh can be manipulated in the Vertex Shader to achieve a “scrolling” effect of the image texture. Therefore, in the vertex shader, the x-component of the UV values were changed with respect to time (initially added by the value of time multiplied by 0.1, but later changed to subtraction to switch direction of scroll). Combined with the vertex displacement by wave allowed for a relatively good impersonation of moving water.
-
-#### River Pixel Shader
-_Phong Illumination_
-
-We wanted the river to have some form of interaction with lighting in order to show off more depth as well as to better blend the shading of the material with the rest of the environment assets. We therefore decided to use Phong Illumination, which is the sum of ambient, diffused, and specular lighting, in order to achieve a “realistic” illumination in the context of a cartoon aesthetic. In addition, we decided to do this through Phong Shading, or in other words, apply the technique in the pixel shader as we thought that would achieve a more smoother shade across the vertices of the plane in addition to being able to interact with other illumination techniques.
-
 ### Custom assets
 #### Chiki: Model
 To provide our game with a unique feel we decided to create our main character ourselves. Our game name took inspiration from Studio Ghibli’s famous movie Kiki’s delivery service. So to make Chiki for our Chiki’s delivery service, we decided to explore Miyazaki’s universe even further. 
@@ -190,7 +174,13 @@ Fig. - Chiki Design. Made in Blender.
 Using blender, we then created a custom skeleton rig for Chiki, and through the help of tutorials [32][33], created animations for her. The animations we made for her included a state for being idle, running, starting to jump, middle of a jump, the end of a jump, and gliding. In addition, all animations excluding gliding had a “package” variant where both of Chiki’s hands are stretched outwards for the cases where Chiki is holding a package.
 
 The animated model was then exported as a .fbx file and imported into our unity project to be used for gameplay.
-| gif of chiki running and idle
+
+<p align="center">
+  <img src="Media/Animation.gif" height="250">
+</p>
+<p align = "center">
+Fig. - Chiki running animation. Made in Blender.
+</p>
 
 
 #### Package
@@ -213,6 +203,220 @@ Fig. - Base Tiles (Made in Blender).
 
 #### Buildings
 Currently, Chiki’s Delivery Service only has 1 type of Building, i.e. house. These buildings are procedurally generated with a random height. The max building height is set to 4. The height of the building is weighted towards a smaller number, so a house with 1 floor is more likely than one with 4 floors. We created the buildings in a way that makes them easy to procedurally generate, i.e. parts are made to fit together nicely. The inspiration for the building style came from ‘polygonrunaway’ [29]
+
+### Graphics Pipeline
+Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, it does enhance the game’s visuals in a way that does not directly clash with our envisioned aesthetics.
+
+#### Water/River Shader
+As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “WaveShader.shader”.
+<p align="center">
+  <img src="Media/Shader 1 River Tile Image.png" height="250">
+</p>
+
+<p align = "center">
+Fig. - Wave shader.
+</p>
+
+
+##### River Vertex Shader
+As it is a river, we wanted the vertices of the mesh to move in a wave pattern. In the vertex shader, the vertices along the x-axis of the mesh are displaced along the y-axis through a wave function in world space in order to allow all river tiles to be synced. The value of the amplitude and the period of the wave could also be changed as parameters of the material, with higher amplitudes and shorter periods to be used for stronger water currents if we were to extend the project further. 
+
+```c#
+Interpolators vert(MeshData v) {
+  // ...
+  v.vertex = mul(UNITY_MATRIX_M, v.vertex);
+
+  // Displace the vertex by the wave
+  float4 displacement = float4(0.0f, _Amplitude * sin( (v.vertex.x + _Period * _Time.y )), 0.0f, 0.0f);
+  v.vertex += displacement;
+  
+  // ...
+}
+```
+In addition to this, since the shader uses UV mapping to project a premade texture onto the surface of the plane, we had found that the UV values of the mesh can be manipulated in the Vertex Shader to achieve a “scrolling” effect of the image texture. Therefore, in the vertex shader, the x-component of the UV values were changed with respect to time. Combined with the vertex displacement by wave allowed for a relatively good impersonation of moving water.
+
+```c#
+Interpolators vert(MeshData v) {
+  // ...
+  // 	Tile the texture by time
+  o.uv.x -= _Time.y * 0.1;
+  
+  // ...
+}
+```
+<p align="center">
+  <img src="Media/Shader 2 base river 1.gif" height="250">
+  <img src="Media/Shader 3 base river 2.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Texture scrolling and Wave vertex displacement.
+</p>
+
+
+
+
+#####  River Pixel Shader
+###### Phong Illumination
+We wanted the river to have some form of interaction with lighting in order to show off more depth as well as to better blend the shading of the material with the rest of the environment assets. We, therefore, decided to use Phong illumination, which is the sum of ambient, diffused, and specular lighting, in order to achieve a “realistic” illumination in the context of a cartoon aesthetic. This was achieved using Phong shading in the pixel shader as we thought that would achieve a smoother shade across the vertices of the plane in addition to being able to interact with other illumination techniques.
+
+Furthermore, for the specular light component of the illumination, we decided to use the Blinn-Phong method [34], which uses half vectors, or the normalised direction of the sum of the direction of the surface from the light and the direction of the surface to the camera. This was because the river shader will be implemented onto a plane object, and we Blinn-Phong caused a better imitation of specular light for planes.
+
+```c#
+fixed4 frag(Interpolators i) : SV_Target {
+  // ...
+  float3 L = _WorldSpaceLightPos0.xyz; // Light Direction from the world light
+  // ...
+  
+  // Specular light through Blinn Phong
+  float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
+  float3 HalfVector = normalize(L +V);
+  float3 specLight = saturate(dot(HalfVector, N)) * (lambertianDiffuse > 0);
+  specLight = pow(specLight, _Gloss);
+  float4 specLightF4 = float4(specLight.xxx, 1);
+  
+  // ...
+}
+```
+
+
+Also, as every level used a single Light Direction object as the lightsource, we included the built-in-shader “Lighting.cginc” and "AutoLight.cginc" to get the value of _WorldSpaceLightPos0, which is used as the light direction aspect for all Phong-illumination calculations.
+
+###### Wave Peak and Trough Highlights and Shadows
+Whilst we found that the Phong illumination was fantastic in reflecting light off the entire plane, we also thought that implementing highlights onto the peals of the wave and shadows on the troughs could lead to nice aesthetics and create a better illusion for the wave movement across the wave.
+
+This can be done by implementing a black and white “wave” pattern going through the x-axis of the plane in the pixel-shader. By passing the wave values from the vertex shader to the pixel shader, we were able to have the wave highlights and shadows perfectly synchronised with the vertex wave displacement.
+
+<p align="center">
+  <img src="Shader 5 peak trough 2.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Wave Peak Highlights and Trough Shadows Synchronized.
+</p>
+
+This pattern was then merely added on top of the illumination components in the final return colour to create the final effect.
+
+<p align="center">
+  <img src="Shader 6 phong.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Wave Shader with Implemented Peak Highlights, Trough Shadow and Phong Illumination.
+</p>
+
+
+###### Wave Receiving Shadows
+The wave was able to receive shadows mostly through an implementation detailed in the unity documentation manual [35], by including Autolight and being able to transfer shadows from the mesh data to the interpolator. As the river is placed on the lowest part of the map, no shadow casting was implemented.
+
+Originally, the shadows were just added on top of the Phong illumination and wave highlights and shadows, but we deemed the shadow to look “awkward” as it had a very sudden shift to darkness.
+
+<p align="center">
+  <img src="Shader 7 shadow 1.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Initial Received Shadows Implementation.
+</p>
+
+Therefore, after slight tweaking with the variables, we ended up with multiplying the diffused component of the shade with the slightly lighter shadow value, and then multiplying the specular light and wave highlights components directly with the shadow. This allowed the original colour and texture to remain visible with the strong highlights in shadow for the final return value.
+
+```c#
+fixed4 frag(Interpolators i) : SV_Target {
+  // ...
+  
+  return unlitCol * diffuseLightF4 *(shadow+0.5) + i.wave*shadow + specLightF4*shadow +ambientLightF4;
+
+  // ...
+}
+```
+
+<p align="center">
+  <img src="Shader 11 final river 3.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Final Wave Shader.
+</p>
+
+#### Cloud/Fog Shader
+
+The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “FogShader.shader”.
+
+##### Fog Implementation
+###### Colour Mixing and Fog Factor
+After researching, we found that fog in the context of the pixel shader is mostly the blending of two colours (the object’s original colour or texture and a background/fog colour), with the “fog factor” being dependent on the distance between the camera and the pixel.
+
+Thus, using the “fog factor”, the original colour and the fog colour can be mixed using linear interpolation between the two colours, as detailed in [37].
+
+```c#
+float4 mix(float4 originalColor, float4 fogColor, float fogFactor) {
+    return originalColor*(1-fogFactor)+fogColor*fogFactor;
+}
+```
+
+ The following gif is an example of mixing colours using a custom shader we made for testing, where the fog factor is based on the sine of time passed:
+ <p align="center">
+  <img src=".gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Final Wave Shader.
+</p>
+ 
+
+
+###### Distance from Camera to Vertex
+As explained, the fog factor is based on the distance between the camera and the vertex of the mesh, with the additional caveat of a “minimum” and “maximum” distance where the colour of the mesh would entirely be either the fog colour or original colour. This distance can be found by passing the vertices in camera space from the vertex shader to the pixel shader and using its negative z-value. [38].  
+
+After finding the camera distance, we can then find the fog factor by converting the camera distance into a value between 0 and 1 using the maximum and minimum distance.
+
+As no other shader implementation was used, the result is mostly flat colours that change depending on the distance from the camera.
+ <p align="center">
+  <img src=".gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Cloud Shader.
+</p>
+ 
+
+
+
+##### Cloud Depth
+Initially, we wanted to use normal shading methods in order to make the clouds have a sense of shape; specifically using Gouraud shading due to the size of the clouds and reduced cost of vertex-based shading. However, the final results clashed with the more simple look of the rest of the aesthetics of the game.
+
+To keep the simple aesthetics of the game, we decided to instead implement a watercolour pattern[38] along all axises in the pixel shader . 
+
+This was done using the vertices in world space, and modifying these values using sine functions across all axis components through a for loop of 2 iterations to allow for a still watercolour look. 
+
+Afterwards, as we do not want any actual colours, but rather a black and white pattern across all axises, the RGB value of the final colour vector is based on the sine of the sum of all water colour vertices, with the following results:
+
+
+
+```c#
+fixed4 frag(Interpolators i) : SV_Target {
+  // ...
+  // Add Watercolour pattern. Mulitiplied by 0.04 to increase size of pattern
+  fixed3 waterColorVertex = (i.worldDistance)*0.04;
+
+  // For loop for stilness of watercolour pattern
+  for(int n = 1; n<2; n++) {
+      float i = float(n);
+      waterColorVertex = waterColorVertex + float3(0.5/i*sin(i*waterColorVertex.y + _Time.y + 0.3*i) + 0.8, 0.5/i*sin(waterColorVertex.z + _Time.y + 0.3*i) + 0.8, 0.5/i*sin(waterColorVertex.x + _Time.y + 0.3*i) + 0.8);
+  }
+
+  // black and white water pattern on all three axis
+  fixed4 col = float4(sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z),sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z),sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z), sin(waterColorVertex.x + waterColorVertex.y + waterColorVertex.z));
+
+  // ...
+}
+```
+
+The final cloud looks to have more depth once this watercolour pattern was implemented in the pixel shader, and added to the cloud colour in the final return:
+
+
+
 
 ### Querying Technique
 The querying technique used was a Questionnaire. The questionnaire consists of a combination of open-ended and scalar questions which were designed through the inspirations of using past experience in answering game questionnaires and searching online for questions that could be used in game questionnaires. The questionnaire had 25 participants in total, in which the population was random University of Melbourne students that were all aged 18-24. The gender distribution was 52% female and 48% male with no non-binary participants.
