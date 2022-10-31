@@ -108,7 +108,7 @@ public class MainMenuController : MonoBehaviour
         
         int seed;
 
-        if(int.TryParse(seedText, out seed)) {
+        if(int.TryParse(seedText, out seed) && (seed >= 0)) {
             PlayerPrefs.SetInt("Exploration Seed", seed);
             LoadScene("Exploration");
         } else {
