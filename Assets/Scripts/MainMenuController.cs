@@ -89,7 +89,7 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void ExitGame() {
-        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 
     // Parses the seed and determine if it's a valid int. If it is, then save the
