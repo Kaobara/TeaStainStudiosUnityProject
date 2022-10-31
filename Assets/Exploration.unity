@@ -223,6 +223,18 @@ PrefabInstance:
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1012049660}
+    - target: {fileID: 8838440130943091086, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.6784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838440130943091086, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.78039217
+      objectReference: {fileID: 0}
+    - target: {fileID: 8838440130943091086, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.77254903
+      objectReference: {fileID: 0}
     - target: {fileID: 8838440131307154033, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_RootOrder
       value: 2
