@@ -19,6 +19,10 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float maxSpeed = 5f;
     private float maxSpeedSq;
     [SerializeField] private Transform orientation;
+    // IMPORTANT DO NOT DELETE
+    // store rotation between frames as Unity sometimes resets
+    // rotation to last value between lateupdate and fixedupdate calls
+    private Quaternion rotation;
 
     [Header("Jumping")]
     [SerializeField] private float jumpCooldown = 0.05f;
@@ -257,6 +261,10 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // apply rotation of last late update in case unity
+        // resets it for no reason
+        transform.localRotation = rotation;
+
         // move player
         MovePlayer();
 
@@ -289,7 +297,10 @@ public class PlayerControl : MonoBehaviour
         // Doing a rotation around the y-axis makes the camera rotate the view horizontally. Vector3.up is a 
         // shorthand way of writing (0, 1, 0). The code is rotating the y-axis using the horizontal
         // movement of the player's mouse.
-        transform.localRotation = Quaternion.Euler(Vector3.up * horizontal_movement_x); 
+        transform.localRotation = Quaternion.Euler(Vector3.up * horizontal_movement_x);
+
+        // store new rotation in case unity resets it :shrug:
+        rotation = transform.localRotation;
     }
     // store inputs from movement keys
     private void ProcessInput()
