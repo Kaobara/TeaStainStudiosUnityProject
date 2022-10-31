@@ -66,34 +66,9 @@ Upon delivering the package successfully, the player clears the level and unlock
 ### Technologies
 Project is created with:
 * Unity 2022.1.9f1 
-* Ipsum version: 2.33
-* Ament library version: 999
 * Blender  version 2.91
+* Adobe Illustrator 2022
 
-### Using Images
-
-You can include images/gifs by adding them to a folder in your repo, currently `Gifs/*`:
-
-<p align="center">
-  <img src="Media/sample.gif" width="300">
-</p>
-
-To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
-
-### Code Snippets 
-
-You may wish to include code snippets, but be sure to explain them properly, and don't go overboard copying
-every line of code in your project!
-
-```c#
-public class CameraController : MonoBehaviour
-{
-    void Start ()
-    {
-        // Do something...
-    }
-}
-```
 
 ### How To Play The Game
 As briefly outlined, Chiki’s Delivery Service is a game where players traverse a level to pick up packages and then deliver them to the goal point as fast as possible. To do so, players can utilise the terrain and gameplay mechanics. Using Chiki’s strong legs and wings, players can jump up objects that have more height, allowing them to reach further places or perhaps even reach places faster through the glide mechanic. Players are able to jump up to mailboxes, houses and trees. In order to reach some areas in the map, players might be required to chain jumps from objects that are tall to objects that are taller such as from the ground to mailboxes then to houses.
