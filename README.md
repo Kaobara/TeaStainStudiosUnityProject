@@ -172,7 +172,7 @@ To provide our game with a unique feel we decided to create our main character o
 From our extensive research, we fell in love with Ōtori-Sama from another famous production Spirited Away [3]. Ōtori-Sama resembles a big duck. We knew from then we wanted our Chiki to be a big chicken with similar aesthetics to Ōtori-Sama. 
 
 <p align="center">
-  <img src="Media/chikiInspiration.png" height="250">
+  <img src="Gifs/chikiInspiration.png" height="250">
 </p>
 <p align = "center">
 Fig. 1 - Ōtori-Sama [3]
@@ -182,8 +182,8 @@ We used Blender to make Chiki. Red freckles and a crown were added to give our m
 We wanted players to feel comfortable and love Chiki not only in-game but also outside. Our plan is to make everyone fall in love with Chiki and make it into a brand.
 
 <p align="center">
-  <img src="Media/chikiFace.png" height="250">
-  <img src="Media/chikiBody.png" height="250">
+  <img src="Gifs/chikiFace.png" height="250">
+  <img src="Gifs/chikiBody.png" height="250">
 </p>
 
 <p align = "center">
@@ -197,7 +197,7 @@ Using blender, we then created a custom skeleton rig for Chiki, and through the 
 The animated model was then exported as a .fbx file and imported into our unity project to be used for gameplay.
 
 <p align="center">
-  <img src="Media/Animation.gif" height="250">
+  <img src="Gifs/Animation.gif" height="250">
 </p>
 <p align = "center">
 Fig. 3 - Chiki running animation. Made in Blender.
@@ -211,11 +211,11 @@ Package asset was taken from sketchfab[24]. We decided to keep the mesh the same
 Tiles are the fundamental object of our maps. Tiles are used to define the base of our world, and more objects are built on top of these. The look of these tiles had to be carefully created to set the basic ambience and theme of the world. We kept the styling of these tiles simple, so when they come together there isn't much of a mesh merge conflict. The dimensions were kept to 8x8x4 (W x L x D). Currently ‘base tiles’ consist of a road, grass, a building, and two river tiles: straight and corner.
 
 <p align="center">
-  <img src="Media/roadTile.png" height="250">
-  <img src="Media/grassTile.png" height="250">
-  <img src="Media/rover0Tile.png" height="250">
-  <img src="Media/river1Tile.png" height="250">
-  <img src="Media/buildingTile.png" height="250">
+  <img src="Gifs/roadTile.png" height="250">
+  <img src="Gifs/grassTile.png" height="250">
+  <img src="Gifs/rover0Tile.png" height="250">
+  <img src="Gifs/river1Tile.png" height="250">
+  <img src="Gifs/buildingTile.png" height="250">
 </p>
 
 <p align = "center">
@@ -243,7 +243,7 @@ Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on 
 #### Water/River Shader
 As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in /Assets/Prefabs/Map/Shaders under the name “[WaveShader.shader](Assets/Prefabs/Map/Shaders/WaveShader.shader)”.
 <p align="center">
-  <img src="Media/Shader 1 River Tile Image.png" height="250">
+  <img src="Gifs/Shader 1 River Tile Image.png" height="250">
 </p>
 
 <p align = "center">
@@ -278,8 +278,8 @@ Interpolators vert(MeshData v) {
 }
 ```
 <p align="center">
-  <img src="Media/Shader 2 base river 1.gif" height="250">
-  <img src="Media/Shader 3 base river 2.gif" height="250">
+  <img src="Gifs/Shader 2 base river 1.gif" height="250">
+  <img src="Gifs/Shader 3 base river 2.gif" height="250">
 </p>
 
 <p align = "center">
@@ -320,7 +320,7 @@ Whilst we found that the Phong illumination was fantastic in reflecting light of
 This can be done by implementing a black and white “wave” pattern going through the x-axis of the plane in the pixel-shader. By passing the wave values from the vertex shader to the pixel shader, we were able to have the wave highlights and shadows perfectly synchronised with the vertex wave displacement.
 
 <p align="center">
-  <img src= "Media/Shader 5 peak trough 2.gif" height="250">
+  <img src= "Gifs/Shader 5 peak trough 2.gif" height="250">
 </p>
 
 <p align = "center">
@@ -330,7 +330,7 @@ Fig. 8 - Wave Peak Highlights and Trough Shadows Synchronized.
 This pattern was then merely added on top of the illumination components in the final return colour to create the final effect.
 
 <p align="center">
-  <img src="Media/Shader 6 phong.gif" height="250">
+  <img src="Gifs/Shader 6 phong.gif" height="250">
 </p>
 
 <p align = "center">
@@ -344,7 +344,7 @@ The wave was able to receive shadows mostly through an implementation detailed i
 Originally, the shadows were just added on top of the Phong illumination and wave highlights and shadows, but we deemed the shadow to look “awkward” as it had a very sudden shift to darkness.
 
 <p align="center">
-  <img src="Media/Shader 7 shadow 1.png" height="250">
+  <img src="Gifs/Shader 7 shadow 1.png" height="250">
 </p>
 
 <p align = "center">
@@ -364,7 +364,7 @@ fixed4 frag(Interpolators i) : SV_Target {
 ```
 
 <p align="center">
-  <img src="Media/Shader 11 final river 3.gif" height="250">
+  <img src="Gifs/Shader 11 final river 3.gif" height="250">
 </p>
 
 <p align = "center">
@@ -389,7 +389,7 @@ float4 mix(float4 originalColor, float4 fogColor, float fogFactor) {
 
  The following gif is an example of mixing colours using a custom shader we made for testing, where the fog factor is based on the sine of time passed:
  <p align="center">
-  <img src="Media/Shader 12 Color Interpolation.gif" height="250">
+  <img src="Gifs/Shader 12 Color Interpolation.gif" height="250">
 </p>
 
 <p align = "center">
@@ -405,7 +405,7 @@ After finding the camera distance, we can then find the fog factor by converting
 
 As no other shader implementation was used, the result is mostly flat colours that change depending on the distance from the camera.
  <p align="center">
-  <img src="Media/Shader 14 flat clouds above.gif" height="250">
+  <img src="Gifs/Shader 14 flat clouds above.gif" height="250">
 </p>
 
 <p align = "center">
@@ -419,7 +419,7 @@ Fig. 13 - Cloud shader with flat colours and fog implementation.
 Initially, we wanted to use normal shading methods in order to make the clouds have a sense of shape; specifically using Gouraud shading due to the size of the clouds and reduced cost of vertex-based shading. However, the final results clashed with the more simple look of the rest of the aesthetics of the game.
 
  <p align="center">
-  <img src="Media/Shader 15 gouraud clouds.gif" height="250">
+  <img src="Gifs/Shader 15 gouraud clouds.gif" height="250">
 </p>
 
 <p align = "center">
@@ -453,7 +453,7 @@ fixed4 frag(Interpolators i) : SV_Target {
 ```
 
 <p align="center">
-  <img src="Media/Shader 16 watercolour pattern.gif" height="250">
+  <img src="Gifs/Shader 16 watercolour pattern.gif" height="250">
 </p>
 
 <p align = "center">
@@ -463,7 +463,7 @@ Fig. 15 - Watercolour pattern in pixel shader.
 The final cloud looks to have more depth once this watercolour pattern was implemented in the pixel shader, and added to the cloud colour in the final return:
 
 <p align="center">
-  <img src="Media/Shader 17 final clouds.gif" height="250">
+  <img src="Gifs/Shader 17 final clouds.gif" height="250">
 </p>
 
 <p align = "center">
@@ -502,7 +502,7 @@ The specific base leaf system that was used for the Sakura trees can be found in
 The particles were rendered as billboards using a custom texture sheet. This texture sheet had four leaf sprites along different rows. Using the Texture Sheet Animation component, we had the particle animated by “single row” with a “random” row mode in order for each particle to randomly choose between the four sprites. 
 
 <p align="center">
-  <img src="Media/LeafTextureSheetBordered.png" height="250">
+  <img src="Gifs/LeafTextureSheetBordered.png" height="250">
 </p>
 
 <p align = "center">
@@ -525,7 +525,7 @@ In addition to that, in order for the leaves to have a gradual appearance and di
 As wind acts in a 3d space and can have a chaotic effect on all leaves, the Noise component was used to add turbulence and randomness on all three axis positions of the particles at any given time. Despite the chaos, we still want to keep the simple and calm aesthetic of the game, so the frequency of the noise was set to a small value of 0.62 and a scroll speed of 1.17. This creates a subtle and calm yet chaotic effect on the leaves as it falls.
 
 <p align="center">
-  <img src="Media/Particles Sakura Leaves.gif" height="250">
+  <img src="Gifs/Particles Sakura Leaves.gif" height="250">
 </p>
 
 <p align = "center">
