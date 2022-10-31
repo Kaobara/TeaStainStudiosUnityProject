@@ -16,7 +16,7 @@ We will be using Confluence to keep track of our weekly progress and organising 
 | Gameplay | Mukul, Sebastian, Jason |
 | General Vertex and Pixel Shaders | Daniel |
 | Particle| Daniel |
-| Animation | Daniel and Seastian|
+| Animation | Daniel and Sebastian|
 | Objs and Assets | Mukul |
 | Music, SFX and Sound Assets | Jason |
 | Procedural generation (scenery + maps and clouds) | Mukul
@@ -74,7 +74,7 @@ Project is created with:
 You can include images/gifs by adding them to a folder in your repo, currently `Gifs/*`:
 
 <p align="center">
-  <img src="Gifs/sample.gif" width="300">
+  <img src="Media/sample.gif" width="300">
 </p>
 
 To create a gif from a video you can follow this [link](https://ezgif.com/video-to-gif/ezgif-6-55f4b3b086d4.mov).
@@ -170,18 +170,18 @@ We made the conscious decision to design the rivers as “kill zones” that ser
 #### Medal System
 The intention of the Medal System is to increase the replayability of the game as well as reward the player with a sense of accomplishment. In order to decide the time thresholds for the Silver and Gold medals, we extensively playtest the level in order to determine reasonable timeframes that we can complete the levels in. We then added some additional time to those thresholds to allow for players who are more inexperienced to still be able to achieve the medals. Additionally, while some of the time thresholds may allow the player to be able to achieve the medals on their first playthrough of the level, the general idea is that the players are more likely to achieve medals from subsequent playthroughs, when they are familiar with the level environment and terrain, as well as the locations where they may need to navigate to. 
 
-#### Graphics Pipeline
+## Graphics Pipeline
 Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, does enhance the game’s visuals in a way that does not directly clash with our envisioned aethstetics.
 
 ### Water/River Shader
 As one of the core mechanics of the game is Chiki’s ability to jump and glide, rivers were used as obstacles for all levels. Because of this, we decided early on that a custom shader should be applied to the water tiles - specifically, a material with a wave shader was applied onto a plane in the river tile prefab. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “WaveShader.shader”.
 
-## River Vertex Shader
+#### River Vertex Shader
 As it is a river, we wanted the vertices of the mesh to move in a wave-pattern, not unlike what was practiced in Workshop 7. In the vertex shader, the vertices along the x-axis of the mesh is displaced along the y-axis through a wave function. The value of the amplitude and the period of the wave could thus be changed as parameters of the material, with higher amplitudes and shorter periods to be used for stronger water currents if we were to extend the project further.
 
 In addition to this, since the shader uses UV mapping to project a premade texture onto the surface of the plane, we had found that the UV values of the mesh can be manipulated in the Vertex Shader to achieve a “scrolling” effect of the image texture. Therefore, in the vertex shader, the x-component of the UV values were changed with respect to time (initially added by the value of time multiplied by 0.1, but later changed to subtraction to switch direction of scroll). Combined with the vertex displacement by wave allowed for a relatively good impersonation of moving water.
 
-## River Pixel Shader
+#### River Pixel Shader
 **Phong Illumination**
 We wanted the river to have some form of interaction with lighting in order to show off more depth as well as to better blend the shading of the material with the rest of the environment assets. We therefore decided to use Phong Illumination, which is the sum of ambient, diffused, and specular lighting, in order to achieve a “realistic” illumination in the context of a cartoon aesthetic. In addition, we decided to do this through Phong Shading, or in other words, apply the technique in the pixel shader as we thought that would achieve a more smoother shade across the vertices of the plane in addition to being able to interact with other illumination techniques.
 
