@@ -348,8 +348,8 @@ public class mapBuilder1 : MonoBehaviour
 
         }
        
-        List<(socketType, int)> up = null;
-        List<(socketType, int)> right = null;
+        // List<(socketType, int)> up = null;
+        // List<(socketType, int)> right = null;
         if (j + 1 >= width)
         {
             ps.Add(allStates);

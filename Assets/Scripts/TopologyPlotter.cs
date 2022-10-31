@@ -11,7 +11,6 @@ public class TopologyPlotter
     public void Start()
     {
         prefabs = Resources.LoadAll<GameObject>("Topology");
-        Debug.Log(prefabs.Length);
     }
 
     public void plot(Vector2 leftBottom, Vector2 rightTop, System.Random r, Transform transform)

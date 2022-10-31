@@ -5,7 +5,7 @@ using UnityEngine;
 public class rt : MonoBehaviour
 {
     public RenderTexture rt1;
-    private bool first = true;
+    // private bool first = true;
     // Start is called before the first frame update
     void Start()
     {
