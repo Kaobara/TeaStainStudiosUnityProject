@@ -293,8 +293,7 @@ Fig. - Texture scrolling and Wave vertex displacement.
 ###### Phong Illumination
 We wanted the river to have some form of interaction with lighting in order to show off more depth as well as to better blend the shading of the material with the rest of the environment assets. We, therefore, decided to use Phong illumination, which is the sum of ambient, diffused, and specular lighting, in order to achieve a “realistic” illumination in the context of a cartoon aesthetic. This was achieved using Phong shading in the pixel shader as we thought that would achieve a smoother shade across the vertices of the plane in addition to being able to interact with other illumination techniques.
 
-Furthermore, for the specular light component of the illumination, we decided to use the Blinn-Phong method [34], which uses half vectors, or the normalised direction of the sum of the direction of the surface from the light and the direction of the surface to the camera. This was because the river shader will be implemented onto a plane object, and we Blinn-Phong caused a better imitation of specular light for planes.
-
+Furthermore, for the specular light component of the illumination, we decided to use the Blinn-Phong method [34], which uses half vectors, or the normalised direction of the sum of the direction of the surface from the light and the direction of the surface to the camera. This was because the river shader will be implemented onto a plane object, and Blinn-Phong creates a better imitation of specular light for planes.
 ```c#
 fixed4 frag(Interpolators i) : SV_Target {
   // ...
