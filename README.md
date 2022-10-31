@@ -19,7 +19,7 @@ We will be using Confluence to keep track of our weekly progress and organising 
 | Animation | Daniel and Sebastian|
 | Objs and Assets | Mukul |
 | Music, SFX and Sound Assets | Jason |
-| Procedural generation (scenery + maps and clouds) | Mukul
+| Procedural generation (scenery + maps) | Mukul |
 | Camera Orientation and Controlling | Jason |
 | Querying and Playtesting and Surveying | Jason and Mukul |
 | Level Design | Mukul and everyone |
@@ -29,12 +29,6 @@ We will be using Confluence to keep track of our weekly progress and organising 
 <!-- [[EndTeamworkPlan]] PLEASE LEAVE THIS LINE UNTOUCHED -->
 
 ## Final report
-
-Read the specification for details on what needs to be covered in this report... 
-
-Remember that _"this document"_ should be `well written` and formatted **appropriately**. 
-Below are examples of markdown features available on GitHub that might be useful in your report. 
-For more details you can find a guide [here](https://docs.github.com/en/github/writing-on-github).
 
 ### Table of contents
 * [Game Summary](#game-summary)
@@ -68,6 +62,7 @@ Project is created with:
 * Unity 2022.1.9f1 
 * Ipsum version: 2.33
 * Ament library version: 999
+* Blender  version 2.91
 
 ### Using Images
 
@@ -170,7 +165,7 @@ We made the conscious decision to design the rivers as “kill zones” that ser
 #### Medal System
 The intention of the Medal System is to increase the replayability of the game as well as reward the player with a sense of accomplishment. In order to decide the time thresholds for the Silver and Gold medals, we extensively playtest the level in order to determine reasonable timeframes that we can complete the levels in. We then added some additional time to those thresholds to allow for players who are more inexperienced to still be able to achieve the medals. Additionally, while some of the time thresholds may allow the player to be able to achieve the medals on their first playthrough of the level, the general idea is that the players are more likely to achieve medals from subsequent playthroughs, when they are familiar with the level environment and terrain, as well as the locations where they may need to navigate to. 
 
-## Graphics Pipeline
+### Graphics Pipeline
 Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, does enhance the game’s visuals in a way that does not directly clash with our envisioned aethstetics.
 
 ### Water/River Shader
