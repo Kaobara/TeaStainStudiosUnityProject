@@ -22,12 +22,6 @@ public class PlayerAnimator : MonoBehaviour
         animator.Play(startingAnimation);
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-
-    }
-
     // Research for animation state machine conduct via these sources:
     // https://docs.unity3d.com/Manual/class-Transition.html
     // https://docs.unity3d.com/ScriptReference/Animator.SetTrigger.html
