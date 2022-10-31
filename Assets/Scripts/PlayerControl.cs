@@ -33,7 +33,7 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Interacting")]
     [SerializeField] private KeyCode useKey;
-    [SerializeField] private bool canUse;
+    [SerializeField] private bool canUse = true;
     [SerializeField] private float useCooldown = 0.2f;
     [SerializeField] private float useRange = 1f;
     [SerializeField] private float ejectForce = 5f;
@@ -45,11 +45,15 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float detachDistThreshold = 0.15f;
 
     [Header("Checks for Groundedness")]
-    [SerializeField] private float heightEpsilon = 0.005f;
+    [SerializeField] private float heightEpsilon = 0.01f;
+    [SerializeField] private float radiusEpsilon = 0.01f;
     private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
     [SerializeField] private readonly float playerScaleFactor;
+    [SerializeField] private bool canLand = true;
+    [SerializeField] private float landCooldown = 0.04f;
+    [SerializeField] private float maxUpwardLandingSpeed = 0.5f;
     public LayerMask groundMask;
     private Vector3[] firingPoints;
 
@@ -116,12 +120,13 @@ public class PlayerControl : MonoBehaviour
         canJump = true;
         canGlide = false;
         canUse = true;
+        canLand = true;
 
         // initialise max speed squared variable for faster calculations
         maxSpeedSq = maxSpeed * maxSpeed;
 
         // stores the global positions from which groundcheck rays are casted
-        firingPoints = new Vector3[5];
+        firingPoints = new Vector3[9];
 
         // store local position of held objects
         localHoldPos = orientation.localPosition + Vector3.forward * holdDistance;
@@ -133,8 +138,11 @@ public class PlayerControl : MonoBehaviour
         ProcessInput();
 
         // store if player is on the ground for current frame
-        if (GroundCheck() && state != PlayerState.Rise) {
+        if (GroundCheck() && canLand && rigidBody.velocity.y < maxUpwardLandingSpeed) {
             if (state != PlayerState.Ground) {
+
+                // trigger landing animation
+                playerAnimator.TriggerLanding();
 
                 // disallow jumping for set time after landing
                 Invoke(nameof(MakeReadyToJump), jumpCooldown);
@@ -151,6 +159,9 @@ public class PlayerControl : MonoBehaviour
                 state = PlayerState.Fall;
             }
             playerAnimator.TriggerFall();     
+        }
+        else {
+            Debug.Log(rigidBody.velocity.y);
         }
 
         // when player starts falling, set new state and allow gliding
@@ -358,7 +369,7 @@ public class PlayerControl : MonoBehaviour
         // store vars and constants needed for calculations
         Vector3 centre = collider.transform.TransformPoint(collider.center);
         float playerHeight = collider.height * transform.localScale.y * collider.transform.localScale.y;
-        float radius = collider.radius * transform.localScale.x * collider.transform.localScale.x;
+        float radius = collider.radius * transform.localScale.x * collider.transform.localScale.x - radiusEpsilon;
         float playerLength = radius * 2f;
         float RADIUS_OVER_ROOT2 = radius / Mathf.Sqrt(2);
 
@@ -368,6 +379,11 @@ public class PlayerControl : MonoBehaviour
         firingPoints[2] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z + RADIUS_OVER_ROOT2);
         firingPoints[3] = new Vector3(centre.x + RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
         firingPoints[4] = new Vector3(centre.x - RADIUS_OVER_ROOT2, centre.y, centre.z - RADIUS_OVER_ROOT2);
+        firingPoints[5] = new Vector3(centre.x + radius, centre.y, centre.z);
+        firingPoints[6] = new Vector3(centre.x - radius, centre.y, centre.z);
+        firingPoints[7] = new Vector3(centre.x, centre.y, centre.z + radius);
+        firingPoints[8] = new Vector3(centre.x, centre.y, centre.z - radius);
+
 
         // store data from each raycast
         List<float> angles = new List<float>();
@@ -376,7 +392,7 @@ public class PlayerControl : MonoBehaviour
         RaycastHit slopeHit;
 
         // iterate through firing points, storing info if raycast hits
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < firingPoints.Length; i++) {
             bool hit = Physics.Raycast(
                 firingPoints[i],
                 Vector3.down,
@@ -432,11 +448,6 @@ public class PlayerControl : MonoBehaviour
             return false;
         }
 
-        // if just in air, set landing animation trigger
-        if (state == PlayerState.Fall || state == PlayerState.Glide) {
-            playerAnimator.TriggerLanding();
-        }
-
         return true;
     }
 
@@ -445,6 +456,10 @@ public class PlayerControl : MonoBehaviour
     {
         // immediately disallow jumping
         canJump = false;
+
+        // prevent player from entering ground state for brief cooldown
+        canLand = false;
+        Invoke(nameof(MakeReadyToLand), landCooldown);
 
         // play jump sound
         audioSource.PlayOneShot(jumpSound);
@@ -480,6 +495,11 @@ public class PlayerControl : MonoBehaviour
     private void MakeReadyToUse()
     {
         canUse = true;
+    }
+
+    private void MakeReadyToLand()
+    {
+        canLand = true;
     }
 
     // set accel and drag multipliers according to player state

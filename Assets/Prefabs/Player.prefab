@@ -1432,13 +1432,15 @@ MonoBehaviour:
   holdDistance: 1.5
   detachDistThreshold: 0.15
   heightEpsilon: 0.01
-  playerHeight: 0.8
+  radiusEpsilon: 0.03
+  canLand: 1
+  landCooldown: 0.04
+  maxUpwardLandingSpeed: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 256
   maxAngle: 45
   slopeThresholdAngle: 5
-  playerLength: 0.2
   slopeNormal: {x: 0, y: 0, z: 0}
   slopeAngle: 0
   state: 0
