@@ -33,8 +33,6 @@ We will be using Confluence to keep track of our weekly progress and organising 
 ### Table of contents
 * [Game Summary](#game-summary)
 * [Technologies](#technologies)
-* [Using Images](#using-images)
-* [Code Snipets](#code-snippets)
 * [How To Play The Game](#how-to-play-the-game)
 * [UI Design](#ui-design)
 * [Gameplay Design](#gameplay-design)
@@ -49,9 +47,25 @@ We will be using Confluence to keep track of our weekly progress and organising 
   + [Package](#package)
   + [Base Tiles](#base-tiles)
   + [Buildings](#buildings)
+  + [Medals](#medals)
+* [Graphics Pipeline](#graphics-pipeline)
+  + [Water/River Shader](#waterriver-shader)
+    + [River Vertex Shader](#river-vertex-shader)
+    + [River Pixel Shader](#river-pixel-shader)
+  + [Cloud/Fog Shader](#cloudfog-shader)
+    + [Fog Implementation](#fog-implementation)
+    + [Cloud Depth](#cloud-depth)
+* [Procedural Generation](#procedural-generation)
+  + [CSP Map Builder](#csp-map-builder)
+    + [Solving CSP: detailed](#solving-csp-detailed)
+  + [Asset Generation](#asset-generation)
+* [Particle System](#particle-system)
 * [Querying Technique](#querying-technique)
   + [Questionnaire Results](#questionnaire-results)
-* [Improvements from Evaluation Information]()
+* [Observational Technique](#observational-technique)
+* [Improvements from Evaluation Information](#improvements-from-evaluation-information)
+* [Reference List](#reference-list)
+
 
 ### Game Summary
 Chiki’s Delivery Service is a Casual Simulation 3D Platformer featuring ragdoll physics delivered by Tea Stain Studios. In Chiki’s Delivery Service, the player takes on the role of Chiki, an aspiring young chick who has just started her employment in the esteemed Chicken Delivery Service company. 
@@ -204,6 +218,18 @@ Fig. - Base Tiles (Made in Blender).
 #### Buildings
 Currently, Chiki’s Delivery Service only has 1 type of Building, i.e. house. These buildings are procedurally generated with a random height. The max building height is set to 4. The height of the building is weighted towards a smaller number, so a house with 1 floor is more likely than one with 4 floors. We created the buildings in a way that makes them easy to procedurally generate, i.e. parts are made to fit together nicely. The inspiration for the building style came from ‘polygonrunaway’ [29]
 
+#### Medals
+We took inspiration for medals from Kenny’s medal assets [43]. The medal style was modified to fit Chiki’s Delivery Service’s simplistic game style and colour palette. To achieve this we used Adobe Illustrator, and coolors.co. 
+<p align="center">
+  <img src="Assets/Images/medal_gold.png" height="250">
+  <img src="Assets/Images/medal_silver.png" height="250">
+  <img src="Assets/Images/medal_bronze.png" height="250">
+</p>
+
+<p align = "center">
+Fig. - Medal design (Made in Adobe Illustrator).
+</p>
+
 ### Graphics Pipeline
 Regarding the graphics pipeline, we had decided to apply custom HLSL shaders on environmental variables that, although may not reduce the burden on the CPU, it does enhance the game’s visuals in a way that does not directly clash with our envisioned aesthetics.
 
@@ -288,7 +314,7 @@ Whilst we found that the Phong illumination was fantastic in reflecting light of
 This can be done by implementing a black and white “wave” pattern going through the x-axis of the plane in the pixel-shader. By passing the wave values from the vertex shader to the pixel shader, we were able to have the wave highlights and shadows perfectly synchronised with the vertex wave displacement.
 
 <p align="center">
-  <img src="Shader 5 peak trough 2.gif" height="250">
+  <img src= "Media/Shader 5 peak trough 2.gif" height="250">
 </p>
 
 <p align = "center">
@@ -298,7 +324,7 @@ Fig. - Wave Peak Highlights and Trough Shadows Synchronized.
 This pattern was then merely added on top of the illumination components in the final return colour to create the final effect.
 
 <p align="center">
-  <img src="Shader 6 phong.gif" height="250">
+  <img src="Media/Shader 6 phong.gif" height="250">
 </p>
 
 <p align = "center">
@@ -312,7 +338,7 @@ The wave was able to receive shadows mostly through an implementation detailed i
 Originally, the shadows were just added on top of the Phong illumination and wave highlights and shadows, but we deemed the shadow to look “awkward” as it had a very sudden shift to darkness.
 
 <p align="center">
-  <img src="Shader 7 shadow 1.gif" height="250">
+  <img src="Media/Shader 7 shadow 1.png" height="250">
 </p>
 
 <p align = "center">
@@ -332,7 +358,7 @@ fixed4 frag(Interpolators i) : SV_Target {
 ```
 
 <p align="center">
-  <img src="Shader 11 final river 3.gif" height="250">
+  <img src="Media/Shader 11 final river 3.gif" height="250">
 </p>
 
 <p align = "center">
@@ -341,7 +367,7 @@ Fig. - Final Wave Shader.
 
 #### Cloud/Fog Shader
 
-The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “FogShader.shader”.
+The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in \Assets\Prefabs\Map\Shaders under the name “CloudShader.shader”.
 
 ##### Fog Implementation
 ###### Colour Mixing and Fog Factor
@@ -357,11 +383,11 @@ float4 mix(float4 originalColor, float4 fogColor, float fogFactor) {
 
  The following gif is an example of mixing colours using a custom shader we made for testing, where the fog factor is based on the sine of time passed:
  <p align="center">
-  <img src=".gif" height="250">
+  <img src="Media/Shader 12 Color Interpolation.gif" height="250">
 </p>
 
 <p align = "center">
-Fig. - Final Wave Shader.
+Fig. - Color Interpolation.
 </p>
  
 
@@ -373,11 +399,11 @@ After finding the camera distance, we can then find the fog factor by converting
 
 As no other shader implementation was used, the result is mostly flat colours that change depending on the distance from the camera.
  <p align="center">
-  <img src=".gif" height="250">
+  <img src="Media/Shader 14 flat clouds above.gif" height="250">
 </p>
 
 <p align = "center">
-Fig. - Cloud Shader.
+Fig. - Cloud shader with flat colours and fog implementation.
 </p>
  
 
@@ -386,12 +412,19 @@ Fig. - Cloud Shader.
 ##### Cloud Depth
 Initially, we wanted to use normal shading methods in order to make the clouds have a sense of shape; specifically using Gouraud shading due to the size of the clouds and reduced cost of vertex-based shading. However, the final results clashed with the more simple look of the rest of the aesthetics of the game.
 
-To keep the simple aesthetics of the game, we decided to instead implement a watercolour pattern[38] along all axises in the pixel shader . 
+ <p align="center">
+  <img src="Media/Shader 15 gouraud clouds.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Cloud shader with Gouraud shading.
+</p>
+
+To keep the simple aesthetics of the game, we decided to instead implement a watercolour pattern[38] along all axises in the pixel shader. 
 
 This was done using the vertices in world space, and modifying these values using sine functions across all axis components through a for loop of 2 iterations to allow for a still watercolour look. 
 
 Afterwards, as we do not want any actual colours, but rather a black and white pattern across all axises, the RGB value of the final colour vector is based on the sine of the sum of all water colour vertices, with the following results:
-
 
 
 ```c#
@@ -413,10 +446,85 @@ fixed4 frag(Interpolators i) : SV_Target {
 }
 ```
 
+<p align="center">
+  <img src="Media/Shader 16 watercolour pattern.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Watercolour pattern in pixel shader.
+</p>
+
 The final cloud looks to have more depth once this watercolour pattern was implemented in the pixel shader, and added to the cloud colour in the final return:
 
+<p align="center">
+  <img src="Media/Shader 17 final clouds.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Final Cloud/Fog shader.
+</p>
+
+### Procedural Generation
+For procedural generation, we took inspiration from wavefunction collapse by Maxim Gumin [31]. In essence, the algorithm tries to solve a constraint satisfaction problem. 
+
+In our implementation, we label our prefab tiles as ‘sockets’. A socket consists of a type(road, river, building etc.), mesh, isSymmetrical, probability and neighbourTypes (types of sockets are allowed on the left, right, forward and backward directions). These neighbour constraints allow us to generate maps with appropriate assets loading next to each other. This helps us to insert rules related to how these different socket tiles can be placed next to each other, such as a road is always needed in front of the house. 
+
+The Maps are generated in two steps. First constraint satisfaction problem is solved and then assets are generated on the base tiles. 
+
+#### CSP Map Builder
+We use a Dictionary data structure to store our Map state at any point when solving the CSP. The key is grid coordinates (x,y) and the value is a list of socketTypes. Initially, all locations are set to have all socketTypes (house, road, grass, building, river0, river1). The first location (0,0) is also collapsed to one of the socketTypes based on probability and a random number generator. This is done to set a boundary condition which helps the algorithm collapse very quickly. 
+
+To improve the efficiency of resource usage, we load the map in small chunks. A full map is split into the majority of square parts with every chunk having one row or column in common with its neighbour chunk. This restricts the move space and allows the small parts of the map to collapse much faster. As one chunk collapses, it restricts the solution space of its neighbour chunks by adding boundary conditions. 
+
+If a large map was chosen, with no chunk size we observe that DFS can take a long time to collapse. A different approach was considered to ensure a complete solution using BFS, as a radial search algorithm, but this increases space complexity. We stuck with the DFS approach and decided to iterate over all points on the grid to ensure all points were collapsed. A point is said to not have collapsed if multiple types were possible at that location. If such a case was found in any of the previous DFS propagation iterations, we rerun the algorithm from that point again. 
+
+Due to the greedy nature of our algorithm to optimise for speed,  some points on the grid can't be solved because of already collapsed neighbours.  We tackle this issue during the second phase of the procedural algorithm, i.e. generating assets. If a location is still found to have more than 1 possible state, we set it to the most probable socketType. Although, this means that in the worst-case scenario our algorithm becomes greedy. It still mostly yields optimal results. These results can be further optimised by changing the parameters like chunk size, and search depth limit based on the size of the map. Optimal parameters were found after multiple iterations: a chunk size k of 6~7 resulted in the best visual results for a range of map sizes from 2x2 to 100x100. The optimal search depth was found to be 2k.
+
+##### Solving CSP: detailed
+The propogateToNeighbour(...) function gets a weighted random type and rotation from the valid types stored in the CSPMap at this location. This change is sent to the propagate(...) function which recursively (in a DFS manner) propagates the change to the neighbours until no change is detected. We perform a precheck to ensure that this socket satisfies all of the 1-degree neighbours of the current location. This is done to stop unnecessary propagation. After that, we iterate through all neighbours of the current location to find the new possible states.
+ If the new states are different from the old states, this change is sent to the propogateToNeighbour(...) function and the process repeats. 
+
+The chunk method allows us to create large map sizes in a small amount of time, which vastly reduces the game loading times. This method could be extended by attaching it to the player and new chunks are constructed when the player gets closer to a boundary, resulting in infinite maps.
+
+#### Asset Generation
+After a collapsed CSP map, we can put base tiles of the socket type on the map. We use prefabs to instantiate a new tile for that location and depending on the type of the tile different assets are procedurally put on them. For example, a building tile will have a procedurally generated house of varying sizes built on them. A grass tile will have trees, grass, shrubs and flowers placed on them using Perlin noise. The magnitude of the noise defines how much these grass tile assets will be rotated to give a unique look every time. Currently, nothing is generated on the road tiles, but going forward we can easily place cars, NPC and other objects. We are using a decorator design pattern to achieve this extensibility. Therefore, adding more types of assets will be easy. The assets placed on grass tile go a bit beyond the tile boundary, this was by design to give an illusion of a continuous natural map. Similarly, more objects can be placed on the river to give a more lively environment. 
+
+### Particle System
+Wanting to keep the simple and calm aesthetics of the game, we wanted to keep most particles to the minimum and use it as an environmental aspect to enhance the visuals of the game. So, we made an environmental leaf particle system using the in-built Particle System in unity [40] that can be attached to all tree prefabs to be used during level generation, with slight modifications to its shape and lifetime to accommodate the height and canopy shape of each tree.
+The specific base leaf system that was used for the Sakura trees can be found in /Assets/Prefabs/ParticleSystemPrefabs/ under the name of “Leaf System Base.prefab”.
+
+The particles were rendered as billboards using a custom texture sheet. This texture sheet had four leaf sprites along different rows. Using the Texture Sheet Animation component, we had the particle animated by “single row” with a “random” row mode in order for each particle to randomly choose between the four sprites. 
+
+<p align="center">
+  <img src="Media/LeafTextureSheetBordered.png" height="250">
+</p>
+
+<p align = "center">
+Fig. - Leaf texture sheet.
+</p>
 
 
+Each particle is spawned with different attributes, namely different sizes, rotations along each axis, and a random colour.
+
+The sizes and 3D rotations were randomized by being chosen between two constants, namely between 0.13 and 0.38 for the size and between 0 and 360 for each axis of rotation.
+
+The colour of each leaf is randomly chosen from a colour gradient, which would be a colour from a highly saturated red to an unsaturated pink for the case of the Sakura tree to allow a more obvious variation between all leaves.
+
+To create the illusion of wind acting on the leaves, the Force over Lifetime component was used to move leaves towards the positive x and z direction in world space, which is along the same direction as the clouds. In addition, an orbital velocity was added using the Velocity over Lifetime component in order to create the effect of leaves moving in a spiral along with the particles themselves rotating using the Rotation over Lifetime component to achieve an interesting yet simplistic spiralling movement and rotating look.
+
+However, as real-life leaves would usually slow down during their descent towards the floor, the Limit Velocity over Lifetime with a downwards curved speed limit was used to dampen the speed of all leaves by 20%.
+
+In addition to that, in order for the leaves to have a gradual appearance and disappearance as a particle spawns and dies, the albedo of the leaves at the start and end was set to be transparent in the Color over Lifetime component, and the size of the leaves was modified to gradually decrease in size as it dies using the Size over Lifetime component.
+
+As wind acts in a 3d space and can have a chaotic effect on all leaves, the Noise component was used to add turbulence and randomness on all three axis positions of the particles at any given time. Despite the chaos, we still want to keep the simple and calm aesthetic of the game, so the frequency of the noise was set to a small value of 0.62 and a scroll speed of 1.17. This creates a subtle and calm yet chaotic effect on the leaves as it falls.
+
+<p align="center">
+  <img src="Media/Particles Sakura Leaves.gif" height="250">
+</p>
+
+<p align = "center">
+Fig. - Final Leaf Particle System for Sakura Trees.
+</p>
 
 ### Querying Technique
 The querying technique used was a Questionnaire. The questionnaire consists of a combination of open-ended and scalar questions which were designed through the inspirations of using past experience in answering game questionnaires and searching online for questions that could be used in game questionnaires. The questionnaire had 25 participants in total, in which the population was random University of Melbourne students that were all aged 18-24. The gender distribution was 52% female and 48% male with no non-binary participants.
@@ -488,6 +596,17 @@ The questions asked on the survey were:
 
 As outlined, Chiki’s Delivery Service is a casual 3D platformer simulation game. Furthermore, it is likely that the playtesters will draw on their knowledge and experiences of games similar to Chiki’s Delivery Service to provide us feedback. Hence, we deemed that the playtesters showing a high interest in game genres which are more casual-friendly and related to Chiki’s Delivery Service such as Party games and Simulation and Sports' games (40% interest) would provide us specialised feedback to act upon. Due to diversity of interest in games, we are also able to obtain general feedback from a diverse range of people. Leveraging both general and specialised feedback allows us to improve the game for people who have no experiences in playing such games as well as drawing upon the knowledge and experiences of the people who have played such games and the comparisons they make to other similar games.
 
+### Observational Technique
+The observational technique used was Cooperative evaluation. We decided to go with this method to allow participants to give us real-time feedback on the game. This method also allowed the participants to criticise any aspect of the game right away. Thus, avoiding the issue of post-hoc interpretation. At the start of the session, we asked the participant for their permission to record the session. All participants declined and therefore we stuck with the approach of taking manual notes on the phone. We observed every aspect of the play, including where they looked, how much time they spent reading the prompts and which areas did they seem most excited about. Before starting, we also asked the participants about their experience level so as observers we could compare how quickly they figured out the control system and game mechanics. 
+
+To avoid the issue of ‘over helping’ we came up with situational questions which were purposely left open-ended. Providing participants with an opportunity to express their emotions regarding the scene if they don't prompt automatically. Some examples of these questions include “How did you feel when you saw the game prompts?”, “What do you think about Chiki?”, “Did you have any difficulty finding checkpoints? If so, where did you get lost?”. As observers, we did have to intervene in some situations where a bug popped up or the user couldn't restart the game. Though, these interventions themselves helped us find key information regarding parts that could be improved or made more accessible. 
+
+
+We wanted to make this experience as enjoyable as possible, and about 90% of the participants seemed amused when they found out that Chiki could ‘fly’. And 60% of the participants enjoyed the challenge of jumping over the river. This task wasn't intended to be this intense or difficult. However, due to our audience's lack of experience in pc games, they created a new challenge for themselves. The challenge was not too difficult and usually, participants were excited and encouraged themselves to complete it. Some participants took over 12 jumps to cross the river. Despite that, all participants were happy with the player mechanics and map interaction. None of the participants showed visual frustration when finishing the tutorial. 
+
+Towards the end of the game, and sometimes throughout the game, participants also tended to give suggestions about new feature implementations. We did list them down, however, most of these features were complex to implement. We had to consider the time constraint and how much value these features would add to the game. The most common suggestions were: “call level 0 tutorial and make minimap bigger”, “reading prompts too big, didn't read”, “ add teleporters, DIY sandbox and hardcore mode” and “moving obstacles and height map”.
+
+
 ### Improvements from Evaluation Information
 Certain aspects that had a lower rating than others had more focus put into them by the team for improvement based on reviewing suggestions provided by the participants. Not all the suggestions were deemed to be helpful but there were a handful of helpful suggestions that the team agreed on implementing that would improve the gameplay experience. Furthermore, the team was also limited in regard to the resources available for the improvement of the game. For example, one suggestion from both the Questionnaire and Cooperative evaluation was to introduce a hard mode where enemies would chase you down while delivering the package. This represents a huge shift in the core gameplay and we deemed that we did not have enough time and resources in order to implement changes such as this. 
 
@@ -501,7 +620,116 @@ Some players have also expressed their desire for more verticality in Level Desi
 
 The build given to the playtesters to playtest also did not have the respawn mechanic implemented when Chiki lands in the water. The majority of participants expressed dissatisfaction with this in the Questionnaire. Similarly in Cooperative evaluation, this need was communicated as “add[ing] teleporters”. Hence, the team made it a priority to quickly implement the mechanic and thus it is now functional.
 
-Most playtesters indicated that they were satisfied with the level of environment and the aesthetics chosen in the Questionnaire and Cooperative evaluation. However, one participant pointed out that the sky looked strange and could use improvement. The build given to the participants was indeed just using the default Unity “sky” and thus the team also implemented a sky asset from the Unity Asset Store [28] to make the level environment look more polished and detailed, in order to provide a better gameplay experience.
+Most playtesters indicated that they were satisfied with the level of environment and the aesthetics chosen in the Questionnaire and Cooperative evaluation. However, one participant pointed out that the sky looked strange and could use improvement. The build given to the participants was indeed just using the default Unity “sky” and thus the team also implemented a sky asset from the Unity Asset Store [31] to make the level environment look more polished and detailed, in order to provide a better gameplay experience.
 
 Some participants in the Cooperative evaluation displayed their dissatisfaction with the size of the minimap. The build given did not have a way to easily identify the player on the minimap, which made it difficult to navigate. Participants found themselves squinting to identify their position. Our maps scale drastically as players progress to higher levels. Thus, we understood the importance of this and added an icon on the minimap which follows Chiki and scaled the minimap itself by 2x, to make it easier to identify where a participant is on the map. 
+
+### Reference List
+#### Logo
+[1] Tea SVG reference \
+https://freesvg.org/vector-graphics-of-green-tea-sign 
+
+[2] Coffee Stain studio reference \
+https://www.coffeestainstudios.com/
+
+#### Player Model
+[3] Ōtori-Sama Image \
+https://www.zerochan.net/141609
+
+#### Camera Controls
+[4] https://answers.unity.com/questions/1179680/how-to-rotate-my-camera.html \
+[5] https://gamedevacademy.org/unity-audio-tutorial/ (Some parts of the tutorial had information about camera control) \
+[6] https://docs.unity3d.com/ScriptReference/Vector3.html \
+[7] https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html \
+[8] https://www.youtube.com/watch?v=CxI2OBdhLno (for idea of accumulating mouse movement) \
+[9] https://docs.unity3d.com/ScriptReference/Quaternion.Euler.html 
+
+#### Menu/UI
+[10] MAIN MENU in Unity | All-In-One Tutorial: \
+https://www.youtube.com/watch?v=Cq_Nnw_LwnI \
+[11] Level selection in your Unity game | Unity tutorial: \
+https://www.youtube.com/watch?v=YAHFnF2MRsE \
+[12] Unity SceneManager Documentation: \
+https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.html \
+[13] Unity Slider Documentation: \
+https://docs.unity3d.com/ScriptReference/UIElements.Slider.html (only value was used here) \
+[14] Unity PlayerPrefs Documentation: \
+https://docs.unity3d.com/2020.1/Documentation/ScriptReference/PlayerPrefs.html 
+
+#### Player Control
+[15] Rigidbody Documentation: \
+https://docs.unity3d.com/ScriptReference/Rigidbody.html \
+[16] Raycast Documentation: \
+https://docs.unity3d.com/ScriptReference/Physics.Raycast.html \
+[17] First Person Movement tutorial in Unity:  \
+https://youtu.be/f473C43s8nE  \
+[18] Slope Movement Tutorial in Unity: \
+https://youtu.be/xCxSjgYTw9c \
+[19] Hooke’s law explanation: \
+https://www.khanacademy.org/science/physics/work-and-energy/hookes-law/a/what-is-hookes-law \
+[20] SpringJoint Documentation: \
+https://docs.unity3d.com/ScriptReference/SpringJoint.html 
+
+#### Player Animation State Machine
+[21] State Transition Documentation: \
+https://docs.unity3d.com/Manual/class-Transition.html \
+[22] Animator Trigger Documentation: \
+https://docs.unity3d.com/ScriptReference/Animator.SetTrigger.html \
+[23] Animator Controller Overview: \
+https://learn.unity.com/tutorial/animator-controllers#5ce2b1caedbc2a0d2ece30f3 
+
+#### Package
+[24] https://sketchfab.com/3d-models/parcel-01-cbc949af3c3e4ece8c92ea7b6c141f84 
+
+#### Trees
+[25] Savana Tree: 
+https://sketchfab.com/3d-models/low-poly-savana-tree-8163766a28444002ae83d3e4511cf571 \
+[26] Cherry Blossom tree: \
+https://sketchfab.com/3d-models/low-poly-cherry-blossom-tree-3d-models-4b76fd63c81e4d489cc06ec66c12a866 \
+[27] Low Poly Tree set: \
+https://sketchfab.com/3d-models/low-poly-trees-tutorial-31c70d2e2e7b4b44874a826dc6cb2d87 \
+[28] Nature assets: https://assetstore.unity.com/packages/3d/environments/lowpoly-environment-nature-pack-free-187052
+
+#### House Reference 
+[29] House inspiration:  \
+https://polygonrunway.gumroad.com/l/cartoon-house 
+
+#### Wave Function Collapse 
+[30] https://github.com/mxgmn/WaveFunctionCollapse 
+
+#### Sky Dome
+[31] https://assetstore.unity.com/packages/2d/textures-materials/sky/customizable-skybox-174576
+
+#### Rigging and Animation 
+[32] 3D Character for Game \
+https://www.youtube.com/watch?v=ogz-3r0EHKM \
+[33] How to Animate a Character \
+https://www.youtube.com/watch?v=a5ALIw3P7H4 
+
+#### Shaders
+[34] Specular Lighting using Blinn-Phong \
+https://youtu.be/mL8U8tIiRRg?t=10234 \
+[35] SL Shader Example - Casting Shadows \
+https://docs.unity3d.com/560/Documentation/Manual/SL-VertexFragmentShaderExamples.html \
+[36] Large Cloud model \
+https://www.turbosquid.com/3d-models/3d-cloud-polygon-blender-1-model-1895708# \
+[37] Mixing Colours through Linear Interpolation \
+https://thebookofshaders.com/glossary/?search=mix \
+[38] Finding Depth Distance to Camera \
+https://stackoverflow.com/questions/16131963/depth-as-distance-to-camera-plane-in-glsl \
+[39] shader tutorial series - water color \
+https://www.youtube.com/watch?v=VxGfhPeeXqs&list=PL4neAtv21WOmIrTrkNO3xCyrxg4LKkrF7 
+
+#### Particles 
+[40] Everything to know about the PARTICLE SYSTEM \
+https://www.youtube.com/watch?v=FEA1wTMJAR0 
+
+#### Exit Game 
+[41] Unity Editor Preprocessing Directive \
+https://docs.unity3d.com/Manual/PlatformDependentCompilation.html 
+
+#### Medals
+[42] Sample medals: \
+https://kenney.nl/assets/medals 
+
 
