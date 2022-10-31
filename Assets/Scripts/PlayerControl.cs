@@ -37,6 +37,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float useCooldown = 0.2f;
     [SerializeField] private float useRange = 1f;
     [SerializeField] private float ejectForce = 5f;
+    [SerializeField] private float airEjectMultiplier = 0.5f;
     [SerializeField] private bool useInput;
     [SerializeField] private bool isHolding;
     [SerializeField] private InteractiveObject heldObject = null;
@@ -160,9 +161,6 @@ public class PlayerControl : MonoBehaviour
             }
             playerAnimator.TriggerFall();     
         }
-        else {
-            Debug.Log(rigidBody.velocity.y);
-        }
 
         // when player starts falling, set new state and allow gliding
         if (state == PlayerState.Rise & rigidBody.velocity.y < 0) {
@@ -197,7 +195,15 @@ public class PlayerControl : MonoBehaviour
 
             // if holding object, eject
             if (isHolding) {
-                heldObject.Eject(orientation.forward, ejectForce);
+
+                float currentEjectForce = ejectForce;
+
+                // change eject force if airborne
+                if (state != PlayerState.Ground) {
+                    currentEjectForce *= airEjectMultiplier;
+                }
+
+                heldObject.Eject(orientation.forward, currentEjectForce);
                 heldObject = null;
                 isHolding = false;
                 canUse = false;
@@ -400,6 +406,7 @@ public class PlayerControl : MonoBehaviour
                 0.5f * (playerHeight + playerLength * Mathf.Tan((maxAngle / 180) * Mathf.PI)) + heightEpsilon,
                 groundMask
             );
+            Debug.DrawRay(firingPoints[i], Vector3.down, Color.green, 1f/50f);
             if (hit) {
                 angles.Add(Vector3.Angle(Vector3.up, slopeHit.normal));
                 distances.Add(slopeHit.distance);
@@ -409,6 +416,7 @@ public class PlayerControl : MonoBehaviour
 
         // return false if no hits
         if (angles.Count == 0) {
+            Debug.Log("no hits");
             return false;
         }
 
@@ -428,6 +436,7 @@ public class PlayerControl : MonoBehaviour
 
         // false if min angle too steep
         if (minAngle > maxAngle) {
+            Debug.Log("too steep");
             return false;
         }
 
@@ -445,6 +454,9 @@ public class PlayerControl : MonoBehaviour
 
         // make sure player isnt too far above any surfaces
         if (smallestDist >= maxDist) {
+            Debug.Log("too far");
+            foreach (float distance in distances) Debug.Log(distance);
+            Debug.Log(maxDist);
             return false;
         }
 
