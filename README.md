@@ -175,7 +175,7 @@ From our extensive research, we fell in love with Ōtori-Sama from another famou
   <img src="Media/chikiInspiration.png" height="250">
 </p>
 <p align = "center">
-Fig. - Ōtori-Sama [3]
+Fig. 1 - Ōtori-Sama [3]
 </p>
 
 We used Blender to make Chiki. Red freckles and a crown were added to give our model a chicken-like appearance. The model has small feet, a small head and a large body to emphasise its cute aesthetic. 
@@ -187,7 +187,7 @@ We wanted players to feel comfortable and love Chiki not only in-game but also o
 </p>
 
 <p align = "center">
-Fig. - Chiki Design. Made in Blender.
+Fig. 2 - Chiki Design. Made in Blender.
 </p>
 
 
@@ -200,7 +200,7 @@ The animated model was then exported as a .fbx file and imported into our unity 
   <img src="Media/Animation.gif" height="250">
 </p>
 <p align = "center">
-Fig. - Chiki running animation. Made in Blender.
+Fig. 3 - Chiki running animation. Made in Blender.
 </p>
 
 
@@ -219,7 +219,7 @@ Tiles are the fundamental object of our maps. Tiles are used to define the base 
 </p>
 
 <p align = "center">
-Fig. - Base Tiles (Made in Blender).
+Fig. 4 - Base Tiles (Made in Blender).
 </p>
 
 #### Buildings
@@ -234,7 +234,7 @@ We took inspiration for medals from Kenny’s medal assets [43]. The medal style
 </p>
 
 <p align = "center">
-Fig. - Medal design (Made in Adobe Illustrator).
+Fig. 5 - Medal design (Made in Adobe Illustrator).
 </p>
 
 ### Graphics Pipeline
@@ -247,7 +247,7 @@ As one of the core mechanics of the game is Chiki’s ability to jump and glide,
 </p>
 
 <p align = "center">
-Fig. - Wave shader.
+Fig. 6 - Wave shader.
 </p>
 
 
@@ -283,7 +283,7 @@ Interpolators vert(MeshData v) {
 </p>
 
 <p align = "center">
-Fig. - Texture scrolling and Wave vertex displacement.
+Fig. 7 - Texture scrolling and Wave vertex displacement.
 </p>
 
 
@@ -324,7 +324,7 @@ This can be done by implementing a black and white “wave” pattern going thro
 </p>
 
 <p align = "center">
-Fig. - Wave Peak Highlights and Trough Shadows Synchronized.
+Fig. 8 - Wave Peak Highlights and Trough Shadows Synchronized.
 </p>
 
 This pattern was then merely added on top of the illumination components in the final return colour to create the final effect.
@@ -334,7 +334,7 @@ This pattern was then merely added on top of the illumination components in the 
 </p>
 
 <p align = "center">
-Fig. - Wave Shader with Implemented Peak Highlights, Trough Shadow and Phong Illumination.
+Fig. 9 - Wave Shader with Implemented Peak Highlights, Trough Shadow and Phong Illumination.
 </p>
 
 
@@ -348,7 +348,7 @@ Originally, the shadows were just added on top of the Phong illumination and wav
 </p>
 
 <p align = "center">
-Fig. - Initial Received Shadows Implementation.
+Fig. 10 - Initial Received Shadows Implementation.
 </p>
 
 Therefore, after slight tweaking with the variables, we ended up with multiplying the diffused component of the shade with the slightly lighter shadow value, and then multiplying the specular light and wave highlights components directly with the shadow. This allowed the original colour and texture to remain visible with the strong highlights in shadow for the final return value.
@@ -368,15 +368,12 @@ fixed4 frag(Interpolators i) : SV_Target {
 </p>
 
 <p align = "center">
-Fig. - Final Wave Shader.
+Fig. 11 - Final Wave Shader.
 </p>
 
 #### Cloud/Fog Shader
 
 The second shader we decided will be used on a single large cloud mesh[35] with a fog effect to allow the easing of visibility as the cloud comes into view of the player through the sky dome. This shader can be found in Assets/Prefabs/Map/Shaders under the name “[CloudShader.shader](Assets/Prefabs/Map/Shaders/CloudShader.shader)”.
-
-### Particles
-* [Leaf Particle System](Assets/Prefabs/ParticleSystemPrefabs/Leaf System Base.prefab)
 
 ##### Fog Implementation
 ###### Colour Mixing and Fog Factor
@@ -396,7 +393,7 @@ float4 mix(float4 originalColor, float4 fogColor, float fogFactor) {
 </p>
 
 <p align = "center">
-Fig. - Color Interpolation.
+Fig. 12 - Color Interpolation.
 </p>
  
 
@@ -412,7 +409,7 @@ As no other shader implementation was used, the result is mostly flat colours th
 </p>
 
 <p align = "center">
-Fig. - Cloud shader with flat colours and fog implementation.
+Fig. 13 - Cloud shader with flat colours and fog implementation.
 </p>
  
 
@@ -426,7 +423,7 @@ Initially, we wanted to use normal shading methods in order to make the clouds h
 </p>
 
 <p align = "center">
-Fig. - Cloud shader with Gouraud shading.
+Fig. 14 - Cloud shader with Gouraud shading.
 </p>
 
 To keep the simple aesthetics of the game, we decided to instead implement a watercolour pattern[38] along all axises in the pixel shader. 
@@ -460,7 +457,7 @@ fixed4 frag(Interpolators i) : SV_Target {
 </p>
 
 <p align = "center">
-Fig. - Watercolour pattern in pixel shader.
+Fig. 15 - Watercolour pattern in pixel shader.
 </p>
 
 The final cloud looks to have more depth once this watercolour pattern was implemented in the pixel shader, and added to the cloud colour in the final return:
@@ -470,7 +467,7 @@ The final cloud looks to have more depth once this watercolour pattern was imple
 </p>
 
 <p align = "center">
-Fig. - Final Cloud/Fog shader.
+Fig. 16 - Final Cloud/Fog shader.
 </p>
 
 ### Procedural Generation
@@ -509,7 +506,7 @@ The particles were rendered as billboards using a custom texture sheet. This tex
 </p>
 
 <p align = "center">
-Fig. - Leaf texture sheet.
+Fig. 17 - Leaf texture sheet.
 </p>
 
 
@@ -532,7 +529,7 @@ As wind acts in a 3d space and can have a chaotic effect on all leaves, the Nois
 </p>
 
 <p align = "center">
-Fig. - Final Leaf Particle System for Sakura Trees.
+Fig. 18 - Final Leaf Particle System for Sakura Trees.
 </p>
 
 ### Querying Technique
