@@ -291,7 +291,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &200970233
 PrefabInstance:
@@ -1934,9 +1934,13 @@ PrefabInstance:
       propertyPath: levelController
       value: 
       objectReference: {fileID: 1146544651}
+    - target: {fileID: 8838440130943091086, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 311
+      objectReference: {fileID: 0}
     - target: {fileID: 8838440131307154033, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8838440131307154033, guid: 88412da14b0c3334d89ac5ffd56dab94, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2255,7 +2259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1938105093768036819, guid: 8700ea02907d0b14fbc12b0cf3e68f4a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1938105093768036819, guid: 8700ea02907d0b14fbc12b0cf3e68f4a, type: 3}
       propertyPath: m_LocalPosition.x
