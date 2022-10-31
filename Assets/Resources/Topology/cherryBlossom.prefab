@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5932364494178660556}
   - component: {fileID: 8482258707402998790}
   - component: {fileID: 5589610575615749770}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: cherryBlossom
   m_TagString: Untagged
   m_Icon: {fileID: 0}

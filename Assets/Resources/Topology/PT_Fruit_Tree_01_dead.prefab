@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3364213191016600219}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_Fruit_Tree_01_dead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5895696782379769845}
   - component: {fileID: 3173837940901169758}
   - component: {fileID: 249713941750251659}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_Fruit_Tree_01_dead_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

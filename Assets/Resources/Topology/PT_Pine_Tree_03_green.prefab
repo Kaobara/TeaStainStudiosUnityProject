@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 602422948168757346}
   - component: {fileID: 4324524935850628773}
   - component: {fileID: 8966111080459491832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_Pine_Tree_03_green_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8139306236123809429}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_Pine_Tree_03_green
   m_TagString: Untagged
   m_Icon: {fileID: 0}

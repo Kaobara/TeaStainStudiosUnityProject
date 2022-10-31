@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2176471847163764425}
   - component: {fileID: 2672903020343093314}
   - component: {fileID: 2265408006072759435}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_River_Rock_Pile_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1714748972919986588}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PT_River_Rock_Pile_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
