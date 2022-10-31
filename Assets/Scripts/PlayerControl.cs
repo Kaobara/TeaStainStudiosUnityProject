@@ -46,13 +46,13 @@ public class PlayerControl : MonoBehaviour
 
     [Header("Checks for Groundedness")]
     [SerializeField] private float heightEpsilon = 0.01f;
-    [SerializeField] private float radiusEpsilon = 0.01f;
+    [SerializeField] private float radiusEpsilon = 0.03f;
     private new CapsuleCollider collider;
     // transform scaling used on player, used to get unscaled radius of collider
     // may create issues with ground detection if z and x scaling are different
     [SerializeField] private readonly float playerScaleFactor;
     [SerializeField] private bool canLand = true;
-    [SerializeField] private float landCooldown = 0.04f;
+    [SerializeField] private float landCooldown = 0.06f;
     [SerializeField] private float maxUpwardLandingSpeed = 0.5f;
     public LayerMask groundMask;
     private Vector3[] firingPoints;
